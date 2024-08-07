@@ -1,4 +1,5 @@
 'use client'
+import { AppColorsHex } from "@/const/colors";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { ReactElement, ReactHTMLElement } from "react";
 
@@ -12,18 +13,18 @@ export default function AppTheme({
         <ThemeProvider theme={createTheme({
             palette:{
                 primary: {
-                    main: "#003D9F"
+                    main: AppColorsHex.blue
                 },
                 secondary: {
-                    main:'#FFFFFF'
+                    main:AppColorsHex.white
                 },
                 info: {
-                    main:'#373636'
+                    main:AppColorsHex.black
                 }
             },
             typography:{
                 h6:{
-                    fontWeight:'lighter',
+                    fontWeight:200,
                 }
             },
             // components: {

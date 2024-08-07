@@ -1,3 +1,4 @@
+'use client'
 import {
   AppBar,
   Box,
@@ -22,7 +23,7 @@ import HideOnScroll from "./hide_on_scroll";
 export default function AppNavBar({}) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   return (
-    <Box height={{ sm: "65px", xs: "65px", md: "70px" }}>
+    <Box height={{ sm: "65px", xs: "65px", md: "70px" }} marginBottom={{sm:'20px',xs:'30px',md:'70px'}}>
     <HideOnScroll>
       <AppBar sx={{ bgcolor: AppColorsHex.white }}>
         <AppDrawer
