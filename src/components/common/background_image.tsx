@@ -7,15 +7,24 @@ export default function AppBackgroundImage({
   children: React.ReactNode;
 }>) {
   return (
-    <Box
-      sx={{
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
-        backgroundImage: "url(/marca/fondo.svg)",
-      }}
-    >
-      {children}
+    < Box>
+      <Box
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100vh",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
+          backgroundImage: "url(/marca/fondo.svg)",
+          zIndex: -1,
+        }}
+      />
+      
+        {children}
+      
     </Box>
   );
 }
