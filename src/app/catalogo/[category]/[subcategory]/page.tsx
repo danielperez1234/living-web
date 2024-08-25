@@ -1,6 +1,14 @@
+"use client";
+import AppFilterDrawer from "@/components/catalogo/app_filter_drawer";
+import AppCounter from "@/components/common/app_counter";
+import AppFooter from "@/components/common/app_footer/main";
+import AppNavBar from "@/components/common/app_nav_bar/main";
+import AppBackgroundImage from "@/components/common/background_image";
 import { AppColorsHex } from "@/const/colors";
-import { Category } from "@mui/icons-material";
-import { Box, Grid, Typography } from "@mui/material";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import { Box, Divider, Fab, Grid, Typography } from "@mui/material";
+import Image from "next/image";
+import { useState } from "react";
 interface CatalogoProps {
   params: {
     category: string;
@@ -8,48 +16,172 @@ interface CatalogoProps {
   };
 }
 export default function catalogo({
-  params: { category, subcategory },
+  params: { category, subcategory }
 }: CatalogoProps) {
+  const [drawerOpen,setDrawerOpen] = useState(false);
   return (
-    <Box
-      marginX={{ xs: "5%", md: "10%" }}
+    <AppBackgroundImage>
+      <AppNavBar />
+      <Box
+        marginX={{ xs: "5%", md: "15%" }}
+        mb={{ xs: "5%", md: "15%" }}
+        display={"flex"}
+        flexDirection={"column"}
+        justifyContent={"start"}
+        alignItems={"center"}
+      >
+        <Typography variant="h1">
+          {subcategory != "0" ? "" : category != "0" ? "" : "Catálogo"}
+        </Typography>
+        <Box height={"20px"} />
+        <Grid
+          container
+          width={"100%"}
+          justifyContent={{ xs: "center", sm: "start" }}
+          maxWidth={1920}
+          rowSpacing={3}
+          columnSpacing={{ xs: 0, sm: 5 }}
+        >
+          {[
+            "Danielilla",
+            "Alguien AlguienAlgu ienAlguienAlguienAlgu ienAlguienAlguienAlguie nAlguienAlguienAlguienAlgu ienAlguienAlguienA guienAlguienAlgu ienAlguien",
+            "YO",
+            "El Pity",
+            "Many",
+            "Alguien",
+            "Alguien",
+            "Alguien AlguienAlgu ienAlguienAlguienAlgu ienAlguienAlguienAlguie nAlguienAlguienAlguienAlgu ienAlguienAlguienA guienAlguienAlgu ienAlguien",
+            "Alguien",
+            "Alguien AlguienAlgu ienAlguienAlguienAlgu ienAlguienAlguienAlguie nAlguienAlguienAlguienAlgu ienAlguienAlguienA guienAlguienAlgu ienAlguien",
+            "Alguien",
+            "Alguien",
+            "Alguien AlguienAlgu ienAlguienAlguienAlgu ienAlguienAlguienAlguie nAlguienAlguienAlguienAlgu nAlguienAlguienAlguienAlgu nAlguienAlguienAlguienAlgu  guienAlguienAlgu ienAlguien"
+          ].map((o, i) => (
+            <Objeto key={i} titulo={o} />
+          ))}
+        </Grid>
+      </Box>
+      <Fab
+      onClick={()=>setDrawerOpen(true)}
+        sx={{
+          position: "fixed",
+          top: 100,
+          right: 20,
+          color: AppColorsHex.blue,
+          bgcolor: AppColorsHex.white,
+          "&:hover": {
+            bgcolor: AppColorsHex.blue,
+            color: AppColorsHex.white
+          }
+        }}
+      >
+        <FilterListIcon />
+      </Fab>
+      <AppFooter />
+      <AppFilterDrawer drawerOpen={drawerOpen} setDrawerOpen={(x)=>setDrawerOpen(x)}/>
+    </AppBackgroundImage>
+  );
+}
+function Objeto({ titulo }: { titulo: string }) {
+  return (
+    <Grid
+      xs={12}
+      sm={6}
+      md={4}
+      xl={3}
+      item
       display={"flex"}
       flexDirection={"column"}
       justifyContent={"start"}
       alignItems={"center"}
+      maxWidth={"280px"}
     >
-      <Typography variant="h1">
-        {subcategory != "0" ? "" : category != "0" ? "" : "Catálogo"}
-      </Typography>
-      <Grid container width={"100%"}>
-        <Grid
-          item
-          display={"flex"}
-          flexDirection={"column"}
-          justifyContent={"start"}
-          alignItems={"center"}
-          maxWidth={"360px"}
-        >
-          <Box
-            bgcolor={AppColorsHex.white}
-            display={'flex'}
-            flexDirection={'column'}
-            alignItems={'center'}
-            padding={'10px'}
-            borderRadius={'49px'}
-            sx={{
-              boxShadow:
-                "0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3)",
-            }}
-            marginX={{ xs: "0px", sm: "10px", md: "20px", lg: "20px" }}
-          >
-                <Typography>
-                    Foamy moldeable
-                </Typography>
-                
+      <Box
+        bgcolor={AppColorsHex.white}
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        borderRadius={"50px"}
+        width={"100%"}
+        sx={{
+          boxShadow:
+            "0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3)"
+        }}
+      >
+        <Box width={"85%"} marginY={"30px"}>
+          <Box width={"100%"} sx={{ aspectRatio: 1, position: "relative" }}>
+            <Image
+              fill
+              alt="product Image"
+              src={"/productos/1.jpg"}
+              style={{
+                objectFit: "cover"
+              }}
+            />
           </Box>
-        </Grid>
-      </Grid>
-    </Box>
+          <Box>
+            <Typography
+              width={"100%"}
+              mb={2}
+              height={"50px"}
+              textOverflow={"ellipsis"}
+              style={{
+                display: "-webkit-box",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical"
+              }}
+            >
+              {titulo}
+            </Typography>
+          </Box>
+          <Box
+            width={"100%"}
+            display={"flex"}
+            justifyContent={"space-between"}
+            mb={2}
+          >
+            <Box width={"49%"}>
+              <Typography variant="h5">${"45.00"}</Typography>
+              <Typography
+                variant="h5"
+                fontSize={"12px"}
+                textOverflow={"ellipsis"}
+              >
+                {`Menudeo`}
+              </Typography>
+            </Box>
+
+            <Divider
+              orientation="vertical"
+              sx={{
+                height: "50px",
+                borderWidth: "0.5px",
+                borderColor: AppColorsHex.black,
+                margin: "0px",
+                padding: "0px",
+                opacity: 0.6
+              }}
+            />
+            <Box
+              width={"49%"}
+              display={"flex"}
+              flexDirection={"column"}
+              alignItems={"end"}
+            >
+              <Typography variant="h5" color={AppColorsHex.blue}>
+                ${"45.00"}
+              </Typography>
+              <Typography variant="h5" fontSize={"12px"}>
+                {`a partir de ${"20"}pz`}
+              </Typography>
+            </Box>
+          </Box>
+          <AppCounter maxCount={40} />
+          
+        </Box>
+      </Box>
+    </Grid>
   );
 }

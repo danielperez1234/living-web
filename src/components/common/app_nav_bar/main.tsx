@@ -20,8 +20,12 @@ import { useState } from "react";
 import AppDrawer from "./app_drawer";
 import { AppColorsHex } from "@/const/colors";
 import HideOnScroll from "./hide_on_scroll";
+import { useRouter } from "next/navigation";
 export default function AppNavBar({}) {
+  //hooks
   const [drawerOpen, setDrawerOpen] = useState(false);
+  // router
+  const router = useRouter();
   return (
     <Box height={{ sm: "65px", xs: "65px", md: "70px" }} marginBottom={{sm:'20px',xs:'30px',md:'70px'}}>
     <HideOnScroll>
@@ -47,10 +51,13 @@ export default function AppNavBar({}) {
             >
               <Image
                 objectPosition="left center"
-                objectFit="contain"
+                
                 fill
                 src="/marca/logo.png"
                 alt="logo Living"
+                style={{
+                  objectFit:"contain"
+                }}
               />
             </Box>
             <Box
@@ -62,7 +69,11 @@ export default function AppNavBar({}) {
               <IconButton onClick={() => setDrawerOpen(true)}>
                 <MenuIcon />
               </IconButton>
-              <NavBarTextButton title={"Catalogo"} onClick={() => {}} />
+              <NavBarTextButton title={"Catalogo"} onClick={() => {
+                console.log('hola')
+                router.push('/catalogo/0/0');
+
+              }} />
               <NavBarTextButton title={"Ofertas"} onClick={() => {}} />
               <NavBarTextButton title={"Servicios"} onClick={() => {}} />
               <NavBarTextButton title={"Quiénes Somos"} onClick={() => {}} />

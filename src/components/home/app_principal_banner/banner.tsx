@@ -45,8 +45,11 @@ export default function Banner({content}:BannerProps){
           src={content}
           alt="mega_banner_image"
           layout="fill"
-          objectFit="cover"
           sizes="(max-width: 80vw)"
+          style={{
+            
+          objectFit:"cover"
+          }}
         />
       </Box>
     )

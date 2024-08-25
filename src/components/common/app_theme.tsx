@@ -33,13 +33,42 @@ export default function AppTheme({
               fontSize: "64px", // LG
             },
           },
+          h2:{
+             fontWeight:600,
+             fontSize: "32px", // XS
+             "@media (min-width:600px)": {
+               fontSize: "37px", // MD
+             },
+             "@media (min-width:960px)": {
+               fontSize: "40px", // LG
+             },
+          },
+          h4:{
+            fontSize: "26px", // XS
+            "@media (min-width:600px)": {
+              fontSize: "30px", // MD
+            },
+            "@media (min-width:960px)": {
+              fontSize: "32px", // LG
+            },
+            fontWeight:500
+          },
           h5:{
-            fontWeight:500,
+            fontWeight:300,
             fontSize: '24px'    
           },
           h6: {
             fontWeight: 200,
           },
+          body1:{
+            fontSize: "18px", // XS
+            "@media (min-width:600px)": {
+              fontSize: "20px", // MD
+            },
+            "@media (min-width:960px)": {
+              fontSize: "28px", // LG
+            },
+          }
         },
         // components: {
         //     MuiTypography: {

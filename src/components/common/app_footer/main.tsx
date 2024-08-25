@@ -1,3 +1,4 @@
+'use client'
 import { AppColorsHex } from "@/const/colors";
 import { Box, Divider, Grid, IconButton, Typography } from "@mui/material";
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -7,8 +8,10 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import MediaIcon from "./media_icon";
 import TextButton from "./text_button";
+import { useRouter } from "next/navigation";
 
 export default function AppFooter(){
+    const router = useRouter();
     return(
         <Box height={{  xs: "50vh", md: "33vh" }} padding={5} bgcolor={AppColorsHex.black} marginTop={{sm:'20px',xs:'30px',md:'70px'}}>
             <Grid container xs={12} marginBottom={5} justifyContent={'center'}>
@@ -32,11 +35,11 @@ export default function AppFooter(){
             </Grid>
             <Grid container xs={12} justifyContent={'center'}>
             <Grid container item rowSpacing={4} xs={10} justifyContent={{md:'space-evenly',xs:'start'}}>
-                <TextButton text={"Inicio"}/>
+                <TextButton onClick={()=>router.push('/home')} text={"Inicio"}/>
                 <TextButton text={"Catálogo"}/>
                 <TextButton text={"Contacto"}/>
                 <TextButton text={"Quiénes somos"}/>
-                <TextButton text={"Empresas"}/>
+                <TextButton onClick={()=>router.push('/empresas')} text={"Empresas"}/>
             </Grid>
             
             </Grid>
