@@ -15,7 +15,7 @@ interface CatalogoProps {
     subcategory: string;
   };
 }
-export default function catalogo({
+export default function Empresas({
   params: { category, subcategory }
 }: CatalogoProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -24,7 +24,7 @@ export default function catalogo({
       <AppNavBar />
       <Box
         marginX={{ xs: "5%", md: "15%" }}
-        mb={{ xs: "5%", md: "15%" }}
+        mb={{ xs: "5%", md: "10%" }}
         display={"flex"}
         flexDirection={"column"}
         justifyContent={"start"}
@@ -39,18 +39,17 @@ export default function catalogo({
           flexDirection={{xs:"column",md:"row"}}
           alignItems={"center"}
           borderRadius={"50px"}
-          height={"50vh"}
-          width={"80%"}
-          padding={"10%"}
+          width={"95%"}
+          padding={"5%"}
           sx={{
             boxShadow:
-              "0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3)"
+              "0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3)"
           }}
         >
-          <Box width={"100%"} height={"100%"}></Box>
-          <Box>
-            <Typography variant="h4" mb={5}>Living</Typography>
-            <Typography variant="h2" mb={5}>
+          <Box width={"70%"} height={"100%"}></Box>
+          <Box width={"100%"}>
+            <Typography variant="h4" mb={2}>Living</Typography>
+            <Typography variant="h2" mb={3}>
               Brindamos soluciones de calidad para tu empresa
             </Typography>
             <>

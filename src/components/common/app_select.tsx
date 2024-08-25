@@ -14,7 +14,7 @@ export default function AppSelect({label,options,onChange}:PropsAppSelect){
     onChange(event.target.value);
   };
   return(
-    <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+    <FormControl variant="standard" focused sx={{ m: 1, minWidth: 120 }}>
         <InputLabel id="demo-simple-select-standard-label">{label}</InputLabel>
         <Select
           labelId="demo-simple-select-standard-label"

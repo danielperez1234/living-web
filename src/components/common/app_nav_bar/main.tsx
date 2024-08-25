@@ -70,13 +70,14 @@ export default function AppNavBar({}) {
                 <MenuIcon />
               </IconButton>
               <NavBarTextButton title={"Catalogo"} onClick={() => {
-                console.log('hola')
                 router.push('/catalogo/0/0');
 
               }} />
               <NavBarTextButton title={"Ofertas"} onClick={() => {}} />
               <NavBarTextButton title={"Servicios"} onClick={() => {}} />
-              <NavBarTextButton title={"Quiénes Somos"} onClick={() => {}} />
+              <NavBarTextButton title={"Quiénes Somos"} onClick={() => {
+                router.push('/quienes_somos')
+              }} />
             </Box>
             <Box
               flexGrow={2}
@@ -87,7 +88,7 @@ export default function AppNavBar({}) {
               <IconButton>
                 <SearchIcon color="info" />
               </IconButton>
-              <IconButton>
+              <IconButton onClick={()=>router.push('/login')}>
                 <PersonIcon color="primary" />
               </IconButton>
               <IconButton>

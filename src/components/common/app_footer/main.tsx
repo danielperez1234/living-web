@@ -38,7 +38,7 @@ export default function AppFooter(){
                 <TextButton onClick={()=>router.push('/home')} text={"Inicio"}/>
                 <TextButton text={"Catálogo"}/>
                 <TextButton text={"Contacto"}/>
-                <TextButton text={"Quiénes somos"}/>
+                <TextButton text={"Quiénes somos"} onClick={()=>router.push('/quienes_somos')}/>
                 <TextButton onClick={()=>router.push('/empresas')} text={"Empresas"}/>
             </Grid>
             

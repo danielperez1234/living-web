@@ -35,18 +35,18 @@ export default function AppTheme({
           },
           h2:{
              fontWeight:600,
-             fontSize: "32px", // XS
+             fontSize: "25px", // XS
              "@media (min-width:600px)": {
-               fontSize: "37px", // MD
+               fontSize: "32px", // MD
              },
              "@media (min-width:960px)": {
                fontSize: "40px", // LG
              },
           },
           h4:{
-            fontSize: "26px", // XS
+            fontSize: "20px", // XS
             "@media (min-width:600px)": {
-              fontSize: "30px", // MD
+              fontSize: "26px", // MD
             },
             "@media (min-width:960px)": {
               fontSize: "32px", // LG
@@ -61,12 +61,12 @@ export default function AppTheme({
             fontWeight: 200,
           },
           body1:{
-            fontSize: "18px", // XS
+            fontSize: "14px", // XS
             "@media (min-width:600px)": {
-              fontSize: "20px", // MD
+              fontSize: "16px", // MD
             },
             "@media (min-width:960px)": {
-              fontSize: "28px", // LG
+              fontSize: "18px", // LG
             },
           }
         },

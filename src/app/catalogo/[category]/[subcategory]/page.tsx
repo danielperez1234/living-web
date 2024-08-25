@@ -15,7 +15,7 @@ interface CatalogoProps {
     subcategory: string;
   };
 }
-export default function catalogo({
+export default function Catalogo({
   params: { category, subcategory }
 }: CatalogoProps) {
   const [drawerOpen,setDrawerOpen] = useState(false);
