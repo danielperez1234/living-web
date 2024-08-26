@@ -31,10 +31,10 @@ export default function AppTheme({
             fontWeight: 900,
             fontSize: "32px", // XS
             "@media (min-width:600px)": {
-              fontSize: "48px", // MD
+              fontSize: "42px", // MD
             },
             "@media (min-width:960px)": {
-              fontSize: "64px", // LG
+              fontSize: "48px", // LG
             },
           },
           h2:{
