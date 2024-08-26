@@ -9,6 +9,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Search } from "@mui/icons-material";
 import AppButton from "@/components/common/app_button";
+import AppDatePicker from "@/components/common/app_date_picker";
 
 export default function Login() {
   const router = useRouter();
@@ -70,7 +71,7 @@ export default function Login() {
       >
         <Box mb={5}>
           <Typography variant="h1" color={AppColorsHex.blue}>
-            Iniciar Sesión
+            Registrate
           </Typography>
         </Box>
         <AppTextField label={"Correo"} fullWidth margin="normal" type="email" />
@@ -95,9 +96,16 @@ export default function Login() {
             )
           }}
         />
+        <AppTextField
+          label={"Vuelve a introducir tu contraseña"}
+          fullWidth
+          margin="normal"
+          type={ "password"}
+          
+        />
+        <AppDatePicker/>
       </Box>
-      <AppButton label="Acceder" />
-      <AppButton label="Registrarme" onClick={()=>router.push('/registro')} color="warning" sx={{minWidth:'18vw'}} />
+      <AppButton label="Completar" />
     </Box>
   );
 }

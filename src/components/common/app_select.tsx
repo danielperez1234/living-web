@@ -2,12 +2,13 @@ import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@m
 import { useState } from "react";
 interface PropsAppSelect{
   label: string,
+  value?: string|undefined,
   options: string[],
   onChange:(value:string | undefined) => void
 
 }
-export default function AppSelect({label,options,onChange}:PropsAppSelect){
-  const [actualValue, setActualValue] = useState<string | undefined>(undefined);
+export default function AppSelect({label,value,options,onChange}:PropsAppSelect){
+  const [actualValue, setActualValue] = useState<string | undefined>(value);
 
   const handleChange = (event: SelectChangeEvent) => {
     setActualValue(event.target.value);

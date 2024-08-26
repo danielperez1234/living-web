@@ -18,6 +18,10 @@ export default function AppTheme({
           secondary: {
             main: AppColorsHex.white,
           },
+          warning:{
+            main:AppColorsHex.yellow,
+            contrastText:AppColorsHex.blue
+          },
           info: {
             main: AppColorsHex.black,
           },
