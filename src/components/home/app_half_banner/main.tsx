@@ -8,7 +8,7 @@ export default function AppHalfBanner({banners}:{banners:BannerInterface[]}){
     const router = useRouter();
     return(
     <Carousel>
-     {banners?.filter(banner => banner.assetUrl).map(banner=><Banner content={banner.assetUrl!} onClick={banner.link ? () => router.push(banner.link!): undefined}></Banner>)
+     {banners?.filter(banner => banner.assetUrl).map((banner,i)=><Banner key={`half_banner_${banner.location}_${i}`} content={banner.assetUrl!} onClick={banner.link ? () => router.push(banner.link!): undefined}></Banner>)
     }
     </Carousel>
     );

@@ -8,7 +8,7 @@ export default function AppPrincipalBanner({banners}:{banners:BannerInterface[]}
     const router = useRouter();
     return(
     <Carousel >
-    {banners?.filter(banner => banner.assetUrl).map(banner=><Banner content={banner.assetUrl!} onClick={banner.link ? () => router.push(banner.link!): undefined}></Banner>)
+    {banners?.filter(banner => banner.assetUrl).map((banner, i)=><Banner key={`mega_banner_${i}`} content={banner.assetUrl!} onClick={banner.link ? () => router.push(banner.link!): undefined}></Banner>)
         
         }
     
