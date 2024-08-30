@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import AppTheme from "@/components/common/app_theme";
-import AppNavBar from "@/components/common/app_nav_bar/main";
-import { Box } from "@mui/material";
 import { AppColorsHex } from "@/const/colors";
 
 const inter = Inter({ subsets: ["latin"] });
