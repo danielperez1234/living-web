@@ -9,7 +9,7 @@ export default function AppFlatBanner({banners}:{banners:BannerInterface[]}){
     console.log(banners)
     return(
     <Carousel >
-     {banners.filter(banner => banner.assetUrl).map((banner, i)=><Banner key={`flat_banner_${i}`} content={banner.assetUrl!} onClick={() => router.push("youtube.com")}></Banner>)
+     {banners.filter(banner => banner.assetUrl).map((banner, i)=><Banner key={`flat_banner_${i}`} content={banner.assetUrl!} onClick={() => window.open('https://www.youtube.com', '_blank', 'noopener,noreferrer')}></Banner>)
         
     }
     </Carousel>
