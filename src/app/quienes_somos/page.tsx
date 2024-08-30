@@ -5,9 +5,11 @@ import AppFooter from "@/components/common/app_footer/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
 import AppBackgroundImage from "@/components/common/background_image";
 import { AppColorsHex } from "@/const/colors";
+import { basepath } from "@/const/utils";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { Box, Divider, Fab, Grid, Typography } from "@mui/material";
 import Image from "next/image";
+import { relative } from "path";
 import { useState } from "react";
 interface CatalogoProps {
   params: {
@@ -46,8 +48,12 @@ export default function QuienesSomos({
           <Typography variant="h1">Nosotros</Typography>
         </Box>
         <Box sx={boxCardStyle}>
-          <Box width={"70%"} height={"100%"}></Box>
-          <Box width={"100%"}>
+          <Box bgcolor={'red'} width={"100%"} sx={{aspectRatio: {xs:1,sm:1/1.5}}} position={'relative'} borderRadius={"45px"} overflow={'hidden'}>
+            <Image fill src={`/${basepath}/marca/ejemplo_somos.png`} alt={"image nf"} style={{objectFit:'cover',objectPosition:'10% 50%'}}>
+
+            </Image>
+          </Box>
+          <Box width={"100%"} ml={3}>
             <Typography variant="h4" mb={2}>
               Living
             </Typography>
@@ -81,8 +87,8 @@ export default function QuienesSomos({
           </Box>
         </Box>
         <Box sx={boxCardStyle}>
-          <Box width={"100%"}>
-            <Typography variant="h2" mb={3}>
+          <Box width={"100%"} mr={3}>
+            <Typography variant="h2" mb={3} >
               Misión
             </Typography>
             <Box>
@@ -102,12 +108,24 @@ export default function QuienesSomos({
               </Typography>
             </Box>
           </Box>
-          <Box width={"70%"} height={"100%"}></Box>
+          <Box bgcolor={'red'} width={"100%"} sx={{aspectRatio:{
+            xs:1,
+            sm:1/1.3
+          }}} position={'relative'} borderRadius={"45px"} overflow={'hidden'}>
+            <Image fill src={`/${basepath}/marca/ejemplo_somos.png`} alt={"image nf"} style={{objectFit:'cover',objectPosition:'10% 50%'}}>
+
+            </Image>
+          </Box>
         </Box>
         <Box sx={boxCardStyle}>
-          <Box width={"70%"} height={"100%"}></Box>
-          <Box width={"100%"}>
-            <Typography variant="h2" mb={3}>
+          
+          <Box bgcolor={'red'} width={"100%"} sx={{aspectRatio: {xs:1,sm:1/1.5}}} position={'relative'} borderRadius={"45px"} overflow={'hidden'}>
+            <Image fill src={`/${basepath}/marca/ejemplo_somos.png`} alt={"image nf"} style={{objectFit:'cover',objectPosition:'10% 50%'}}>
+
+            </Image>
+          </Box>
+          <Box width={"100%"} ml={3}>
+            <Typography variant="h2" mb={3} >
               Visión
             </Typography>
             <Box>
@@ -132,7 +150,7 @@ export default function QuienesSomos({
           </Box>
         </Box>
         <Box sx={boxCardStyle}>
-          <Box width={"100%"}>
+          <Box width={"100%"} mr={3}>
             <Typography variant="h2" mb={3}>
               Valores
             </Typography>
@@ -146,7 +164,11 @@ export default function QuienesSomos({
               </Typography>
             </Box>
           </Box>
-          <Box width={"70%"} height={"100%"}></Box>
+          <Box bgcolor={'red'} width={"100%"} sx={{aspectRatio: 1}} position={'relative'} borderRadius={"45px"} overflow={'hidden'}>
+            <Image fill src={`/${basepath}/marca/ejemplo_somos.png`} alt={"image nf"} style={{objectFit:'cover',objectPosition:'10% 50%'}}>
+
+            </Image>
+          </Box>
         </Box>
       </Box>
 
