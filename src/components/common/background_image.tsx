@@ -1,3 +1,4 @@
+import { basepath } from "@/const/utils";
 import { Box } from "@mui/material";
 import React, { ReactElement } from "react";
 
@@ -18,7 +19,7 @@ export default function AppBackgroundImage({
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundAttachment: "fixed",
-          backgroundImage: "url(/marca/fondo.svg)",
+          backgroundImage: `url(/${basepath}/marca/fondo.svg)`,
           zIndex: -1,
         }}
       />
