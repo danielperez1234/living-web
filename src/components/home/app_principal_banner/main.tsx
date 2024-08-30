@@ -12,7 +12,7 @@ export default function AppPrincipalBanner({banners}:{banners:BannerInterface[]}
     useEffect(() => {
         function handleResize() {
             // Forzar una actualización del carrusel
-            setCarouselKey(Date.now());
+            //setCarouselKey(Date.now());
         }
 
         // Añadir el event listener para resize
