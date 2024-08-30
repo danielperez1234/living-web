@@ -2,18 +2,19 @@ import { Box } from "@mui/material";
 import Image from "next/image";
 
 interface BannerProps{
-  content:string
+  content:string;
+  onClick?: ()=>void;
 }
-export default function Banner({content}:BannerProps){
+export default function Banner({content,onClick}:BannerProps){
   if(content.includes('mp4')){
     return  (<Box
-        marginX={'10%'}
-        width={'80vw'}
-        overflow={'hidden'}
-        position={'relative'}
-        borderRadius={'5vw'}
+    onClick={onClick}
+      width={'100%'}
+      position={'relative'}
+      borderRadius={'5vw'}
+      overflow={'hidden'}
         boxShadow={4}
-        sx={{ aspectRatio: '2' }} // Ajusta la proporción de aspecto según sea necesario
+        sx={{ aspectRatio: '2', cursor: onClick ? "pointer":"none"   }} // Ajusta la proporción de aspecto según sea necesario
       >
        <video
             autoPlay
@@ -33,8 +34,7 @@ export default function Banner({content}:BannerProps){
   }
     return(
         <Box
-        marginX={'10%'}
-        width={'80vw'}
+        width={'100%'}
         position={'relative'}
         borderRadius={'5vw'}
         overflow={'hidden'}

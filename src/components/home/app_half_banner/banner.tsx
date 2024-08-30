@@ -1,20 +1,22 @@
+'use client'
 import { Box } from "@mui/material";
 import Image from "next/image";
 
 interface BannerProps{
-  content:string
+  content:string;
+  onClick?: ()=>void;
 }
-export default function Banner({content}:BannerProps){
+export default function Banner({content,onClick}:BannerProps){
   
     return(
         <Box
+        onClick={onClick}
         width={'100%'}
-        alignSelf={'center'}
         position={'relative'}
         borderRadius={'5vw'}
         overflow={'hidden'}
         boxShadow={4}
-        sx={{ aspectRatio: '1' }} // Ajusta la proporción de aspecto según sea necesario
+        sx={{ aspectRatio: '1', cursor: onClick ? "pointer":"none"   }} // Ajusta la proporción de aspecto según sea necesario
       >
         <Image
           src={content}

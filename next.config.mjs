@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    domains: ['livingphotos.blob.core.windows.net'],
     remotePatterns: [
       {
         protocol: 'http',

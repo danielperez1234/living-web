@@ -27,7 +27,7 @@ export default function AppNavBar({}) {
   // router
   const router = useRouter();
   return (
-    <Box height={{ sm: "65px", xs: "65px", md: "70px" }} marginBottom={{sm:'20px',xs:'30px',md:'70px'}}>
+    <Box height={{ sm: "65px", xs: "65px", md: "70px" }} marginBottom={{sm:'20px',xs:'30px',md:'60px'}}>
     <HideOnScroll>
       <AppBar sx={{ bgcolor: AppColorsHex.white }}>
         <AppDrawer
@@ -51,7 +51,7 @@ export default function AppNavBar({}) {
             >
               <Image
                 objectPosition="left center"
-                
+                onClick={()=>router.push('/home')}
                 fill
                 src="/marca/logo.png"
                 alt="logo Living"
