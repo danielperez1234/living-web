@@ -1,4 +1,3 @@
-'use client'
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -8,7 +7,10 @@ import { Box } from "@mui/material";
 import { AppColorsHex } from "@/const/colors";
 
 const inter = Inter({ subsets: ["latin"] });
-
+export const metadata: Metadata = {
+  title: "Papeleria Living",
+  description: "Brindamos soluciones de calidad",
+};
 
 export default function RootLayout({
   children,
