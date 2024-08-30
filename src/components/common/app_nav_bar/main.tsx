@@ -21,6 +21,7 @@ import AppDrawer from "./app_drawer";
 import { AppColorsHex } from "@/const/colors";
 import HideOnScroll from "./hide_on_scroll";
 import { useRouter } from "next/navigation";
+import { basepath } from "@/const/utils";
 export default function AppNavBar({}) {
   //hooks
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -53,7 +54,7 @@ export default function AppNavBar({}) {
                 objectPosition="left center"
                 onClick={()=>router.push('/home')}
                 fill
-                src="/marca/logo.png"
+                src={`/${basepath}/marca/logo.png`}
                 alt="logo Living"
                 style={{
                   objectFit:"contain"

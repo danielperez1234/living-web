@@ -26,7 +26,7 @@ export default function Banner({content,onClick}:BannerProps){
             }
           >
             <source
-              src={"/mega_banner/megabanner_5.mp4"}
+              src={content}
               type="video/mp4"
             />
           </video>

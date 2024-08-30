@@ -10,6 +10,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Search } from "@mui/icons-material";
 import AppButton from "@/components/common/app_button";
 import AppDatePicker from "@/components/common/app_date_picker";
+import { basepath } from "@/const/utils";
 
 export default function Login() {
   const router = useRouter();
@@ -45,7 +46,7 @@ export default function Login() {
           onClick={() => router.push("/home")}
           objectPosition="left center"
           fill
-          src="/marca/logo.png"
+          src={`/${basepath}/marca/logo.png`}
           alt="logo Living"
           style={{
             objectPosition: "100%",

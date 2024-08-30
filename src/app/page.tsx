@@ -1,4 +1,5 @@
 'use client'
+import { basepath } from "@/const/utils";
 import { Box } from "@mui/material";
 import { NextPage } from "next";
 import Image from "next/image";
@@ -15,7 +16,7 @@ const Page: NextPage<Props> = ({}) => {
   return (
     <Box display={"flex"} justifyContent={"center"} alignItems={"center"} height={"100vh"} width={"100vw"}>
     <Box width={{xs:"80vw", md:"50vw"}} height={"100vw"} position={'relative'}>
-      <Image fill src={"/marca/logo.png"} alt={"logo"} style={{objectFit:'contain'}} />
+      <Image fill src={`/${basepath}/marca/logo.png`} alt={"logo"} style={{objectFit:'contain'}} />
     </Box>      
     </Box>
   );
