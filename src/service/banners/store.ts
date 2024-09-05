@@ -29,15 +29,15 @@ const useBannerStore= create<BannerState>()((set) => ({
     const response_flat_banner = await GetBannersLocation('flat_banner');
     const response_squareOne_banner = await GetBannersLocation('square_one_banner');
     const response_squareTwo_Banner = await GetBannersLocation('square_two_banner');
-    
+      
       set((state) => {
         return {
           ...state,
           loading: false,
-          mega_banners: response_mege_banner.data,
-          flat_banners: response_flat_banner.data,
-          squareTwo_Banners: response_squareTwo_Banner.data,
-          squareOne_banners: response_squareOne_banner.data,
+          mega_banners: response_mege_banner.data ??[],
+          flat_banners: response_flat_banner.data ??[],
+          squareTwo_Banners: response_squareTwo_Banner.data ??[],
+          squareOne_banners: response_squareOne_banner.data ??[],
         };
       });
 
