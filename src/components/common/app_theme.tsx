@@ -64,6 +64,16 @@ export default function AppTheme({
           h6: {
             fontWeight: 200,
           },
+          subtitle1: {
+            fontWeight: 600,
+            fontSize: "16px", // XS
+            "@media (min-width:600px)": {
+              fontSize: "18px", // MD
+            },
+            "@media (min-width:960px)": {
+              fontSize: "20px", // LG
+            },
+          },
           body1:{
             fontSize: "14px", // XS
             "@media (min-width:600px)": {

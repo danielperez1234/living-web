@@ -4,6 +4,7 @@ import AppCounter from "@/components/common/app_counter";
 import AppFooter from "@/components/common/app_footer/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
 import AppBackgroundImage from "@/components/common/background_image";
+import Valor from "@/components/quienes_somos/valor";
 import { AppColorsHex } from "@/const/colors";
 import { basepath } from "@/const/utils";
 import FilterListIcon from "@mui/icons-material/FilterList";
@@ -23,7 +24,7 @@ const boxCardStyle = {
   display: "flex",
   flexDirection: { xs: "column", md: "row" },
   alignItems: "center",
-  borderRadius: "50px",
+  borderRadius: {xs: '30px', md:"50px"},
   width: "95%",
   padding: "5%",
   boxShadow:
@@ -48,10 +49,19 @@ export default function QuienesSomos({
           <Typography variant="h1">Nosotros</Typography>
         </Box>
         <Box sx={boxCardStyle}>
-          <Box bgcolor={'red'} width={"100%"} sx={{aspectRatio: {xs:1,sm:1/1.5}}} position={'relative'} borderRadius={"45px"} overflow={'hidden'}>
-            <Image fill src={`/${basepath}/marca/ejemplo_somos.png`} alt={"image nf"} style={{objectFit:'cover',objectPosition:'10% 50%'}}>
-
-            </Image>
+          <Box
+            width={"100%"}
+            sx={{ aspectRatio: { xs: 1, sm: 1 / 1.5 } }}
+            position={"relative"}
+            borderRadius={{xs: '25px', md:"45px"}}
+            overflow={"hidden"}
+          >
+            <Image
+              fill
+              src={`/${basepath}/marca/ejemplo_somos.png`}
+              alt={"image nf"}
+              style={{ objectFit: "cover", objectPosition: "10% 50%" }}
+            ></Image>
           </Box>
           <Box width={"100%"} ml={3}>
             <Typography variant="h4" mb={2}>
@@ -88,7 +98,7 @@ export default function QuienesSomos({
         </Box>
         <Box sx={boxCardStyle}>
           <Box width={"100%"} mr={3}>
-            <Typography variant="h2" mb={3} >
+            <Typography variant="h2" mb={3}>
               Misión
             </Typography>
             <Box>
@@ -108,24 +118,43 @@ export default function QuienesSomos({
               </Typography>
             </Box>
           </Box>
-          <Box bgcolor={'red'} width={"100%"} sx={{aspectRatio:{
-            xs:1,
-            sm:1/1.3
-          }}} position={'relative'} borderRadius={"45px"} overflow={'hidden'}>
-            <Image fill src={`/${basepath}/marca/ejemplo_somos.png`} alt={"image nf"} style={{objectFit:'cover',objectPosition:'10% 50%'}}>
-
-            </Image>
+          <Box
+            width={"100%"}
+            sx={{
+              aspectRatio: {
+                xs: 1,
+                sm: 1 / 1.3
+              }
+            }}
+            position={"relative"}
+            borderRadius={{xs: '25px', md:"45px"}}
+            overflow={"hidden"}
+          >
+            <Image
+              fill
+              src={`/${basepath}/marca/ejemplo_somos.png`}
+              alt={"image nf"}
+              style={{ objectFit: "cover", objectPosition: "10% 50%" }}
+            ></Image>
           </Box>
         </Box>
         <Box sx={boxCardStyle}>
-          
-          <Box bgcolor={'red'} width={"100%"} sx={{aspectRatio: {xs:1,sm:1/1.5}}} position={'relative'} borderRadius={"45px"} overflow={'hidden'}>
-            <Image fill src={`/${basepath}/marca/ejemplo_somos.png`} alt={"image nf"} style={{objectFit:'cover',objectPosition:'10% 50%'}}>
-
-            </Image>
+          <Box
+            width={"100%"}
+            sx={{ aspectRatio: { xs: 1, sm: 1 / 1.5 } }}
+            position={"relative"}
+            borderRadius={{xs: '25px', md:"45px"}}
+            overflow={"hidden"}
+          >
+            <Image
+              fill
+              src={`/${basepath}/marca/ejemplo_somos.png`}
+              alt={"image nf"}
+              style={{ objectFit: "cover", objectPosition: "10% 50%" }}
+            ></Image>
           </Box>
           <Box width={"100%"} ml={3}>
-            <Typography variant="h2" mb={3} >
+            <Typography variant="h2" mb={3}>
               Visión
             </Typography>
             <Box>
@@ -150,24 +179,57 @@ export default function QuienesSomos({
           </Box>
         </Box>
         <Box sx={boxCardStyle}>
-          <Box width={"100%"} mr={3}>
+          <Box>
             <Typography variant="h2" mb={3}>
               Valores
             </Typography>
-            <Box>
-              <Typography variant="body1" mb={2}>
-                Respeto: En nuestra empresa, el respeto es un valor fundamental
-                que se refleja en cómo tratamos a nuestros clientes, proveedores
-                y colaboradores. Valoramos la diversidad y la dignidad de cada
-                persona, fomentando un ambiente de trabajo inclusivo y
-                respetuoso donde todas las voces son escuchadas y valoradas.
-              </Typography>
-            </Box>
-          </Box>
-          <Box bgcolor={'red'} width={"100%"} sx={{aspectRatio: 1}} position={'relative'} borderRadius={"45px"} overflow={'hidden'}>
-            <Image fill src={`/${basepath}/marca/ejemplo_somos.png`} alt={"image nf"} style={{objectFit:'cover',objectPosition:'10% 50%'}}>
-
-            </Image>
+            <Grid
+              container
+              width={"100%"}
+              spacing={3}
+              direction={"row"}
+              alignItems={"center"}
+              justifyContent={"center"}
+            >
+              <Valor
+                text={
+                  "En nuestra empresa, el respeto es un valor fundamental que se refleja en cómo tratamos a nuestros clientes, proveedores y colaboradores. Valoramos la diversidad y la dignidad de cada persona, fomentando un ambiente de trabajo inclusivo y respetuoso donde todas las voces son escuchadas y valoradas."
+                }
+                valor={"respeto"}
+              />
+              <Valor
+                text={
+                  "La honestidad es la base de nuestra cultura empresarial. Nos comprometemos a actuar con integridad y transparencia en todas nuestras interacciones y transacciones. Mantenemos una comunicación abierta y sincera con nuestros clientes y colaboradores, construyendo relaciones basadas en la confianza."
+                }
+                valor={"honestidad"}
+              />
+              <Valor
+                text={"Reconocemos que el trabajo en equipo es esencial para alcanzar nuestros objetivos. Fomentamos un ambiente colaborativo donde se valora la contribución de cada miembro del equipo y se promueve el intercambio de ideas y conocimientos para lograr soluciones creativas y eficientes."}
+                valor={"colaboracion"}
+              />
+              <Valor
+                text={"En nuestra empresa, el aprendizaje continuo es clave para mantenernos a la vanguardia en nuestra industria. Incentivamos el desarrollo profesional y personal de nuestros colaboradores, brindando oportunidades de capacitación y crecimiento que les permitan alcanzar su máximo potencial."}
+                valor={"aprendizaje"}
+              />
+              <Valor
+                text={
+                  "Asumimos la responsabilidad de nuestras acciones y decisiones. Cumplimos con nuestros compromisos hacia nuestros clientes, colaboradores y la sociedad en general. Buscamos siempre la excelencia en nuestro trabajo y asumimos la responsabilidad de contribuir al bienestar de las comunidades donde operamos."
+                }
+                valor={"responsabilidad"}
+              />
+              <Valor
+                text={
+                  "En nuestra empresa, promovemos la transparencia en nuestras operaciones y procesos. Mantenemos a nuestros clientes y colaboradores informados sobre nuestras políticas, prácticas y resultados, de manera clara y comprensible."
+                }
+                valor={"transparencia"}
+              />
+              <Valor
+                text={
+                  "Reconocemos que el entorno empresarial está en constante cambio. Por lo tanto, nos esforzamos por ser ágiles y flexibles, adaptándonos a las nuevas circunstancias y desafíos para mantenernos competitivos y relevantes en el mercado."}
+                valor={"adaptabilidad"}
+              />
+              
+            </Grid>
           </Box>
         </Box>
       </Box>
