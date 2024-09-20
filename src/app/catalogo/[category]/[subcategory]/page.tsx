@@ -5,7 +5,6 @@ import AppFooter from "@/components/common/app_footer/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
 import AppBackgroundImage from "@/components/common/background_image";
 import { AppColorsHex } from "@/const/colors";
-import { basepath } from "@/const/utils";
 import useBannerStore from "@/service/banners/store";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { Box, Divider, Fab, Grid, Typography } from "@mui/material";

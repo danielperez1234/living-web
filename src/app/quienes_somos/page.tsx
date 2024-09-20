@@ -1,16 +1,12 @@
 "use client";
-import AppFilterDrawer from "@/components/catalogo/app_filter_drawer";
-import AppCounter from "@/components/common/app_counter";
 import AppFooter from "@/components/common/app_footer/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
 import AppBackgroundImage from "@/components/common/background_image";
 import Valor from "@/components/quienes_somos/valor";
 import { AppColorsHex } from "@/const/colors";
 import { basepath } from "@/const/utils";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import { Box, Divider, Fab, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import Image from "next/image";
-import { relative } from "path";
 import { useState } from "react";
 interface CatalogoProps {
   params: {

@@ -1,5 +1,4 @@
 "use client";
-import AppButton from "@/components/common/app_button";
 import AppFooter from "@/components/common/app_footer/main";
 import AppHalfBanner from "@/components/common/app_half_banner/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";

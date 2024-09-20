@@ -4,10 +4,7 @@ import AppFooter from "@/components/common/app_footer/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
 import AppBackgroundImage from "@/components/common/background_image";
 import Servicio from "@/components/servicios/servicio";
-import { AppColorsHex } from "@/const/colors";
-import { basepath } from "@/const/utils";
 import { Box, Grid, Typography } from "@mui/material";
-import Image from "next/image";
 
 export default function Catalogo() {
   const impresiones=
