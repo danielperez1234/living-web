@@ -107,7 +107,7 @@ const useBannerStore= create<BannerState>()((set) => ({
         return {
           ...state,
           loading: false,
-          ofertas: response_sandbox_catalogo.data ??[],
+          sandbox_catalogo_banners: response_sandbox_catalogo.data ??[],
          
         };
       });
