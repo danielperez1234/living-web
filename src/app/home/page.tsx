@@ -4,7 +4,7 @@ import AppNavBar from "@/components/common/app_nav_bar/main";
 import AppSpace from "@/components/common/app_space";
 import AppBackgroundImage from "@/components/common/background_image";
 import AppFlatBanner from "@/components/home/app_flat_banner/main";
-import AppHalfBanner from "@/components/home/app_half_banner/main";
+import AppHalfBanner from "@/components/common/app_half_banner/main";
 import Banner from "@/components/home/app_principal_banner/banner";
 import AppPrincipalBanner from "@/components/home/app_principal_banner/main";
 import useBannerStore from "@/service/banners/store";
