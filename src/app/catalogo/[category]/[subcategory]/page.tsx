@@ -6,10 +6,11 @@ import AppNavBar from "@/components/common/app_nav_bar/main";
 import AppBackgroundImage from "@/components/common/background_image";
 import { AppColorsHex } from "@/const/colors";
 import { basepath } from "@/const/utils";
+import useBannerStore from "@/service/banners/store";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { Box, Divider, Fab, Grid, Typography } from "@mui/material";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 interface CatalogoProps {
   params: {
     category: string;
@@ -17,9 +18,17 @@ interface CatalogoProps {
   };
 }
 export default function Catalogo({
-  params: { category, subcategory }
+  params: { category, subcategory },
 }: CatalogoProps) {
-  const [drawerOpen,setDrawerOpen] = useState(false);
+  const getBanners = useBannerStore((state) => state.getBannersSandbox);
+
+  const sandbox = useBannerStore((state) => state.sandbox_catalogo_banners);
+
+  useEffect(() => {
+    getBanners();
+  }, []);
+
+  const [drawerOpen, setDrawerOpen] = useState(false);
   return (
     <AppBackgroundImage>
       <AppNavBar />
@@ -43,27 +52,13 @@ export default function Catalogo({
           rowSpacing={3}
           columnSpacing={{ xs: 0, sm: 5 }}
         >
-          {[
-            "Danielilla",
-            "Alguien AlguienAlgu ienAlguienAlguienAlgu ienAlguienAlguienAlguie nAlguienAlguienAlguienAlgu ienAlguienAlguienA guienAlguienAlgu ienAlguien",
-            "YO",
-            "El Pity",
-            "Many",
-            "Alguien",
-            "Alguien",
-            "Alguien AlguienAlgu ienAlguienAlguienAlgu ienAlguienAlguienAlguie nAlguienAlguienAlguienAlgu ienAlguienAlguienA guienAlguienAlgu ienAlguien",
-            "Alguien",
-            "Alguien AlguienAlgu ienAlguienAlguienAlgu ienAlguienAlguienAlguie nAlguienAlguienAlguienAlgu ienAlguienAlguienA guienAlguienAlgu ienAlguien",
-            "Alguien",
-            "Alguien",
-            "Alguien AlguienAlgu ienAlguienAlguienAlgu ienAlguienAlguienAlguie nAlguienAlguienAlguienAlgu nAlguienAlguienAlguienAlgu nAlguienAlguienAlguienAlgu  guienAlguienAlgu ienAlguien"
-          ].map((o, i) => (
-            <Objeto key={i} titulo={o} />
+          {sandbox.map((o, i) => (
+            <Objeto key={i} titulo={o.assetName ?? ""} image={o.assetUrl ?? ""} />
           ))}
         </Grid>
       </Box>
       <Fab
-      onClick={()=>setDrawerOpen(true)}
+        onClick={() => setDrawerOpen(true)}
         sx={{
           position: "fixed",
           top: 100,
@@ -72,18 +67,21 @@ export default function Catalogo({
           bgcolor: AppColorsHex.white,
           "&:hover": {
             bgcolor: AppColorsHex.blue,
-            color: AppColorsHex.white
-          }
+            color: AppColorsHex.white,
+          },
         }}
       >
         <FilterListIcon />
       </Fab>
       <AppFooter />
-      <AppFilterDrawer drawerOpen={drawerOpen} setDrawerOpen={(x)=>setDrawerOpen(x)}/>
+      <AppFilterDrawer
+        drawerOpen={drawerOpen}
+        setDrawerOpen={(x) => setDrawerOpen(x)}
+      />
     </AppBackgroundImage>
   );
 }
-function Objeto({ titulo }: { titulo: string }) {
+function Objeto({ titulo, image }: { titulo: string; image: string }) {
   return (
     <Grid
       xs={12}
@@ -106,7 +104,7 @@ function Objeto({ titulo }: { titulo: string }) {
         width={"100%"}
         sx={{
           boxShadow:
-            "0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3)"
+            "0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3)",
         }}
       >
         <Box width={"85%"} marginY={"30px"}>
@@ -114,9 +112,9 @@ function Objeto({ titulo }: { titulo: string }) {
             <Image
               fill
               alt="product Image"
-              src={`/${basepath}/productos/1.jpg`}
+              src={image} // src={`/${basepath}/productos/1.jpg`}
               style={{
-                objectFit: "cover"
+                objectFit: "cover",
               }}
             />
           </Box>
@@ -131,7 +129,7 @@ function Objeto({ titulo }: { titulo: string }) {
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 WebkitLineClamp: 2,
-                WebkitBoxOrient: "vertical"
+                WebkitBoxOrient: "vertical",
               }}
             >
               {titulo}
@@ -162,7 +160,7 @@ function Objeto({ titulo }: { titulo: string }) {
                 borderColor: AppColorsHex.black,
                 margin: "0px",
                 padding: "0px",
-                opacity: 0.6
+                opacity: 0.6,
               }}
             />
             <Box
@@ -180,7 +178,6 @@ function Objeto({ titulo }: { titulo: string }) {
             </Box>
           </Box>
           <AppCounter maxCount={40} />
-          
         </Box>
       </Box>
     </Grid>
