@@ -7,20 +7,32 @@ interface BannerState {
   flat_banners: Banner[];
   squareOne_banners: Banner[];
   squareTwo_Banners: Banner[];
+  ofertas: Banner[];
+  square_banner_ofertas: Banner[];
+  quarter_one_banner: Banner[];
+  quarter_two_banner: Banner[];
   errorMsg: string | undefined;
   loading: boolean;
-  getBanners: () => void;
+  getBannersHome: () => void;
+  getBannersOfertas: () => void;
   clean: () => void;
 }
 
 const useBannerStore= create<BannerState>()((set) => ({
+  //Banners home
   mega_banners: [],
   flat_banners: [],
   squareOne_banners: [],
   squareTwo_Banners: [],
+  //Banners Ofertas
+  ofertas: [],
+  square_banner_ofertas: [],
+  quarter_one_banner: [],
+  quarter_two_banner: [],
+  // indicadores
   errorMsg: undefined,
   loading: false,
-  getBanners: async () => {
+  getBannersHome: async () => {
     set((state) => ({
       ...state,
       loading: true
@@ -38,6 +50,36 @@ const useBannerStore= create<BannerState>()((set) => ({
           flat_banners: response_flat_banner.data ??[],
           squareTwo_Banners: response_squareTwo_Banner.data ??[],
           squareOne_banners: response_squareOne_banner.data ??[],
+        };
+      });
+
+      return;
+    
+    set((state) => {
+      return {
+        ...state,
+        loading: false
+      };
+    });
+  },
+  getBannersOfertas: async () => {
+    set((state) => ({
+      ...state,
+      loading: true
+    }));
+    const response_ofertas = await GetBannersLocation('ofertas');
+    const response_square_banner_ofertas = await GetBannersLocation('square_banner_ofertas');
+    const response_quarter_one_banner= await GetBannersLocation('quarter_one_banner');
+    const response_quarter_two_banner = await GetBannersLocation('quarter_two_banner');
+      
+      set((state) => {
+        return {
+          ...state,
+          loading: false,
+          ofertas: response_ofertas.data ??[],
+          square_banner_ofertas: response_square_banner_ofertas.data ??[],
+          quarter_one_banner: response_quarter_one_banner.data ??[],
+          quarter_two_banner: response_quarter_two_banner.data ??[],
         };
       });
 

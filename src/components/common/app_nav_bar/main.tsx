@@ -74,7 +74,7 @@ export default function AppNavBar({}) {
                 router.push('/catalogo/0/0');
 
               }} />
-              <NavBarTextButton title={"Ofertas"} onClick={() => {}} />
+              <NavBarTextButton title={"Ofertas"} onClick={() => {router.push('/ofertas')}} />
               <NavBarTextButton title={"Servicios"} onClick={() => {router.push('/servicios')}} />
               <NavBarTextButton title={"Quiénes Somos"} onClick={() => {
                 router.push('/quienes_somos')

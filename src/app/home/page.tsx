@@ -16,7 +16,7 @@ interface Props {}
 
 const Page: NextPage<Props> = ({}) => {
   //Zustand hooks
-  const getBanners = useBannerStore((state) => state.getBanners);
+  const getBanners = useBannerStore((state) => state.getBannersHome);
   const megaBanners = useBannerStore((state) => state.mega_banners);
   const flatBanners = useBannerStore((state) => state.flat_banners);
   const squareOneBanners = useBannerStore((state) => state.squareOne_banners);

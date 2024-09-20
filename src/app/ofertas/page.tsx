@@ -3,6 +3,7 @@ import AppButton from "@/components/common/app_button";
 import AppFooter from "@/components/common/app_footer/main";
 import AppHalfBanner from "@/components/common/app_half_banner/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
+import AppSpace from "@/components/common/app_space";
 import AppBackgroundImage from "@/components/common/background_image";
 import AppQuartBanner from "@/components/ofertas/app_quart_banner/main";
 import Oferta from "@/components/ofertas/oferta";
@@ -11,10 +12,12 @@ import { Box, Grid, Typography } from "@mui/material";
 import { useEffect } from "react";
 
 export default function Ofertas() {
-  const getBanners = useBannerStore((state) => state.getBanners);
+  const getBanners = useBannerStore((state) => state.getBannersOfertas);
 
-  const squareOneBanners = useBannerStore((state) => state.squareOne_banners);
-  const squareTwoBanners = useBannerStore((state) => state.squareTwo_Banners);
+  const ofertas = useBannerStore((state) => state.ofertas);
+  const squareBanners = useBannerStore((state) => state.square_banner_ofertas);
+  const quarterOneBanners = useBannerStore((state) => state.quarter_one_banner);
+  const quarterTwoBanners = useBannerStore((state) => state.quarter_two_banner);
   useEffect(() => {
     getBanners();
   }, []);
@@ -32,35 +35,46 @@ export default function Ofertas() {
         <Typography variant="h1">Ofertas</Typography>
         <Box mb={5} />
         <Typography variant="h5" textAlign="center">
-        Hasta 50% off en artículos seleccionados.
+          Hasta 50% off en artículos seleccionados.
         </Typography>
         <Box mb={5} />
         <Grid container width={"100%"} spacing={4}>
-          <Oferta title={"Oficina"} description={"Compra una y llevate el doble."}/>
-          <Oferta title={"Papeleria"} description={"Compra una y llevate el doble."}/>
-          <Oferta title={"Manualidades"} description={"Compra una y llevate el doble."}/>
-          <Oferta title={"Lapices"} description={"Compra una y llevate el doble."}/>
-          <Oferta title={"Libretas"} description={"Compra una y llevate el doble."}/>
-          <Oferta title={"Mochilas"} description={"Compra una y llevate el doble."}/>
+          {ofertas.slice(0, 5).map((value, index) => (
+            <Oferta
+              key={`oferta_element_${index}`}
+              title={value.assetName ?? ""}
+              description={value.assetDescription ?? ""}
+              image={value.assetUrl ?? ""}
+              link={value.link}
+            />
+          ))}
         </Grid>
-        <Box mb={7} />
+        <AppSpace />
         <Grid
-        container
-        marginX={"10%"}
-        rowSpacing={4}
-        width={"80vw"}
-        xs={12}
-        alignContent={"center"}
-        justifyContent={{ xs: "start", md: "space-between" }}
-      >
-        
-        <Grid item xs={12} md={5.5}>
-          <AppHalfBanner banners={squareOneBanners} />
-        </Grid>
-        <Grid item xs={12} md={5.5}>
-          <AppQuartBanner banners={squareTwoBanners}/>
-        </Grid>
-      </Grid>      </Box>
+          container
+          marginX={"10%"}
+          rowSpacing={4}
+          width={"80vw"}
+          xs={12}
+          alignContent={"center"}
+          justifyContent={{ xs: "start", md: "space-between" }}
+        >
+          <Grid item xs={12} md={5.5}>
+            <AppHalfBanner banners={squareBanners} />
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={5.5}
+            display={"flex"}
+            flexDirection={"column"}
+            justifyContent={"space-between"}
+          >
+            <AppQuartBanner banners={quarterOneBanners} />
+            <AppQuartBanner banners={quarterTwoBanners} />
+          </Grid>
+        </Grid>{" "}
+      </Box>
 
       <AppFooter />
     </AppBackgroundImage>
