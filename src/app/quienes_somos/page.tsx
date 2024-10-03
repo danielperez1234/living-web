@@ -5,9 +5,10 @@ import AppBackgroundImage from "@/components/common/background_image";
 import Valor from "@/components/quienes_somos/valor";
 import { AppColorsHex } from "@/const/colors";
 import { basepath } from "@/const/utils";
+import useBannerStore from "@/service/banners/store";
 import { Box, Grid, Typography } from "@mui/material";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 interface CatalogoProps {
   params: {
     category: string;
@@ -29,7 +30,13 @@ const boxCardStyle = {
 export default function QuienesSomos({
   params: { category, subcategory }
 }: CatalogoProps) {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const getBanners = useBannerStore((state) => state.getBannersSandbox);
+
+  const bannersQS = useBannerStore((state) => state.sandbox_catalogo_banners);
+
+  useEffect(() => {
+    getBanners();
+  }, []);
   return (
     <AppBackgroundImage>
       <AppNavBar />
@@ -54,7 +61,7 @@ export default function QuienesSomos({
           >
             <Image
               fill
-              src={`/${basepath}/marca/ejemplo_somos.png`}
+              src={bannersQS.length >0 ? bannersQS[0].assetUrl ??'' : `/${basepath}/marca/ejemplo_somos.png`}
               alt={"image nf"}
               style={{ objectFit: "cover", objectPosition: "10% 50%" }}
             ></Image>
@@ -128,7 +135,7 @@ export default function QuienesSomos({
           >
             <Image
               fill
-              src={`/${basepath}/marca/ejemplo_somos.png`}
+              src={bannersQS.length >1 ? bannersQS[1].assetUrl ??'' :`/${basepath}/marca/ejemplo_somos.png`}
               alt={"image nf"}
               style={{ objectFit: "cover", objectPosition: "10% 50%" }}
             ></Image>
@@ -144,7 +151,7 @@ export default function QuienesSomos({
           >
             <Image
               fill
-              src={`/${basepath}/marca/ejemplo_somos.png`}
+              src={bannersQS.length >2 ? bannersQS[2].assetUrl ??'' :`/${basepath}/marca/ejemplo_somos.png`}
               alt={"image nf"}
               style={{ objectFit: "cover", objectPosition: "10% 50%" }}
             ></Image>

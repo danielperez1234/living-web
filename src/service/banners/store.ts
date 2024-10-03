@@ -12,11 +12,13 @@ interface BannerState {
   quarter_one_banner: Banner[];
   quarter_two_banner: Banner[];
   sandbox_catalogo_banners: Banner[];
+  quienes_somos_banners: Banner[];
   errorMsg: string | undefined;
   loading: boolean;
   getBannersHome: () => void;
   getBannersOfertas: () => void;
   getBannersSandbox: () => void;
+  getBannersQuienesSomos: () => void;
   clean: () => void;
 }
 
@@ -33,6 +35,7 @@ const useBannerStore= create<BannerState>()((set) => ({
   quarter_two_banner: [],
   //sandbox catalogo
   sandbox_catalogo_banners: [],
+  quienes_somos_banners: [],
   // indicadores
   errorMsg: undefined,
   loading: false,
@@ -108,6 +111,31 @@ const useBannerStore= create<BannerState>()((set) => ({
           ...state,
           loading: false,
           sandbox_catalogo_banners: response_sandbox_catalogo.data ??[],
+         
+        };
+      });
+
+      return;
+    
+    set((state) => {
+      return {
+        ...state,
+        loading: false
+      };
+    });
+  },
+  getBannersQuienesSomos: async () => {
+    set((state) => ({
+      ...state,
+      loading: true
+    }));
+    const response_quienes_somos = await GetBannersLocation('quienes_somos');
+      
+      set((state) => {
+        return {
+          ...state,
+          loading: false,
+          quienes_somos_banners: response_quienes_somos.data ??[],
          
         };
       });
