@@ -30,9 +30,9 @@ const boxCardStyle = {
 export default function QuienesSomos({
   params: { category, subcategory }
 }: CatalogoProps) {
-  const getBanners = useBannerStore((state) => state.getBannersSandbox);
+  const getBanners = useBannerStore((state) => state.getBannersQuienesSomos);
 
-  const bannersQS = useBannerStore((state) => state.sandbox_catalogo_banners);
+  const bannersQS = useBannerStore((state) => state.quienes_somos_banners);
 
   useEffect(() => {
     getBanners();
