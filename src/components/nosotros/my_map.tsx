@@ -8,9 +8,11 @@ import { renderToString } from "react-dom/server";
 import { LocationOn, Person } from "@mui/icons-material";
 import { AppColorsHex } from "@/const/colors";
 import "@/components/nosotros/my_map.css"
+import useSucursalesStore from "@/service/sucursales/store";
 export default function MyMap() {
   const [position, setPosition] = useState<[number, number] | null>(null);
-
+  const sucursales = useSucursalesStore(state=>state.sucursales);
+  const getSucursales = useSucursalesStore(state=>state.getSucursales);
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
