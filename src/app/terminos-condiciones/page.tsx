@@ -311,7 +311,7 @@ export default function QuienesSomos({
               </Typography>
               <Typography variant="body1">
                 Reconoce y acepta que proporcionamos acceso a este tipo de
-                herramientas "tal cual" y "según disponibilidad" sin garantías,
+                herramientas &quot;tal cual&quot; y &quot;según disponibilidad&quot; sin garantías,
                 representaciones o condiciones de ningún tipo y sin ningún
                 respaldo. No tendremos responsabilidad alguna derivada de o
                 relacionada con su uso de herramientas proporcionadas por
@@ -456,7 +456,7 @@ export default function QuienesSomos({
               <Typography variant="body1">
                 El servicio y todos los productos y servicios proporcionados a
                 través del servicio son (salvo lo expresamente manifestado por
-                nosotros) proporcionados "tal cual" y "según esté disponible"
+                nosotros) proporcionados &quot;tal cual&quot; y &quot;según esté disponible&quot;
                 para su uso, sin ningún tipo de representación, garantías o
                 condiciones de ningún tipo, ya sea expresa o implícita,
                 incluidas todas las garantías o condiciones implícitas de
