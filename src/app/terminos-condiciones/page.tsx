@@ -91,7 +91,7 @@ export default function QuienesSomos({
               <Typography variant="h5" mb={2}>
                 SECCIÓN 1 - TÉRMINOS DE LA TIENDA EN LÍNEA
               </Typography>
-              <Typography variant="body1" >
+              <Typography variant="body1">
                 Al utilizar este sitio, declara que tiene al menos la mayoría de
                 edad y que nos ha otorgado su consentimiento para permitir que
                 cualquiera de sus dependientes menores use este sitio.
@@ -311,11 +311,11 @@ export default function QuienesSomos({
               </Typography>
               <Typography variant="body1">
                 Reconoce y acepta que proporcionamos acceso a este tipo de
-                herramientas &quot;tal cual&quot; y &quot;según disponibilidad&quot; sin garantías,
-                representaciones o condiciones de ningún tipo y sin ningún
-                respaldo. No tendremos responsabilidad alguna derivada de o
-                relacionada con su uso de herramientas proporcionadas por
-                terceras partes.
+                herramientas &quot;tal cual&quot; y &quot;según
+                disponibilidad&quot; sin garantías, representaciones o
+                condiciones de ningún tipo y sin ningún respaldo. No tendremos
+                responsabilidad alguna derivada de o relacionada con su uso de
+                herramientas proporcionadas por terceras partes.
               </Typography>
               <Typography variant="body1">
                 Cualquier uso que haga de las herramientas opcionales que se
@@ -456,12 +456,13 @@ export default function QuienesSomos({
               <Typography variant="body1">
                 El servicio y todos los productos y servicios proporcionados a
                 través del servicio son (salvo lo expresamente manifestado por
-                nosotros) proporcionados &quot;tal cual&quot; y &quot;según esté disponible&quot;
-                para su uso, sin ningún tipo de representación, garantías o
-                condiciones de ningún tipo, ya sea expresa o implícita,
-                incluidas todas las garantías o condiciones implícitas de
-                comercialización, calidad comercializable, la aptitud para un
-                propósito particular, durabilidad, título y no infracción.
+                nosotros) proporcionados &quot;tal cual&quot; y &quot;según esté
+                disponible&quot; para su uso, sin ningún tipo de representación,
+                garantías o condiciones de ningún tipo, ya sea expresa o
+                implícita, incluidas todas las garantías o condiciones
+                implícitas de comercialización, calidad comercializable, la
+                aptitud para un propósito particular, durabilidad, título y no
+                infracción.
               </Typography>
               <Typography variant="body1" mb={4}>
                 {`En ningún caso GRUPO LIVING, nuestros directores, funcionarios,
@@ -563,7 +564,18 @@ export default function QuienesSomos({
                 redacción.
               </Typography>
               <Typography variant="h5" mb={2}>
-                SECCIÓN 17 - INFORMACIÓN DE CONTACTO
+                SECCIÓN 17 - USO DE OpenPay COMO PASARELA DE PAGOS
+              </Typography>
+              <Typography variant="body1">
+                GRUPO LIVING utiliza la plataforma OpenPay para procesar pagos
+                de manera segura y eficiente. Al realizar una compra a través de
+                nuestro sitio web, el Cliente acepta los términos y condiciones
+                de OpenPay, disponibles en su página oficial. OpenPay es
+                responsable de garantizar la seguridad y confidencialidad de la
+                información proporcionada durante el proceso de pago.
+              </Typography>
+              <Typography variant="h5" mb={2}>
+                SECCIÓN 18 - INFORMACIÓN DE CONTACTO
               </Typography>
               <Typography variant="body1">
                 Preguntas acerca de los Términos de Servicio deben ser enviadas
