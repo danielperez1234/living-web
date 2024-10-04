@@ -22,6 +22,7 @@ import { AppColorsHex } from "@/const/colors";
 import HideOnScroll from "./hide_on_scroll";
 import { useRouter } from "next/navigation";
 import { basepath } from "@/const/utils";
+import { LocationOn } from "@mui/icons-material";
 export default function AppNavBar({}) {
   //hooks
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -91,6 +92,9 @@ export default function AppNavBar({}) {
               </IconButton>
               <IconButton onClick={()=>router.push('/login')}>
                 <PersonIcon color="primary" />
+              </IconButton>
+              <IconButton onClick={()=>router.push('/nosotros')}>
+                <LocationOn color="error" />
               </IconButton>
               <IconButton>
                 <ShoppingCartIcon color="primary" />

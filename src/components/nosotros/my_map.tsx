@@ -1,19 +1,26 @@
-import { MapContainer, Marker, Popup, TileLayer, Tooltip } from "react-leaflet"
-import "leaflet/dist/leaflet.css"
+import { MapContainer, Marker, Popup, TileLayer, Tooltip } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import "leaflet-defaulticon-compatibility"
-import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css"
+import "leaflet-defaulticon-compatibility";
+import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import { useEffect, useState } from "react";
 import { renderToString } from "react-dom/server";
 import { LocationOn, Person } from "@mui/icons-material";
 import { AppColorsHex } from "@/const/colors";
-import "@/components/nosotros/my_map.css"
+import "@/components/nosotros/my_map.css";
 import useSucursalesStore from "@/service/sucursales/store";
+import { Sucursal } from "@/service/sucursales/interface";
+import { Box, Divider, Typography } from "@mui/material";
 export default function MyMap() {
   const [position, setPosition] = useState<[number, number] | null>(null);
-  const sucursales = useSucursalesStore(state=>state.sucursales);
-  const getSucursales = useSucursalesStore(state=>state.getSucursales);
+  const sucursales = useSucursalesStore((state) => state.sucursales);
+  const getSucursales = useSucursalesStore((state) => state.getSucursales);
+
+  const [selectedSucursal, setSelectedSucursal] = useState<
+    Sucursal | undefined
+  >();
   useEffect(() => {
+    getSucursales();
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
@@ -26,7 +33,7 @@ export default function MyMap() {
         {
           enableHighAccuracy: true, // Aumentar precisión
           timeout: 5000, // Tiempo de espera en milisegundos
-          maximumAge: 0 // No usar una ubicación en caché
+          maximumAge: 0, // No usar una ubicación en caché
         }
       );
     } else {
@@ -35,18 +42,116 @@ export default function MyMap() {
   }, []);
   const customIcon = L.divIcon({
     className: "custom-icon",
-    html: renderToString(<Person style={{ color: AppColorsHex.blue, fontSize: "2rem" }} />),
+    html: renderToString(
+      <Person style={{ color: AppColorsHex.blue, fontSize: "2rem" }} />
+    ),
     iconSize: [30, 30], // Tamaño del icono
     iconAnchor: [15, 30], // Punto del icono que apunta a la ubicación
   });
-  return <MapContainer scrollWheelZoom center={position ?? [21.1191454,-101.6833461]} zoom={13} zoomControl={false} style={{ height: "100%", width: "100%" }}>
-    <TileLayer
-      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+  const customBranch = L.divIcon({
+    className: "custom-icon",
+    html: renderToString(
+      <LocationOn style={{ color: AppColorsHex.blue, fontSize: "2rem" }} />
+    ),
+    iconSize: [30, 30], // Tamaño del icono
+    iconAnchor: [15, 30], // Punto del icono que apunta a la ubicación
+  });
+  return (
+    <div style={{ position: "relative", height: "100%", width: "100%" }}>
+      <MapContainer
+        scrollWheelZoom
+        center={position ?? [21.1191454, -101.6833461]}
+        zoom={13}
+        zoomControl={false}
+        style={{ height: "100%", width: "100%" }}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        {position && <Marker icon={customIcon} position={position}></Marker>}
+        {sucursales.map((element, index) => (
+          <Marker
+            key={`sucursal_${index}`}
+            icon={customBranch}
+            position={[element.latitude, element.longitude]}
+            eventHandlers={{
+              click: () => {
+                setSelectedSucursal(element);
+              },
+            }}
+          ></Marker>
+        ))}
+      </MapContainer>
 
-    />
-    {position && <Marker icon={customIcon} position={position}>
-      
-    </Marker>}
-  </MapContainer>
+      {selectedSucursal && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            boxShadow: 3,
+            zIndex: 1000, // Ensure the box is above the map
+            height: "100%",
+            width: "50%",
+            bgcolor: AppColorsHex.white,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundAttachment: "fixed",
+            backgroundImage: `url(${selectedSucursal.image})`,
+            opacity: 1,
+            overflow: "hidden",
+            display: "flex",
+            justifyContent: "end",
+          }}
+        >
+          <Box
+            bgcolor={AppColorsHex.black}
+            sx={{ opacity: 0.85 }}
+            width={"45%"}
+            height={"100%"}
+            padding={2}
+            display={"flex"}
+            flexDirection={"column"}
+            justifyContent={"center"}
+          ><Box sx={{opacity:1}}>
+            <Typography
+              variant="h4"
+              color={AppColorsHex.white}
+              textAlign={"center"}
+              mb={2}
+            >
+              {selectedSucursal.name}
+            </Typography>
+            <Divider style={{ background: "yellow", height: 5 }} />
+            <Typography
+              mt={2}
+              variant="body1"
+              color={AppColorsHex.white}
+              textAlign={"center"}
+            >
+              {selectedSucursal.description}
+            </Typography>
+            <Typography
+              mt={2}
+              variant="body1"
+              color={AppColorsHex.white}
+              textAlign={"center"}
+            >
+              {selectedSucursal.schedule}
+            </Typography>
+            <Typography
+              mt={2}
+              variant="body1"
+              color={AppColorsHex.white}
+              textAlign={"center"}
+            >
+              {selectedSucursal.phoneNumber}
+            </Typography>
+            </Box>
+          </Box>
+        </Box>
+      )}
+    </div>
+  );
 }
