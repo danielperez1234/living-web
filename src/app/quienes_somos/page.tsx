@@ -61,7 +61,7 @@ export default function QuienesSomos({
           >
             <Image
               fill
-              src={bannersQS.length >0 ? bannersQS[0].assetUrl ??'' : `/${basepath}/marca/ejemplo_somos.png`}
+              src={bannersQS.length >0 ? bannersQS[0].assetUrl ??'' : `/${basepath}/marca/default.png`}
               alt={"image nf"}
               style={{ objectFit: "cover", objectPosition: "10% 50%" }}
             ></Image>
@@ -135,7 +135,7 @@ export default function QuienesSomos({
           >
             <Image
               fill
-              src={bannersQS.length >1 ? bannersQS[1].assetUrl ??'' :`/${basepath}/marca/ejemplo_somos.png`}
+              src={bannersQS.length >1 ? bannersQS[1].assetUrl ??'' :`/${basepath}/marca/default.png`}
               alt={"image nf"}
               style={{ objectFit: "cover", objectPosition: "10% 50%" }}
             ></Image>
@@ -151,7 +151,7 @@ export default function QuienesSomos({
           >
             <Image
               fill
-              src={bannersQS.length >2 ? bannersQS[2].assetUrl ??'' :`/${basepath}/marca/ejemplo_somos.png`}
+              src={bannersQS.length >2 ? bannersQS[2].assetUrl ??'' :`/${basepath}/marca/default.png`}
               alt={"image nf"}
               style={{ objectFit: "cover", objectPosition: "10% 50%" }}
             ></Image>
