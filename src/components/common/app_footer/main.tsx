@@ -1,6 +1,6 @@
 'use client'
 import { AppColorsHex } from "@/const/colors";
-import { Box, Divider, Grid, IconButton, Typography } from "@mui/material";
+import { Box, Divider, Grid, IconButton, SvgIcon, Typography } from "@mui/material";
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
@@ -9,27 +9,43 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import MediaIcon from "./media_icon";
 import TextButton from "./text_button";
 import { useRouter } from "next/navigation";
-
+import { basepath } from "@/const/utils";
+import Image from "next/image";
+const TikTokIcon: React.FC = () => (
+    <Image
+        src={`/${basepath}/svg/tiktok_icon.svg`} alt={"sadsa"} width={30} height={30}   
+    />
+  );
 export default function AppFooter(){
     const router = useRouter();
     return(
         <Box height={{  xs: "50vh", md: "33vh" }} padding={5} bgcolor={AppColorsHex.black} marginTop={{sm:'20px',xs:'30px',md:'70px'}}>
             <Grid container xs={12} marginBottom={5} justifyContent={'center'}>
             <Grid container item rowSpacing={4} xs={6} justifyContent={{md:'space-evenly',xs:'start'}}>
-                <MediaIcon>
+                <MediaIcon onClick={()=>{
+                    window.open('https://www.facebook.com/profile.php?id=100093796121369&mibextid=ZbWKwL', '_blank');
+                }}>
                     <FacebookIcon fontSize="large"/>
                 </MediaIcon>
-                <MediaIcon>
+                <MediaIcon onClick={()=>{
+                    window.open('https://www.instagram.com/living.papeleria?igsh=MWJtOGZ5YTZmYXloZQ==', '_blank');
+                }}>
                     <InstagramIcon fontSize="large"/>
                 </MediaIcon>
-                <MediaIcon>
+                {/* <MediaIcon onClick={()=>{
+                    window.open('https://www.facebook.com/profile.php?id=100093796121369&mibextid=ZbWKwL', '_blank');
+                }}>
                     <WhatsAppIcon fontSize="large"/>
-                </MediaIcon>
-                <MediaIcon>
+                </MediaIcon> */}
+                <MediaIcon onClick={()=>{
+                    window.open('https://youtube.com/@livingpapeleria?si=JaarBPCzAesDQpOE', '_blank');
+                }}>
                     <YouTubeIcon fontSize="large"/>
                 </MediaIcon>
-                <MediaIcon>
-                    <MailOutlineIcon fontSize="large"/>
+                <MediaIcon onClick={()=>{
+                    window.open('https://www.tiktok.com/@livingpapeleria?_t=8qSbjM2TA6n&_r=1', '_blank');
+                }}>
+                    <TikTokIcon />
                 </MediaIcon>
             </Grid>
             </Grid>
