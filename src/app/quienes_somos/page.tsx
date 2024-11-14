@@ -1,12 +1,14 @@
 "use client";
+import AppButton from "@/components/common/app_button";
 import AppFooter from "@/components/common/app_footer/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
+import AppTextField from "@/components/common/app_text_field";
 import AppBackgroundImage from "@/components/common/background_image";
 import Valor from "@/components/quienes_somos/valor";
 import { AppColorsHex } from "@/const/colors";
 import { basepath } from "@/const/utils";
 import useBannerStore from "@/service/banners/store";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, TextField, Typography } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 interface CatalogoProps {
@@ -21,22 +23,26 @@ const boxCardStyle = {
   display: "flex",
   flexDirection: { xs: "column", md: "row" },
   alignItems: "center",
-  borderRadius: {xs: '30px', md:"50px"},
+  borderRadius: { xs: "30px", md: "50px" },
   width: "95%",
   padding: "5%",
   boxShadow:
-    "0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3)"
+    "0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3)",
 };
 export default function QuienesSomos({
-  params: { category, subcategory }
+  params: { category, subcategory },
 }: CatalogoProps) {
   const getBanners = useBannerStore((state) => state.getBannersQuienesSomos);
 
   const bannersQS = useBannerStore((state) => state.quienes_somos_banners);
 
+  /// Popup: Formulario de mayorista
+  const [showPopup, setShowPopup] = useState(false);
+
   useEffect(() => {
     getBanners();
   }, []);
+
   return (
     <AppBackgroundImage>
       <AppNavBar />
@@ -56,12 +62,16 @@ export default function QuienesSomos({
             width={"100%"}
             sx={{ aspectRatio: { xs: 1, sm: 1 / 1.5 } }}
             position={"relative"}
-            borderRadius={{xs: '25px', md:"45px"}}
+            borderRadius={{ xs: "25px", md: "45px" }}
             overflow={"hidden"}
           >
             <Image
               fill
-              src={bannersQS.length >0 ? bannersQS[0].assetUrl ??'' : `/${basepath}/marca/default.png`}
+              src={
+                bannersQS.length > 0
+                  ? bannersQS[0].assetUrl ?? ""
+                  : `/${basepath}/marca/default.png`
+              }
               alt={"image nf"}
               style={{ objectFit: "cover", objectPosition: "10% 50%" }}
             ></Image>
@@ -126,16 +136,20 @@ export default function QuienesSomos({
             sx={{
               aspectRatio: {
                 xs: 1,
-                sm: 1 / 1.3
-              }
+                sm: 1 / 1.3,
+              },
             }}
             position={"relative"}
-            borderRadius={{xs: '25px', md:"45px"}}
+            borderRadius={{ xs: "25px", md: "45px" }}
             overflow={"hidden"}
           >
             <Image
               fill
-              src={bannersQS.length >1 ? bannersQS[1].assetUrl ??'' :`/${basepath}/marca/default.png`}
+              src={
+                bannersQS.length > 1
+                  ? bannersQS[1].assetUrl ?? ""
+                  : `/${basepath}/marca/default.png`
+              }
               alt={"image nf"}
               style={{ objectFit: "cover", objectPosition: "10% 50%" }}
             ></Image>
@@ -146,12 +160,16 @@ export default function QuienesSomos({
             width={"100%"}
             sx={{ aspectRatio: { xs: 1, sm: 1 / 1.5 } }}
             position={"relative"}
-            borderRadius={{xs: '25px', md:"45px"}}
+            borderRadius={{ xs: "25px", md: "45px" }}
             overflow={"hidden"}
           >
             <Image
               fill
-              src={bannersQS.length >2 ? bannersQS[2].assetUrl ??'' :`/${basepath}/marca/default.png`}
+              src={
+                bannersQS.length > 2
+                  ? bannersQS[2].assetUrl ?? ""
+                  : `/${basepath}/marca/default.png`
+              }
               alt={"image nf"}
               style={{ objectFit: "cover", objectPosition: "10% 50%" }}
             ></Image>
@@ -207,11 +225,15 @@ export default function QuienesSomos({
                 valor={"honestidad"}
               />
               <Valor
-                text={"Reconocemos que el trabajo en equipo es esencial para alcanzar nuestros objetivos. Fomentamos un ambiente colaborativo donde se valora la contribución de cada miembro del equipo y se promueve el intercambio de ideas y conocimientos para lograr soluciones creativas y eficientes."}
+                text={
+                  "Reconocemos que el trabajo en equipo es esencial para alcanzar nuestros objetivos. Fomentamos un ambiente colaborativo donde se valora la contribución de cada miembro del equipo y se promueve el intercambio de ideas y conocimientos para lograr soluciones creativas y eficientes."
+                }
                 valor={"colaboracion"}
               />
               <Valor
-                text={"En nuestra empresa, el aprendizaje continuo es clave para mantenernos a la vanguardia en nuestra industria. Incentivamos el desarrollo profesional y personal de nuestros colaboradores, brindando oportunidades de capacitación y crecimiento que les permitan alcanzar su máximo potencial."}
+                text={
+                  "En nuestra empresa, el aprendizaje continuo es clave para mantenernos a la vanguardia en nuestra industria. Incentivamos el desarrollo profesional y personal de nuestros colaboradores, brindando oportunidades de capacitación y crecimiento que les permitan alcanzar su máximo potencial."
+                }
                 valor={"aprendizaje"}
               />
               <Valor
@@ -228,13 +250,73 @@ export default function QuienesSomos({
               />
               <Valor
                 text={
-                  "Reconocemos que el entorno empresarial está en constante cambio. Por lo tanto, nos esforzamos por ser ágiles y flexibles, adaptándonos a las nuevas circunstancias y desafíos para mantenernos competitivos y relevantes en el mercado."}
+                  "Reconocemos que el entorno empresarial está en constante cambio. Por lo tanto, nos esforzamos por ser ágiles y flexibles, adaptándonos a las nuevas circunstancias y desafíos para mantenernos competitivos y relevantes en el mercado."
+                }
                 valor={"adaptabilidad"}
               />
-              
             </Grid>
           </Box>
         </Box>
+        <AppButton
+          label="¿Eres mayorista?"
+          onClick={() => setShowPopup(true)}
+        />
+        {showPopup && (
+          <Box
+            sx={{
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            <Box
+              onClick={() => setShowPopup(false)}
+              sx={{
+                width: "100%",
+                height: "100%",
+                background: AppColorsHex.blue,
+                opacity: 0.4,
+                position: "fixed",
+                top: 0,
+                left: 0,
+                zIndex: 2,
+              }}
+            ></Box>
+            <Box
+              sx={{
+                transform: "translate(-50%, -50%)",
+                position: "fixed",
+                top: "50%",
+                left: "50%",
+                bgcolor: "white",
+                padding: 4,
+                borderRadius: "10px",
+                boxShadow: 3,
+                zIndex: 3,
+                display: "flex",
+                flexDirection: "column",
+                textAlign: "center",
+                width: "60%",
+              }}
+            >
+              <Typography
+                variant="h1"
+                sx={{ color: AppColorsHex.blue, letterSpacing: "3px" }}
+              >
+                ¿Buscas mayoreo?
+              </Typography>
+              <AppTextField label="Nombre"></AppTextField>
+              <AppTextField label="Correo"></AppTextField>
+              <AppTextField label="Teléfono"></AppTextField>
+              <Box>
+                <AppButton
+                  label="Enviar"
+                  onClick={() => setShowPopup(false)}
+                  sx={{ width: "20%" }}
+                />
+              </Box>
+            </Box>
+          </Box>
+        )}
       </Box>
 
       <AppFooter />
