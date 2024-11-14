@@ -8,7 +8,6 @@ export default function AppTextField(props: TextFieldProps) {
     color={"primary"}
     focused
     {...props}
-    
     />
   )
 }

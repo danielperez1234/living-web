@@ -4,11 +4,20 @@ import AppFooter from "@/components/common/app_footer/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
 import AppTextField from "@/components/common/app_text_field";
 import AppBackgroundImage from "@/components/common/background_image";
+import AppDataForm from "@/components/quienes_somos/app_dataform";
 import Valor from "@/components/quienes_somos/valor";
 import { AppColorsHex } from "@/const/colors";
 import { basepath } from "@/const/utils";
 import useBannerStore from "@/service/banners/store";
-import { Box, Grid, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  Grid,
+  Input,
+  TextField,
+  Typography,
+} from "@mui/material";
+import App from "next/app";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 interface CatalogoProps {
@@ -260,62 +269,44 @@ export default function QuienesSomos({
         <AppButton
           label="¿Eres mayorista?"
           onClick={() => setShowPopup(true)}
+          sx={{ fontSize: 30 }}
         />
         {showPopup && (
-          <Box
-            sx={{
-              width: "100%",
-              height: "100%",
-            }}
-          >
-            <Box
-              onClick={() => setShowPopup(false)}
+          <AppDataForm setShowPopup={setShowPopup}>
+            <Typography
+              variant="h1"
               sx={{
-                width: "100%",
-                height: "100%",
-                background: AppColorsHex.blue,
-                opacity: 0.4,
-                position: "fixed",
-                top: 0,
-                left: 0,
-                zIndex: 2,
-              }}
-            ></Box>
-            <Box
-              sx={{
-                transform: "translate(-50%, -50%)",
-                position: "fixed",
-                top: "50%",
-                left: "50%",
-                bgcolor: "white",
-                padding: 4,
-                borderRadius: "10px",
-                boxShadow: 3,
-                zIndex: 3,
-                display: "flex",
-                flexDirection: "column",
-                textAlign: "center",
-                width: "60%",
+                color: AppColorsHex.blue,
               }}
             >
-              <Typography
-                variant="h1"
-                sx={{ color: AppColorsHex.blue, letterSpacing: "3px" }}
-              >
-                ¿Buscas mayoreo?
-              </Typography>
-              <AppTextField label="Nombre"></AppTextField>
-              <AppTextField label="Correo"></AppTextField>
-              <AppTextField label="Teléfono"></AppTextField>
-              <Box>
-                <AppButton
-                  label="Enviar"
-                  onClick={() => setShowPopup(false)}
-                  sx={{ width: "20%" }}
-                />
-              </Box>
+              ¿Buscas mayoreo?
+            </Typography>
+            <FormControl>
+              <AppTextField
+                label="Nombre"
+                fullWidth
+                margin="normal"
+              ></AppTextField>
+              <AppTextField
+                label="Correo"
+                fullWidth
+                margin="normal"
+              ></AppTextField>
+              <AppTextField
+                label="Teléfono"
+                fullWidth
+                margin="normal"
+              ></AppTextField>
+            </FormControl>
+            <Box display="flex" justifyContent="flex-end">
+              {/* TODO Activar el envío del formulario*/}
+              <AppButton
+                label="Enviar"
+                sx={{ marginTop: "40px" }}
+                onClick={() => setShowPopup(false)}
+              />
             </Box>
-          </Box>
+          </AppDataForm>
         )}
       </Box>
 
