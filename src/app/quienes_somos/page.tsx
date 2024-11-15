@@ -4,20 +4,12 @@ import AppFooter from "@/components/common/app_footer/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
 import AppTextField from "@/components/common/app_text_field";
 import AppBackgroundImage from "@/components/common/background_image";
-import AppDataForm from "@/components/quienes_somos/app_dataform";
+import AppDataForm from "@/components/common/app_dataform";
 import Valor from "@/components/quienes_somos/valor";
 import { AppColorsHex } from "@/const/colors";
 import { basepath } from "@/const/utils";
 import useBannerStore from "@/service/banners/store";
-import {
-  Box,
-  FormControl,
-  Grid,
-  Input,
-  TextField,
-  Typography,
-} from "@mui/material";
-import App from "next/app";
+import { Box, FormControl, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 interface CatalogoProps {
@@ -47,6 +39,7 @@ export default function QuienesSomos({
 
   /// Popup: Formulario de mayorista
   const [showPopup, setShowPopup] = useState(false);
+  const handlePopup = () => setShowPopup(!showPopup);
 
   useEffect(() => {
     getBanners();
@@ -268,11 +261,11 @@ export default function QuienesSomos({
         </Box>
         <AppButton
           label="¿Eres mayorista?"
-          onClick={() => setShowPopup(true)}
+          onClick={handlePopup}
           sx={{ fontSize: 30 }}
         />
         {showPopup && (
-          <AppDataForm setShowPopup={setShowPopup}>
+          <AppDataForm showPopup={showPopup} handleShowPopup={handlePopup}>
             <Typography
               variant="h1"
               sx={{
@@ -282,34 +275,21 @@ export default function QuienesSomos({
               ¿Buscas mayoreo?
             </Typography>
             <FormControl>
-              <AppTextField
-                label="Nombre"
-                fullWidth
-                margin="normal"
-              ></AppTextField>
-              <AppTextField
-                label="Correo"
-                fullWidth
-                margin="normal"
-              ></AppTextField>
-              <AppTextField
-                label="Teléfono"
-                fullWidth
-                margin="normal"
-              ></AppTextField>
+              <AppTextField label="Nombre" fullWidth margin="normal" />
+              <AppTextField label="Correo" fullWidth margin="normal" />
+              <AppTextField label="Teléfono" fullWidth margin="normal" />
             </FormControl>
             <Box display="flex" justifyContent="flex-end">
               {/* TODO Activar el envío del formulario*/}
               <AppButton
                 label="Enviar"
                 sx={{ marginTop: "40px" }}
-                onClick={() => setShowPopup(false)}
+                onClick={handlePopup}
               />
             </Box>
           </AppDataForm>
         )}
       </Box>
-
       <AppFooter />
     </AppBackgroundImage>
   );

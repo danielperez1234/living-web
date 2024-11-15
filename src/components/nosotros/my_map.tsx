@@ -63,7 +63,7 @@ export default function MyMap() {
         center={position ?? [21.1191454, -101.6833461]}
         zoom={13}
         zoomControl={false}
-        style={{ height: "100%", width: "100%" }}
+        style={{ height: "100%", width: "100%", zIndex: 0 }}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -114,40 +114,41 @@ export default function MyMap() {
             display={"flex"}
             flexDirection={"column"}
             justifyContent={"center"}
-          ><Box sx={{opacity:1}}>
-            <Typography
-              variant="h4"
-              color={AppColorsHex.white}
-              textAlign={"center"}
-              mb={2}
-            >
-              {selectedSucursal.name}
-            </Typography>
-            <Divider style={{ background: "yellow", height: 5 }} />
-            <Typography
-              mt={2}
-              variant="body1"
-              color={AppColorsHex.white}
-              textAlign={"center"}
-            >
-              {selectedSucursal.description}
-            </Typography>
-            <Typography
-              mt={2}
-              variant="body1"
-              color={AppColorsHex.white}
-              textAlign={"center"}
-            >
-              {selectedSucursal.schedule}
-            </Typography>
-            <Typography
-              mt={2}
-              variant="body1"
-              color={AppColorsHex.white}
-              textAlign={"center"}
-            >
-              {selectedSucursal.phoneNumber}
-            </Typography>
+          >
+            <Box sx={{ opacity: 1 }}>
+              <Typography
+                variant="h4"
+                color={AppColorsHex.white}
+                textAlign={"center"}
+                mb={2}
+              >
+                {selectedSucursal.name}
+              </Typography>
+              <Divider style={{ background: "yellow", height: 5 }} />
+              <Typography
+                mt={2}
+                variant="body1"
+                color={AppColorsHex.white}
+                textAlign={"center"}
+              >
+                {selectedSucursal.description}
+              </Typography>
+              <Typography
+                mt={2}
+                variant="body1"
+                color={AppColorsHex.white}
+                textAlign={"center"}
+              >
+                {selectedSucursal.schedule}
+              </Typography>
+              <Typography
+                mt={2}
+                variant="body1"
+                color={AppColorsHex.white}
+                textAlign={"center"}
+              >
+                {selectedSucursal.phoneNumber}
+              </Typography>
             </Box>
           </Box>
         </Box>
