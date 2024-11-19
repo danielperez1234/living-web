@@ -1,4 +1,4 @@
-import { MapContainer, Marker, Popup, TileLayer, Tooltip } from "react-leaflet";
+import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet-defaulticon-compatibility";
@@ -10,7 +10,9 @@ import { AppColorsHex } from "@/const/colors";
 import "@/components/nosotros/my_map.css";
 import useSucursalesStore from "@/service/sucursales/store";
 import { Sucursal } from "@/service/sucursales/interface";
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Divider, ImageListItemBar, Typography } from "@mui/material";
+import { basepath } from "@/const/utils";
+
 export default function MyMap() {
   const [position, setPosition] = useState<[number, number] | null>(null);
   const sucursales = useSucursalesStore((state) => state.sucursales);
@@ -19,6 +21,7 @@ export default function MyMap() {
   const [selectedSucursal, setSelectedSucursal] = useState<
     Sucursal | undefined
   >();
+
   useEffect(() => {
     getSucursales();
     if (navigator.geolocation) {
@@ -40,6 +43,7 @@ export default function MyMap() {
       console.error("Geolocalización no es soportada por este navegador.");
     }
   }, []);
+
   const customIcon = L.divIcon({
     className: "custom-icon",
     html: renderToString(
@@ -48,6 +52,7 @@ export default function MyMap() {
     iconSize: [30, 30], // Tamaño del icono
     iconAnchor: [15, 30], // Punto del icono que apunta a la ubicación
   });
+
   const customBranch = L.divIcon({
     className: "custom-icon",
     html: renderToString(
@@ -56,8 +61,104 @@ export default function MyMap() {
     iconSize: [30, 30], // Tamaño del icono
     iconAnchor: [15, 30], // Punto del icono que apunta a la ubicación
   });
+
   return (
     <div style={{ position: "relative", height: "100%", width: "100%" }}>
+      {/* Static Image Overlay */}
+      <Box
+        style={{
+          position: "absolute",
+          zIndex: 1000, // Ensure it stays above the map
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          justifyContent: "end",
+        }}
+      >
+        <Box
+          style={{
+            width: "50%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "end",
+          }}
+        >
+          <img
+            src={`/${basepath}/productos/tienda.jpeg`} // Replace with your image path
+            alt="Static Overlay"
+            style={{ height: "100%", width: "100%", objectFit: "cover" }}
+            // Customize the size and opacity
+          />
+          <Box
+            sx={{
+              position: "absolute",
+              width: "25%",
+              height: "100%",
+              backgroundColor: "black",
+              opacity: 0.8,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          ></Box>
+          <Box
+            sx={{
+              position: "absolute",
+              width: "25%",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              alignContent: "center",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="h5" color={"white"} textAlign={"center"}>
+              Mariano Escobedo
+            </Typography>
+            <Divider
+              sx={{
+                borderColor: AppColorsHex.yellow,
+                borderWidth: "2px",
+                width: "50%",
+                borderRadius: "100px",
+                marginY: 1,
+              }}
+            />
+            <Typography
+              variant="body2"
+              color={"white"}
+              textAlign={"center"}
+              fontSize={11}
+              marginX={3}
+            >
+              Blvr. Mariano Escobedo Pte. 3001-Local 3, John F. Kennedy, 37410
+              León de los Aldama, Gto.
+            </Typography>
+            <Typography
+              variant="body2"
+              color={"white"}
+              textAlign={"center"}
+              fontSize={11}
+              marginX={3}
+              marginY={1}
+            >
+              miércoles, 8 a.m.–9 p.m.
+            </Typography>
+            <Typography
+              variant="body2"
+              color={"white"}
+              textAlign={"center"}
+              fontSize={11}
+              marginX={3}
+              marginY={2}
+            >
+              +524776614369
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+
       <MapContainer
         scrollWheelZoom
         center={position ?? [21.1191454, -101.6833461]}

@@ -2,11 +2,8 @@
 import AppFooter from "@/components/common/app_footer/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
 import AppBackgroundImage from "@/components/common/background_image";
-import Valor from "@/components/quienes_somos/valor";
 import { AppColorsHex } from "@/const/colors";
-import { basepath } from "@/const/utils";
-import { Box, Grid, Typography } from "@mui/material";
-import Image from "next/image";
+import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 interface CatalogoProps {
   params: {

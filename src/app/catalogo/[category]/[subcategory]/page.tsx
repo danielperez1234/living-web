@@ -10,12 +10,14 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { Box, Divider, Fab, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+
 interface CatalogoProps {
   params: {
     category: string;
     subcategory: string;
   };
 }
+
 export default function Catalogo({
   params: { category, subcategory },
 }: CatalogoProps) {
