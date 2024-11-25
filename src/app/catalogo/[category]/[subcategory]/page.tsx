@@ -10,6 +10,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { Box, Divider, Fab, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface CatalogoProps {
   params: {
@@ -21,6 +22,8 @@ interface CatalogoProps {
 export default function Catalogo({
   params: { category, subcategory },
 }: CatalogoProps) {
+  const router = useRouter();
+
   const getBanners = useBannerStore((state) => state.getBannersSandbox);
 
   const sandbox = useBannerStore((state) => state.sandbox_catalogo_banners);
@@ -54,7 +57,11 @@ export default function Catalogo({
           columnSpacing={{ xs: 0, sm: 5 }}
         >
           {sandbox.map((o, i) => (
-            <Objeto key={i} titulo={o.assetName ?? ""} image={o.assetUrl ?? ""} />
+            <Objeto
+              key={i}
+              titulo={o.assetName ?? ""}
+              image={o.assetUrl ?? ""}
+            />
           ))}
         </Grid>
       </Box>

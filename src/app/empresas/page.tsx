@@ -1,13 +1,9 @@
 "use client";
-import AppFilterDrawer from "@/components/catalogo/app_filter_drawer";
-import AppCounter from "@/components/common/app_counter";
 import AppFooter from "@/components/common/app_footer/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
 import AppBackgroundImage from "@/components/common/background_image";
 import { AppColorsHex } from "@/const/colors";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import { Box, Divider, Fab, Grid, Typography } from "@mui/material";
-import Image from "next/image";
+import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 interface CatalogoProps {
   params: {
@@ -16,7 +12,7 @@ interface CatalogoProps {
   };
 }
 export default function Empresas({
-  params: { category, subcategory }
+  params: { category, subcategory },
 }: CatalogoProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   return (
@@ -36,36 +32,37 @@ export default function Empresas({
         <Box
           bgcolor={AppColorsHex.white}
           display={"flex"}
-          flexDirection={{xs:"column",md:"row"}}
+          flexDirection={{ xs: "column", md: "row" }}
           alignItems={"center"}
           borderRadius={"50px"}
           width={"95%"}
           padding={"5%"}
           sx={{
             boxShadow:
-              "0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3)"
+              "0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3)",
           }}
         >
           <Box width={"70%"} height={"100%"}></Box>
           <Box width={"100%"}>
-            <Typography variant="h4" mb={2}>Living</Typography>
+            <Typography variant="h4" mb={2}>
+              Living
+            </Typography>
             <Typography variant="h2" mb={3}>
               Brindamos soluciones de calidad para tu empresa
             </Typography>
             <>
               <Typography variant="body1" mb={2}>
-              Mejora la calidad de los insumos de papelería de tu oficina con
-              Livin y vive de primera mano las soluciones de calidad que
-              ofrecemos para tu empresa. 
+                Mejora la calidad de los insumos de papelería de tu oficina con
+                Livin y vive de primera mano las soluciones de calidad que
+                ofrecemos para tu empresa.
               </Typography>
               <Typography variant="body1" mb={2}>
-              Envíanos un WhatsApp y disfruta
-              nuestras ofertas exclusivas. No dudes en contactarnos.
+                Envíanos un WhatsApp y disfruta nuestras ofertas exclusivas. No
+                dudes en contactarnos.
               </Typography>
               <Typography variant="body1">
-              Atentamente, equipo Living.
+                Atentamente, equipo Living.
               </Typography>
-              
             </>
           </Box>
         </Box>

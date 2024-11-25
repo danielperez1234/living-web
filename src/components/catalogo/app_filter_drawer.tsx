@@ -1,15 +1,4 @@
-import {
-  Box,
-  Divider,
-  Drawer,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  NativeSelect,
-  Select,
-  Typography
-} from "@mui/material";
-import NavBarTextButton from "./nav_bar_text_button";
+import { Box, Divider, Drawer, Typography } from "@mui/material";
 import AppSelect from "../common/app_select";
 interface Subcategory {
   name: string;
@@ -24,7 +13,7 @@ interface PropsAppDrawer {
 }
 export default function AppFilterDrawer({
   drawerOpen,
-  setDrawerOpen
+  setDrawerOpen,
 }: PropsAppDrawer) {
   return (
     <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
@@ -34,12 +23,20 @@ export default function AppFilterDrawer({
         minWidth={"20vw"}
         flexDirection={"column"}
       >
-        <Typography variant="h6" color='info'>
-              Filtros
-            </Typography>
-            <Divider/>
-        <AppSelect label={"Categorias"} options={["Oficina","Escolar","Manualidades"]} onChange={(value)=>{} } />
-        <AppSelect label={"Sub categorias"} options={["Plastilina","Lapiz","Plumas"]} onChange={(value)=>{} } />
+        <Typography variant="h6" color="info">
+          Filtros
+        </Typography>
+        <Divider />
+        <AppSelect
+          label={"Categorias"}
+          options={["Oficina", "Escolar", "Manualidades"]}
+          onChange={(value) => {}}
+        />
+        <AppSelect
+          label={"Sub categorias"}
+          options={["Plastilina", "Lapiz", "Plumas"]}
+          onChange={(value) => {}}
+        />
       </Box>
     </Drawer>
   );

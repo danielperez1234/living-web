@@ -5,7 +5,6 @@ import AppSpace from "@/components/common/app_space";
 import AppBackgroundImage from "@/components/common/background_image";
 import AppFlatBanner from "@/components/home/app_flat_banner/main";
 import AppHalfBanner from "@/components/common/app_half_banner/main";
-import Banner from "@/components/home/app_principal_banner/banner";
 import AppPrincipalBanner from "@/components/home/app_principal_banner/main";
 import useBannerStore from "@/service/banners/store";
 import { Box, Grid } from "@mui/material";
@@ -30,9 +29,6 @@ const Page: NextPage<Props> = ({}) => {
       <Box width={'100%'}  display={"flex"} flexDirection={"column"} alignItems={'center'}>
       {megaBanners.length > 0 && (
         <Box width={"80vw"}>
-        
-          
-
           <AppPrincipalBanner banners={megaBanners} />
           <AppSpace/>
         </Box>
