@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { Banner } from "./interface";
 import {  GetBannersLocation} from "./service";
+import { basepath } from "@/const/utils";
 
 interface BannerState {
   mega_banners: Banner[];
@@ -13,12 +14,14 @@ interface BannerState {
   quarter_two_banner: Banner[];
   sandbox_catalogo_banners: Banner[];
   quienes_somos_banners: Banner[];
+  fondo_web: Banner[];
   errorMsg: string | undefined;
   loading: boolean;
   getBannersHome: () => void;
   getBannersOfertas: () => void;
   getBannersSandbox: () => void;
   getBannersQuienesSomos: () => void;
+  getFondoWeb: () => Promise<void>;
   clean: () => void;
 }
 
@@ -36,6 +39,7 @@ const useBannerStore= create<BannerState>()((set) => ({
   //sandbox catalogo
   sandbox_catalogo_banners: [],
   quienes_somos_banners: [],
+  fondo_web: [],
   // indicadores
   errorMsg: undefined,
   loading: false,
@@ -136,6 +140,31 @@ const useBannerStore= create<BannerState>()((set) => ({
           ...state,
           loading: false,
           quienes_somos_banners: response_quienes_somos.data ??[],
+         
+        };
+      });
+
+      return;
+    
+    set((state) => {
+      return {
+        ...state,
+        loading: false
+      };
+    });
+  },
+  getFondoWeb: async () => {
+    set((state) => ({
+      ...state,
+      loading: true
+    }));
+    const fondo_web = await GetBannersLocation('fondo_web');
+      
+      set((state) => {
+        return {
+          ...state,
+          loading: false,
+          fondo_web: fondo_web.data ??[],
          
         };
       });
