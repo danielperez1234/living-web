@@ -11,6 +11,8 @@ import { Box, Divider, Fab, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import useCategoriasStore from "@/service/categorias/store";
+import useSubcategoriasStore from "@/service/subcategorias/store";
 
 interface CatalogoProps {
   params: {
@@ -28,8 +30,19 @@ export default function Catalogo({
 
   const sandbox = useBannerStore((state) => state.sandbox_catalogo_banners);
 
+  // Zustand
+  const categorias = useCategoriasStore((state) => state.categorias);
+  const getCategorias = useCategoriasStore((state) => state.getCategorias);
+  const subcategorias = useSubcategoriasStore((state) => state.subcategorias);
+  const getSubcategorias = useSubcategoriasStore(
+    (state) => state.getSubcategorias
+  );
+  const clean = useSubcategoriasStore((state) => state.clean);
+
   useEffect(() => {
     getBanners();
+    getCategorias();
+    getSubcategorias(category);
   }, []);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -85,6 +98,9 @@ export default function Catalogo({
       <AppFilterDrawer
         drawerOpen={drawerOpen}
         setDrawerOpen={(x) => setDrawerOpen(x)}
+        categories={categorias}
+        subcategories={subcategorias}
+        getSubcategorias={(id) => getSubcategorias(id)}
       />
     </AppBackgroundImage>
   );

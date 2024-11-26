@@ -1,6 +1,6 @@
 import { Response, request } from "../service";
 import "../service";
-import { Sucursal, SucursalPost } from "./interface";
+import { Sucursal } from "./interface";
 export async function GetSucursales(): Promise<Response<Sucursal[]>> {
   try {
     return await request({
