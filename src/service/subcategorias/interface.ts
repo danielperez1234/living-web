@@ -1,3 +1,5 @@
+import { Product } from "../products/interface";
+
 export interface Subcategoria {
   id: string;
   categoryName: string;
@@ -8,3 +10,12 @@ export interface Subcategory {
   id: string;
   subcategoryName: string;
 }
+export interface SubcategoriaElement {
+  id:         string;
+  categoryId: string;
+  name:       string;
+  products:   Product[];
+  properties: any[];
+}
+
+

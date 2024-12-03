@@ -1,12 +1,14 @@
 import {create} from "zustand";
-import {Subcategoria} from "./interface";
-import {GetSubcategorias} from "./service";
+import {Subcategoria, SubcategoriaElement} from "./interface";
+import {GetSelectedSubcategoria, GetSubcategorias} from "./service";
 
 interface SubcategoriaState {
     subcategorias: Subcategoria;
+    selectedSubcatetgoria?:SubcategoriaElement
     errorMsg: string | undefined;
     loading: boolean;
     getSubcategorias: (idCategoria: string) => void;
+    getSelectedSubcategoria: (idSubcategoria: string) => void;
     clean: () => void;
 }
 
@@ -27,6 +29,31 @@ const useSubcategoriasStore = create<SubcategoriaState>()((set) => ({
           ...state,
           loading: false,
           subcategorias: response.data,
+        };
+      });
+
+      return;
+    }
+    set((state) => {
+      return {
+        ...state,
+        loading: false,
+      };
+    });
+  },
+  getSelectedSubcategoria: async (idSubcategory) => {
+    set((state) => ({
+      ...state,
+      loading: true,
+    }));
+    const response = await GetSelectedSubcategoria(idSubcategory);
+    console.log("Prueba subcategoria seelcted: " + response.data);
+    if (response.status < 300 && response.data) {
+      set((state) => {
+        return {
+          ...state,
+          loading: false,
+          selectedSubcatetgoria: response.data,
         };
       });
 
