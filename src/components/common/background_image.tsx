@@ -4,18 +4,20 @@ import { Box } from "@mui/material";
 import React, { ReactElement, useEffect } from "react";
 
 export default function AppBackgroundImage({
-  children
+  children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const getFondosWeb = useBannerStore((state) => state.getFondoWeb);
   const fondosWeb = useBannerStore((state) => state.fondo_web);
 
-  useEffect(() => {
-      getFondosWeb();
-  }, [getFondosWeb]);
+  useEffect(()=>{
+    if(fondosWeb.length == 0){
+      console.log("hola")
+    getFondosWeb();}
+  },[])
   return (
-    <Box>
+    < Box>
       <Box
         sx={{
           position: "fixed",
@@ -26,14 +28,13 @@ export default function AppBackgroundImage({
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundAttachment: "fixed",
-          backgroundImage: `url(${
-            fondosWeb[0]?.assetUrl ?? `/${basepath}/marca/fondo.svg`
-          })`,
-          zIndex: -1
+          backgroundImage: `url(${fondosWeb[0]?.assetUrl ?? `/${basepath}/marca/fondo.svg`})`,
+          zIndex: -1,
         }}
       />
-
-      {children}
+      
+        {children}
+      
     </Box>
   );
 }

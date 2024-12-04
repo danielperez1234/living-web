@@ -13,7 +13,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useCategoriasStore from "@/service/categorias/store";
 import useSubcategoriasStore from "@/service/subcategorias/store";
-import useProductsStore from "@/service/products/store";
 
 interface CatalogoProps {
   params: {
@@ -35,31 +34,16 @@ export default function Catalogo({
   const categorias = useCategoriasStore((state) => state.categorias);
   const getCategorias = useCategoriasStore((state) => state.getCategorias);
   const subcategorias = useSubcategoriasStore((state) => state.subcategorias);
-  const selectedSubcategorias = useSubcategoriasStore((state) => state.selectedSubcatetgoria);
   const getSubcategorias = useSubcategoriasStore(
     (state) => state.getSubcategorias
   );
-  const getSelectedSubcategoria = useSubcategoriasStore(
-    (state) => state.getSelectedSubcategoria
-  );
-  const products = useProductsStore(state => state.productos)
-  const getProducts = useProductsStore(state => state.getAllProducts)
-  const cleanProducts = useProductsStore(state => state.clean)
   const clean = useSubcategoriasStore((state) => state.clean);
 
   useEffect(() => {
     getBanners();
     getCategorias();
     getSubcategorias(category);
-    console.log(category);
-    if(subcategory == '0'
-    ){
-      getProducts();
-    }else{
-      cleanProducts();
-      getSelectedSubcategoria(subcategory);
-    }
-  }, [category, cleanProducts, getBanners, getCategorias, getProducts, getSelectedSubcategoria, getSubcategorias, subcategory]);
+  }, []);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   return (
@@ -74,7 +58,7 @@ export default function Catalogo({
         alignItems={"center"}
       >
         <Typography variant="h1">
-          {subcategory != "0" ? selectedSubcategorias?.name : "Catálogo"}
+          {subcategory != "0" ? "" : category != "0" ? "" : "Catálogo"}
         </Typography>
         <Box height={"20px"} />
         <Grid
@@ -85,11 +69,11 @@ export default function Catalogo({
           rowSpacing={3}
           columnSpacing={{ xs: 0, sm: 5 }}
         >
-          {[...products, ...(selectedSubcategorias?.products ?? [])].map((o, i) => (
+          {sandbox.map((o, i) => (
             <Objeto
-              key={`producto_${i}`}
-              titulo={o.name ?? ""}
-              image={o.imageUrlSmall ?? ""}
+              key={i}
+              titulo={o.assetName ?? ""}
+              image={o.assetUrl ?? ""}
             />
           ))}
         </Grid>
@@ -116,8 +100,6 @@ export default function Catalogo({
         setDrawerOpen={(x) => setDrawerOpen(x)}
         categories={categorias}
         subcategories={subcategorias}
-        selectedInitialCategoryId={category == '0'? undefined : category}
-        selectedInitialSubcategoryId={subcategory == '0'? undefined : subcategory}
         getSubcategorias={(id) => getSubcategorias(id)}
       />
     </AppBackgroundImage>

@@ -18,16 +18,14 @@ export async function GetSubcategorias(
   }
 }
 
-export async function GetSubcategoria(
-  id: string
-): Promise<Response<SubcategoryPost>> {
-  try {
+export async function GetSubcategoria(id:string): Promise<Response<SubcategoryPost>> {
+  try{
     console.log("ID de la subcategoria: " + id);
     return await request({
       method: "GET",
       endpoint: `/${id}`,
     });
-  } catch (err) {
+  } catch(err){
     return {
       status: 500,
       error: `${err}`,
