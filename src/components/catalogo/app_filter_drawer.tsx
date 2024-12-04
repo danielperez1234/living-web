@@ -1,8 +1,9 @@
-import { Box, Divider, Drawer, Typography } from "@mui/material";
+import { Box, Button, Divider, Drawer, Typography } from "@mui/material";
 import AppSelect from "../common/app_select";
 import { Categoria } from "@/service/categorias/interface";
 import { Subcategoria } from "@/service/subcategorias/interface";
 import { useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 
 interface PropsAppDrawer {
   drawerOpen: boolean;
@@ -19,13 +20,29 @@ export default function AppFilterDrawer({
   subcategories,
   getSubcategorias,
 }: PropsAppDrawer) {
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string>("");
+  // Router hooks
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Local Hooks
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>("0");
+  const [selectedSubcategoryId, setSelectedSubcategoryId] =
+    useState<string>("0");
 
   useEffect(() => {
-    if(selectedCategoryId){
-      getSubcategorias(selectedCategoryId);
+    const parts = pathname.split("/");
+    if (parts.length >= 3) {
+      const idCategoria = parts[2] || "0";
+      const idSubcategoria = parts[3] || "0";
+
+      setSelectedCategoryId(idCategoria);
+      setSelectedSubcategoryId(idSubcategoria);
+
+      if (idCategoria !== "0") {
+        getSubcategorias(idCategoria);
+      }
     }
-  }, [selectedCategoryId]);
+  }, [pathname]);
 
   return (
     <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
@@ -43,10 +60,12 @@ export default function AppFilterDrawer({
           label={"Categorias"}
           options={categories.map((category) => category.categoryName)}
           onChange={(value) => {
-            console.log("Hell0000 ", value);
-            setSelectedCategoryId(value ?? "");
+            setSelectedCategoryId(value ?? "0");
+            setSelectedSubcategoryId("0");
+            router.replace(`/catalogo/${value}/0`);
           }}
           ids={categories.map((category) => category.id)}
+          value={selectedCategoryId}
         />
         <AppSelect
           label={"Sub categorias"}
@@ -54,10 +73,25 @@ export default function AppFilterDrawer({
             (subcategory) => subcategory.subcategoryName
           )}
           onChange={(value) => {
-            console.log("Hello: " + value);
+            setSelectedSubcategoryId(value ?? "0");
+            router.replace(`/catalogo/${selectedCategoryId}/${value}`);
           }}
+          ids={subcategories.subcategories.map((subcategory) => subcategory.id)}
+          value={selectedSubcategoryId}
         />
       </Box>
+      <Button
+        fullWidth
+        color="error"
+        onClick={() => {
+          setSelectedCategoryId("0");
+          setSelectedSubcategoryId("0");
+          router.replace(`/catalogo/0/0`);
+          setDrawerOpen(false);
+        }}
+      >
+        Borrar filtros
+      </Button>
     </Drawer>
   );
 }
