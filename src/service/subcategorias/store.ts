@@ -1,17 +1,15 @@
-import { create } from "zustand";
-import { Subcategoria, Subcategory, SubcategoryPost } from "./interface";
-import { GetSubcategoria, GetSubcategorias } from "./service";
+import {create} from "zustand";
+import {Subcategoria, SubcategoriaElement} from "./interface";
+import {GetSelectedSubcategoria, GetSubcategorias} from "./service";
 
 interface SubcategoriaState {
-  subcategorias: Subcategoria;
-  subcategoria?: SubcategoryPost;
-  errorMsg: string | undefined;
-  loading: boolean;
-  selectedSubcategoria?: Subcategoria;
-  selectSubcategoria: (Subcategoria: Subcategory) => void;
-  getSubcategorias: (idCategoria: string) => void;
-  getSubcategoria: (id: string) => void;
-  clean: () => void;
+    subcategorias: Subcategoria;
+    selectedSubcatetgoria?:SubcategoriaElement
+    errorMsg: string | undefined;
+    loading: boolean;
+    getSubcategorias: (idCategoria: string) => void;
+    getSelectedSubcategoria: (idSubcategoria: string) => void;
+    clean: () => void;
 }
 
 const useSubcategoriasStore = create<SubcategoriaState>()((set) => ({
@@ -49,19 +47,19 @@ const useSubcategoriasStore = create<SubcategoriaState>()((set) => ({
       };
     });
   },
-  getSubcategoria: async (id) => {
+  getSelectedSubcategoria: async (idSubcategory) => {
     set((state) => ({
       ...state,
       loading: true,
     }));
-    const response = await GetSubcategoria(id);
-    console.log("Prueba get subcategoria: " + response.data);
+    const response = await GetSelectedSubcategoria(idSubcategory);
+    console.log("Prueba subcategoria seelcted: " + response.data);
     if (response.status < 300 && response.data) {
       set((state) => {
         return {
           ...state,
           loading: false,
-          subcategoria: response.data,
+          selectedSubcatetgoria: response.data,
         };
       });
 

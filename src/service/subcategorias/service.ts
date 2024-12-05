@@ -1,6 +1,6 @@
 import { Response, request } from "../service";
 import "../service";
-import { Subcategoria, SubcategoryPost } from "./interface";
+import { Subcategoria, SubcategoriaElement } from "./interface";
 
 export async function GetSubcategorias(
   idCategoria: string
@@ -17,15 +17,15 @@ export async function GetSubcategorias(
     };
   }
 }
-
-export async function GetSubcategoria(id:string): Promise<Response<SubcategoryPost>> {
-  try{
-    console.log("ID de la subcategoria: " + id);
+export async function GetSelectedSubcategoria(
+  idSubcategoria: string
+): Promise<Response<SubcategoriaElement>> {
+  try {
     return await request({
       method: "GET",
-      endpoint: `/${id}`,
+      endpoint: `/${idSubcategoria}`,
     });
-  } catch(err){
+  } catch (err) {
     return {
       status: 500,
       error: `${err}`,

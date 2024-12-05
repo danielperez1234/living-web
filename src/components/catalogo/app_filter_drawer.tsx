@@ -3,13 +3,15 @@ import AppSelect from "../common/app_select";
 import { Categoria } from "@/service/categorias/interface";
 import { Subcategoria } from "@/service/subcategorias/interface";
 import { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface PropsAppDrawer {
   drawerOpen: boolean;
   setDrawerOpen: (x: boolean) => void;
   categories: Categoria[];
   subcategories: Subcategoria;
+  selectedInitialCategoryId?: string;
+  selectedInitialSubcategoryId?: string;
   getSubcategorias: (idCategoria: string) => void;
 }
 
@@ -19,16 +21,16 @@ export default function AppFilterDrawer({
   categories,
   subcategories,
   getSubcategorias,
+  selectedInitialCategoryId,
+  selectedInitialSubcategoryId,
 }: PropsAppDrawer) {
-  // Router hooks
+  const [selectedCategoryId, setSelectedCategoryId] = useState<
+    string | undefined
+  >(selectedInitialCategoryId);
+  const [selectedSubCategoryId, setSelectedSubCategoryId] = useState<
+    string | undefined
+  >(selectedInitialSubcategoryId);
   const router = useRouter();
-  const pathname = usePathname();
-
-  // Local Hooks
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string>("0");
-  const [selectedSubcategoryId, setSelectedSubcategoryId] =
-    useState<string>("0");
-
   useEffect(() => {
     const parts = pathname.split("/");
     if (parts.length >= 3) {
@@ -57,27 +59,27 @@ export default function AppFilterDrawer({
         </Typography>
         <Divider />
         <AppSelect
+          value={selectedCategoryId}
           label={"Categorias"}
           options={categories.map((category) => category.categoryName)}
           onChange={(value) => {
-            setSelectedCategoryId(value ?? "0");
-            setSelectedSubcategoryId("0");
-            router.replace(`/catalogo/${value}/0`);
+            setSelectedCategoryId(value);
           }}
           ids={categories.map((category) => category.id)}
           value={selectedCategoryId}
         />
         <AppSelect
+          value={selectedSubCategoryId}
           label={"Sub categorias"}
           options={subcategories.subcategories.map(
             (subcategory) => subcategory.subcategoryName
           )}
           onChange={(value) => {
-            setSelectedSubcategoryId(value ?? "0");
-            router.replace(`/catalogo/${selectedCategoryId}/${value}`);
+            console.log("Hello: " + value);
+            setSelectedSubCategoryId(value);
+            router.push(`/catalogo/${selectedCategoryId ?? 0}/${value ?? 0}`);
           }}
-          ids={subcategories.subcategories.map((subcategory) => subcategory.id)}
-          value={selectedSubcategoryId}
+          ids={subcategories.subcategories.map((element) => element.id)}
         />
       </Box>
       <Button
