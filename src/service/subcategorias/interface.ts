@@ -1,4 +1,4 @@
-import { Product } from "../products/interface";
+import { Product } from "../productos/interface";
 
 export interface Subcategoria {
   id: string;
@@ -10,12 +10,12 @@ export interface Subcategory {
   id: string;
   subcategoryName: string;
 }
-export interface SubcategoriaElement {
-  id:         string;
+
+// 12/02/2024
+export interface SubcategoryPost {
+  id: string;
   categoryId: string;
-  name:       string;
-  products:   Product[];
-  properties: any[];
+  category: object;
+  name: string;
+  products: Product[];
 }
-
-
