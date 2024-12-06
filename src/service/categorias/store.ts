@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { Categoria } from "./interface";
-import { GetCategorias } from "./service";
+import { GetCategoria, GetCategorias } from "./service";
 import { GetSubcategorias } from "../subcategorias/service";
 
 interface CategoriaState {
@@ -8,8 +8,10 @@ interface CategoriaState {
   errorMsg: string | undefined;
   loading: boolean;
   selectedCategoria?: Categoria;
+  categoria?: Categoria;
   selectCategoria: (categoria: Categoria) => void;
   getCategorias: () => void;
+  getCategoria: (idCategoria: string) => void;
   getSubcategorias: (idCategorias: string) => void;
   clean: () => void;
 }
@@ -38,7 +40,29 @@ const useCategoriasStore = create<CategoriaState>()((set) => ({
           categorias: response.data,
         };
       });
-
+      return;
+    }
+    set((state) => {
+      return {
+        ...state,
+        loading: false,
+      };
+    });
+  },
+  getCategoria: async (idCategoria: string) => {
+    set((state) => ({
+      ...state,
+      loading: true,
+    }));
+    const response = await GetCategoria(idCategoria);
+    if (response.status < 300 && response.data) {
+      set((state) => {
+        return {
+          ...state,
+          loading: false,
+          categoriaContainer: response.data,
+        };
+      });
       return;
     }
     set((state) => {
@@ -54,7 +78,6 @@ const useCategoriasStore = create<CategoriaState>()((set) => ({
       loading: true,
     }));
     const response = await GetSubcategorias(idCategoria);
-    console.log("Prueba: " + response);
     if (response.status < 300 && response.data) {
       set((state) => {
         return {

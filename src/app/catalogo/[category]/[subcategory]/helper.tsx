@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useCategoriasStore from "@/service/categorias/store";
 import useSubcategoriasStore from "@/service/subcategorias/store";
-import useProductsStore from "@/service/productos/store";
+import useProductsStore from "@/service/products/store";
 
 interface CatalogoProps {
   params: {
@@ -32,59 +32,43 @@ export default function Catalogo({
   const sandbox = useBannerStore((state) => state.sandbox_catalogo_banners);
 
   // Zustand
-  const getCategoria = useCategoriasStore((state) => state.getCategoria);
-  const categoriaContainer = useCategoriasStore((state) => state.categoria);
-  const getSubcategoria = useSubcategoriasStore(
-    (state) => state.getSubcategoria
-  );
-  const subcategoriaContainer = useSubcategoriasStore(
-    (state) => state.subcategoria
-  );
   const categorias = useCategoriasStore((state) => state.categorias);
   const getCategorias = useCategoriasStore((state) => state.getCategorias);
   const subcategorias = useSubcategoriasStore((state) => state.subcategorias);
+  const selectedSubcategorias = useSubcategoriasStore(
+    (state) => state.selectedSubcatetgoria
+  );
   const getSubcategorias = useSubcategoriasStore(
     (state) => state.getSubcategorias
   );
-  const selectedSubcategoria = useSubcategoriasStore(
-    (state) => state.getSubcategoria
+  const getSelectedSubcategoria = useSubcategoriasStore(
+    (state) => state.getSelectedSubcategoria
   );
-  const selectedCategoria = useCategoriasStore(
-    (state) => state.selectedCategoria
-  );
-  const cleanSubcategorias = useSubcategoriasStore((state) => state.clean);
-  // Producto
   const products = useProductsStore((state) => state.productos);
-  const getProductos = useProductsStore((state) => state.getAllProducts);
-  const cleanProductos = useProductsStore((state) => state.clean);
+  const getProducts = useProductsStore((state) => state.getAllProducts);
+  const cleanProducts = useProductsStore((state) => state.clean);
+  const clean = useSubcategoriasStore((state) => state.clean);
 
   useEffect(() => {
-    if (!categoriaContainer && category != "0") {
-      getCategoria(category);
-    }
-    if (!subcategoriaContainer && subcategory != "0") {
-      getSubcategoria(subcategory);
-    }
     getBanners();
     getCategorias();
     getSubcategorias(category);
+    console.log(category);
     if (subcategory == "0") {
-      getProductos();
+      getProducts();
     } else {
-      cleanProductos();
-      selectedSubcategoria(subcategory);
+      cleanProducts();
+      getSelectedSubcategoria(subcategory);
     }
   }, [
-    cleanProductos,
-    getProductos,
+    category,
+    cleanProducts,
     getBanners,
     getCategorias,
+    getProducts,
+    getSelectedSubcategoria,
     getSubcategorias,
-    category,
     subcategory,
-    selectedSubcategoria,
-    categoriaContainer,
-    subcategoriaContainer,
   ]);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -100,9 +84,7 @@ export default function Catalogo({
         alignItems={"center"}
       >
         <Typography variant="h1">
-          {categoriaContainer?.categoryName
-            ? `${categoriaContainer?.categoryName} -> ${subcategoriaContainer?.name}`
-            : "Catálogo"}
+          {subcategory != "0" ? selectedSubcategorias?.name : "Catálogo"}
         </Typography>
         <Box height={"20px"} />
         <Grid
@@ -113,7 +95,7 @@ export default function Catalogo({
           rowSpacing={3}
           columnSpacing={{ xs: 0, sm: 5 }}
         >
-          {[...products, ...(subcategoriaContainer?.products ?? [])].map(
+          {[...products, ...(selectedSubcategorias?.products ?? [])].map(
             (o, i) => (
               <Objeto
                 key={`producto_${i}`}
@@ -122,13 +104,6 @@ export default function Catalogo({
               />
             )
           )}
-          {/* {sandbox.map((o, i) => (
-            <Objeto
-              key={i}
-              titulo={o.assetName ?? ""}
-              image={o.assetUrl ?? ""}
-            />
-          ))} */}
         </Grid>
       </Box>
       <Fab
@@ -153,6 +128,10 @@ export default function Catalogo({
         setDrawerOpen={(x) => setDrawerOpen(x)}
         categories={categorias}
         subcategories={subcategorias}
+        selectedInitialCategoryId={category == "0" ? undefined : category}
+        selectedInitialSubcategoryId={
+          subcategory == "0" ? undefined : subcategory
+        }
         getSubcategorias={(id) => getSubcategorias(id)}
       />
     </AppBackgroundImage>
