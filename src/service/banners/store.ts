@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { Banner } from "./interface";
 import {  GetBannersLocation} from "./service";
-import { basepath } from "@/const/utils";
 
 interface BannerState {
   mega_banners: Banner[];

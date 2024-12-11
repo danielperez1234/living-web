@@ -1,19 +1,18 @@
 "use client";
 import AppFilterDrawer from "@/components/catalogo/app_filter_drawer";
-import AppCounter from "@/components/common/app_counter";
 import AppFooter from "@/components/common/app_footer/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
 import AppBackgroundImage from "@/components/common/background_image";
 import { AppColorsHex } from "@/const/colors";
 import useBannerStore from "@/service/banners/store";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import { Box, Divider, Fab, Grid, Typography } from "@mui/material";
-import Image from "next/image";
+import { Box, Fab, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useCategoriasStore from "@/service/categorias/store";
 import useSubcategoriasStore from "@/service/subcategorias/store";
 import useProductsStore from "@/service/productos/store";
+import AppProduct from "@/components/common/app_product";
 
 interface CatalogoProps {
   params: {
@@ -115,20 +114,14 @@ export default function Catalogo({
         >
           {[...products, ...(subcategoriaContainer?.products ?? [])].map(
             (o, i) => (
-              <Objeto
+              <AppProduct
                 key={`producto_${i}`}
                 titulo={o.name ?? ""}
                 image={o.imageUrlSmall ?? ""}
+                product={o}
               />
             )
           )}
-          {/* {sandbox.map((o, i) => (
-            <Objeto
-              key={i}
-              titulo={o.assetName ?? ""}
-              image={o.assetUrl ?? ""}
-            />
-          ))} */}
         </Grid>
       </Box>
       <Fab
@@ -156,107 +149,5 @@ export default function Catalogo({
         getSubcategorias={(id) => getSubcategorias(id)}
       />
     </AppBackgroundImage>
-  );
-}
-function Objeto({ titulo, image }: { titulo: string; image: string }) {
-  return (
-    <Grid
-      xs={12}
-      sm={6}
-      md={4}
-      xl={3}
-      item
-      display={"flex"}
-      flexDirection={"column"}
-      justifyContent={"start"}
-      alignItems={"center"}
-      maxWidth={"280px"}
-    >
-      <Box
-        bgcolor={AppColorsHex.white}
-        display={"flex"}
-        flexDirection={"column"}
-        alignItems={"center"}
-        borderRadius={"50px"}
-        width={"100%"}
-        sx={{
-          boxShadow:
-            "0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3)",
-        }}
-      >
-        <Box width={"85%"} marginY={"30px"}>
-          <Box width={"100%"} sx={{ aspectRatio: 1, position: "relative" }}>
-            <Image
-              fill
-              alt="product Image"
-              src={image} // src={`/${basepath}/productos/1.jpg`}
-              style={{
-                objectFit: "cover",
-              }}
-            />
-          </Box>
-          <Box>
-            <Typography
-              width={"100%"}
-              mb={2}
-              height={"50px"}
-              textOverflow={"ellipsis"}
-              style={{
-                display: "-webkit-box",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: "vertical",
-              }}
-            >
-              {titulo}
-            </Typography>
-          </Box>
-          <Box
-            width={"100%"}
-            display={"flex"}
-            justifyContent={"space-between"}
-            mb={2}
-          >
-            <Box width={"49%"}>
-              <Typography variant="h5">${"45.00"}</Typography>
-              <Typography
-                variant="h5"
-                fontSize={"12px"}
-                textOverflow={"ellipsis"}
-              >
-                {`Menudeo`}
-              </Typography>
-            </Box>
-
-            <Divider
-              orientation="vertical"
-              sx={{
-                height: "50px",
-                borderWidth: "0.5px",
-                borderColor: AppColorsHex.black,
-                margin: "0px",
-                padding: "0px",
-                opacity: 0.6,
-              }}
-            />
-            <Box
-              width={"49%"}
-              display={"flex"}
-              flexDirection={"column"}
-              alignItems={"end"}
-            >
-              <Typography variant="h5" color={AppColorsHex.blue}>
-                ${"45.00"}
-              </Typography>
-              <Typography variant="h5" fontSize={"12px"}>
-                {`a partir de ${"20"}pz`}
-              </Typography>
-            </Box>
-          </Box>
-          <AppCounter maxCount={40} />
-        </Box>
-      </Box>
-    </Grid>
   );
 }

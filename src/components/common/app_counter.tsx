@@ -1,31 +1,28 @@
 import React, { useState } from "react";
-import { Button, Box, Typography, TextField, IconButton } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
+import { Box, TextField, IconButton } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 interface CounterProps {
   maxCount: number;
+  count: number;
+  setCount: (newCount: number) => void;
 }
 
-const AppCounter: React.FC<CounterProps> = ({ maxCount }) => {
-  const [count, setCount] = useState<number>(0);
+const AppCounter: React.FC<CounterProps> = ({ maxCount, count, setCount }) => {
 
-  const handleIncrement = () => {
-    if (count < maxCount) {
-      setCount((prevCount) => prevCount + 1);
-    }
-  };
+   const handleIncrement = () => {
+     if (count < maxCount) setCount(count + 1);
+   };
 
-  const handleDecrement = () => {
-    if (count > 0) {
-      setCount((prevCount) => prevCount - 1);
-    }
-  };
+   const handleDecrement = () => {
+     if (count > 0) setCount(count - 1);
+   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.target.value, 10);
     if (!isNaN(value) && value >= 0 && value <= maxCount) {
       setCount(value);
-    }else if(isNaN(value) || value <= 0){
+    } else if (isNaN(value) || value <= 0) {
       setCount(0);
     }
   };
@@ -37,7 +34,7 @@ const AppCounter: React.FC<CounterProps> = ({ maxCount }) => {
         disabled={count === 0}
         color="primary"
       >
-        <RemoveIcon/>
+        <RemoveIcon />
       </IconButton>
       <TextField
         type="number"
@@ -64,10 +61,9 @@ const AppCounter: React.FC<CounterProps> = ({ maxCount }) => {
       <IconButton
         onClick={handleIncrement}
         disabled={count === maxCount}
-        
         color="primary"
       >
-        <AddIcon/>
+        <AddIcon />
       </IconButton>
     </Box>
   );

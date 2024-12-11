@@ -1,8 +1,8 @@
 import { Response, request } from "../service";
 import '../service'
 import { Banner } from "./interface";
+
 export  async function GetBannersLocation(location:string):Promise<Response<Banner[]>>{
-  
   try{
   return await request({
     method:"GET",
