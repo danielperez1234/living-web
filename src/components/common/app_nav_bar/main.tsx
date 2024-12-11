@@ -106,7 +106,7 @@ export default function AppNavBar({}) {
                 <IconButton onClick={() => router.push("/nosotros")}>
                   <LocationOn color="error" />
                 </IconButton>
-                <IconButton onClick={() => router.push("/cart")}>
+                <IconButton onClick={() => router.push("/carrito")}>
                   <ShoppingCartIcon color="primary" />
                 </IconButton>
                 <IconButton

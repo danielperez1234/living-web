@@ -1,14 +1,57 @@
 "use client";
 
+import AppButton from "@/components/common/app_button";
+import AppCartProduct from "@/components/common/app_cart_product";
 import AppNavBar from "@/components/common/app_nav_bar/main";
-import { AppColorsHex } from "@/const/colors";
 import useCartStore from "@/service/carrito/store";
-import { Box, Grid } from "@mui/material";
-import Image from "next/image";
+import {
+  Box,
+  Grid,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
+import { useState } from "react";
 
 export default function cart() {
-  const { cartItems, removeFromCart, updateQuantity, clearCart } =
-    useCartStore();
+  const { cartItems } = useCartStore();
+
+  const handleTotal = () => {
+    let total = 0;
+    cartItems.forEach((item) => {
+      total += item.product.price * item.quantity;
+    });
+    return total;
+  };
+  const handleIVA = () => {
+    let iva = handleTotal() * 0.16;
+    return iva;
+  };
+
+  const handleShipping = () => {
+    if (handleTotal() > 600) {
+      return "Gratis";
+    } else {
+      return "$100";
+    }
+  };
+
+  const handleTotalWithShipping = () => {
+    if (handleTotal() > 600) {
+      let total = handleTotal() + handleIVA();
+      return total;
+    } else {
+      let total = handleTotal() + handleIVA() + 100;
+      return total;
+    }
+  };
+
+  const [count, setCount] = useState(0);
 
   return (
     <Box>
@@ -26,53 +69,91 @@ export default function cart() {
         <Grid
           container
           marginX={"10%"}
-          rowSpacing={4}
           width={"80vw"}
           xs={12}
           alignContent={"center"}
-          justifyContent={{ xs: "start", md: "space-between" }}
+          justifyContent={"center"}
         >
           {cartItems.map((item, i) => (
-            <Grid
-              xs={12}
-              sm={6}
-              md={4}
-              xl={3}
-              item
-              display={"flex"}
-              flexDirection={"column"}
-              justifyContent={"start"}
-              alignItems={"center"}
-              >
-              <Box
-                bgcolor={AppColorsHex.white}
-                display={"flex"}
-                alignItems={"center"}
-                width={"100%"}
-                padding={"30px"}
-                sx={{
-                  boxShadow:
-                    "0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3)",
-                }}
-              >
-                <Box width={"75%"}>
-                  <Box
-                    width={"100%"}
-                    sx={{ aspectRatio: 1, position: "relative" }}
-                  >
-                    <Image
-                      fill
-                      alt="product Image"
-                      src={item.product.imageUrlOriginal}
-                      style={{ objectFit: "cover" }}
-                    />
-                  </Box>
-                </Box>
-                hello
-              </Box>
-            </Grid>
+            <AppCartProduct product={item.product} />
           ))}
         </Grid>
+        <Box
+          sx={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100vh",
+            zIndex: -1,
+          }}
+        >
+          <AppNavBar />
+          <Grid
+            container
+            marginX={"10%"}
+            width={"80vw"}
+            xs={12}
+            alignContent={"center"}
+            justifyContent={"center"}
+          >
+            {cartItems.map((item, i) => (
+              <AppCartProduct product={item.product} />
+            ))}
+          </Grid>
+        </Box>
+
+        {/* Caja para la tabla fija en la esquina inferior derecha */}
+        <Box
+          sx={{
+            position: "fixed", // Mantiene la posición fija
+            bottom: 0, // Alinea al fondo de la ventana
+            right: 0, // Alinea a la derecha
+            padding: "16px", // Espaciado interno
+            backgroundColor: "white", // Fondo blanco para visibilidad
+            borderRadius: "16px", // Bordes redondeados
+            zIndex: 10, // Asegura que esté por encima de otros elementos
+          }}
+        >
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <Typography variant="h5">Resumen de compra</Typography>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>Subtotal</TableCell>
+                  <TableCell>${handleTotal()}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>I.V.A</TableCell>
+                  <TableCell>${handleIVA()}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Envío</TableCell>
+                  <TableCell>{handleShipping()}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell sx={{ fontWeight: "bolder", fontStyle: "italic" }}>
+                    Total
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bolder", fontStyle: "italic" }}>
+                    ${handleTotalWithShipping().toFixed(2)}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <AppButton label="Finalizar compra" />
+          </Box>
+        </Box>
       </Box>
     </Box>
   );

@@ -39,7 +39,7 @@ export default function AppProduct(props: {
       flexDirection={"column"}
       justifyContent={"start"}
       alignItems={"center"}
-      maxWidth={"280px"}
+      width={"100%"}
     >
       <Box
         bgcolor={AppColorsHex.white}

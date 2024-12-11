@@ -26,33 +26,38 @@ const Page: NextPage<Props> = ({}) => {
   return (
     <AppBackgroundImage>
       <AppNavBar />
-      <Box width={'100%'}  display={"flex"} flexDirection={"column"} alignItems={'center'}>
-      {megaBanners.length > 0 && (
-        <Box width={"80vw"}>
-          <AppPrincipalBanner banners={megaBanners} />
-          <AppSpace/>
-        </Box>
-      )}
-      
-      <Grid
-        container
-        marginX={"10%"}
-        rowSpacing={4}
-        width={"80vw"}
-        xs={12}
-        alignContent={"center"}
-        justifyContent={{ xs: "start", md: "space-between" }}
+      <Box
+        width={"100%"}
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
       >
-        <Grid item xs={12}>
-          {flatBanners.length > 0 && <AppFlatBanner banners={flatBanners} />}
+        {megaBanners.length > 0 && (
+          <Box width={"80vw"}>
+            <AppPrincipalBanner banners={megaBanners} />
+            <AppSpace />
+          </Box>
+        )}
+
+        <Grid
+          container
+          marginX={"10%"}
+          rowSpacing={4}
+          width={"80vw"}
+          xs={12}
+          alignContent={"center"}
+          justifyContent={{ xs: "start", md: "space-between" }}
+        >
+          <Grid item xs={12}>
+            {flatBanners.length > 0 && <AppFlatBanner banners={flatBanners} />}
+          </Grid>
+          <Grid item xs={12} md={5.5}>
+            <AppHalfBanner banners={squareOneBanners} />
+          </Grid>
+          <Grid item xs={12} md={5.5}>
+            <AppHalfBanner banners={squareTwoBanners} />
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={5.5}>
-          <AppHalfBanner banners={squareOneBanners} />
-        </Grid>
-        <Grid item xs={12} md={5.5}>
-          <AppHalfBanner banners={squareTwoBanners}/>
-        </Grid>
-      </Grid>
       </Box>
       <AppFooter />
     </AppBackgroundImage>
