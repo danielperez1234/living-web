@@ -6,7 +6,6 @@ import AppCounter from "./app_counter";
 import AppButton from "./app_button";
 import useCartStore from "@/service/carrito/store";
 import { useEffect, useState } from "react";
-import { count } from "console";
 
 export default function AppProduct(props: {
   titulo: string;

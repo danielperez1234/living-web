@@ -1,7 +1,7 @@
 import { basepath } from "@/const/utils";
 import useBannerStore from "@/service/banners/store";
 import { Box } from "@mui/material";
-import React, { ReactElement, useEffect } from "react";
+import React, { useEffect } from "react";
 
 export default function AppBackgroundImage({
   children,
@@ -17,7 +17,7 @@ export default function AppBackgroundImage({
     getFondosWeb();}
   },[])
   return (
-    < Box>
+    <Box>
       <Box
         sx={{
           position: "fixed",
