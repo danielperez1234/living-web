@@ -28,7 +28,7 @@ export default function AppProduct(props: {
     } else {
       setCount(0);
     }
-  }, [cartItems, props.product.id]);
+  }, [props.product.id]);
   return (
     <Grid
       xs={12}
