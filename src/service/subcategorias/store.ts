@@ -4,7 +4,7 @@ import { GetSubcategoria, GetSubcategorias } from "./service";
 
 interface SubcategoriaState {
   subcategorias: Subcategoria;
-  subcategoria?: SubcategoryPost;
+    subcategoria?: SubcategoryPost;
   errorMsg: string | undefined;
   loading: boolean;
   selectedSubcategoria?: Subcategoria;

@@ -9,16 +9,36 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import AppButton from "@/components/common/app_button";
 import { basepath } from "@/const/utils";
+import { UserLoginRequest } from "@/service/token/interface";
+import LoginRequested from "@/service/token/service";
+import { storageKeys } from "@/const/storage_keys";
+import { Password } from "@mui/icons-material";
 
 export default function Login() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-
+  const [user,setUser] = useState<UserLoginRequest>({email:'',password:''})
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
+  };
+  const handleLoginRequested = async(
+  ) => {
+    const response = await LoginRequested(user);
+
+              if (response.status == 401) {
+                //setErrorMsg("Usuario o contraseña incorrectos.");
+              } else if (response.status == 200 && response.data) {
+                localStorage.setItem(storageKeys.token, response.data.token);
+                localStorage.setItem(storageKeys.email, response.data.email);
+                localStorage.setItem(
+                  storageKeys.userName,
+                  response.data.userName
+                );
+                router.push("/banners");
+              }
   };
   return (
     <Box
@@ -73,7 +93,10 @@ export default function Login() {
             Iniciar Sesión
           </Typography>
         </Box>
-        <AppTextField label={"Correo"} fullWidth margin="normal" type="email" />
+        <AppTextField onChange={(s)=>setUser(state=>{
+          var x = {...state,email:s.target.value}
+          return x;
+        })} label={"Correo"} fullWidth margin="normal" type="email" />
         <AppTextField
           label={"Tu contraseña"}
           fullWidth
@@ -94,9 +117,13 @@ export default function Login() {
               </InputAdornment>
             )
           }}
+          onChange={(s)=>setUser(state=>{
+            var x = {...state, password:s.target.value}
+            return x;
+          })}
         />
       </Box>
-      <AppButton label="Acceder" />
+      <AppButton label="Acceder" onClick={handleLoginRequested} />
       <AppButton label="Registrarme" onClick={()=>router.push('/registro')} color="warning" sx={{minWidth:'18vw'}} />
     </Box>
   );

@@ -1,7 +1,7 @@
 import { Response, request } from "../service";
 import { Token, UserLoginRequest } from "./interface";
 import  '../service'
-export default async function Login(user:UserLoginRequest):Promise<Response<Token>>{
+export default async function LoginRequested(user:UserLoginRequest):Promise<Response<Token>>{
   
   try {
   return await request({
