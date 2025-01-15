@@ -12,7 +12,6 @@ import { basepath } from "@/const/utils";
 import { UserLoginRequest } from "@/service/token/interface";
 import LoginRequested from "@/service/token/service";
 import { storageKeys } from "@/const/storage_keys";
-import { Password } from "@mui/icons-material";
 
 export default function Login() {
   const router = useRouter();

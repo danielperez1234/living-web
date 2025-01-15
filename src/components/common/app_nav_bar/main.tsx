@@ -18,6 +18,7 @@ export default function AppNavBar({}) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   // router
   const router = useRouter();
+  
   return (
     <Box
       height={{ sm: "65px", xs: "65px", md: "70px" }}

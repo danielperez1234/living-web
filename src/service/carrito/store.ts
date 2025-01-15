@@ -18,16 +18,11 @@ const useCartStore = create<cartState>()(
       // Agregar un producto al carrito
       addToCart: (product, quantity) => {
         set((state) => {
-          // Buscar si el producto ya existe en el carrito
           const existingItem = state.cartItems.find(
             (item) => item.product.id === product.id
           );
 
-          console.log("Cart items before add: ", state.cartItems); // Mejor ver el carrito completo
-
-          // Si el producto ya está en el carrito
           if (existingItem) {
-            console.log("Existing item found, updating quantity");
             return {
               cartItems: state.cartItems.map((item) =>
                 item.product.id === product.id
@@ -35,7 +30,7 @@ const useCartStore = create<cartState>()(
                       ...item,
                       quantity: Math.min(
                         item.quantity + quantity,
-                        product.maxOrder // Limitar a la cantidad máxima permitida
+                        product.maxOrder
                       ),
                     }
                   : item
@@ -43,8 +38,6 @@ const useCartStore = create<cartState>()(
             };
           }
 
-          // Si el producto no está en el carrito, agregarlo
-          console.log("Adding new item to cart");
           return {
             cartItems: [
               ...state.cartItems,
@@ -58,27 +51,26 @@ const useCartStore = create<cartState>()(
       removeFromCart: (product) => {
         set((state) => ({
           cartItems: state.cartItems.filter(
-            (item) => item.product.id !== product.id // Eliminar por ID
+            (item) => item.product.id !== product.id
           ),
         }));
       },
 
       // Actualizar la cantidad de un producto en el carrito
       updateQuantity: (product, quantity) => {
-        set((state) => {
-          console.log("Updating quantity for product: ", product);
-
-          return {
-            cartItems: state.cartItems.map((item) =>
-              item.product.id === product.id
-                ? {
-                    ...item,
-                    quantity: Math.min(quantity, product.maxOrder), // Limitar la cantidad a la máxima
-                  }
-                : item
-            ),
-          };
-        });
+        set((state) => ({
+          cartItems: state.cartItems.map((item) =>
+            item.product.id === product.id
+              ? {
+                  ...item,
+                  quantity: Math.min(
+                    Math.max(1, quantity), // Asegura que sea al menos 1
+                    product.maxOrder
+                  ),
+                }
+              : item
+          ),
+        }));
       },
 
       // Limpiar el carrito
