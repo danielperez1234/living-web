@@ -1,26 +1,24 @@
 import { AppColorsHex } from "@/const/colors";
 import useCartStore from "@/service/carrito/store";
 import { Product } from "@/service/productos/interface";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, useMediaQuery } from "@mui/material";
 import Image from "next/image";
 import AppCounter from "./app_counter";
 
 export default function AppCartProduct({ product }: { product: Product }) {
-  // Zustand
   const { cartItems, updateQuantity, removeFromCart } = useCartStore();
-
-  // Encuentra la cantidad actual en el carrito para este producto
   const existingItem = cartItems.find((item) => item.product.id === product.id);
   const count = existingItem ? existingItem.quantity : 0;
 
-  // Manejadores de eventos
   const handleCountChange = (newCount: number) => {
     if (newCount === 0) {
-      removeFromCart(product); // Elimina el producto si la cantidad es 0
+      removeFromCart(product);
     } else {
-      updateQuantity(product, newCount); // Actualiza la cantidad en el store
+      updateQuantity(product, newCount);
     }
   };
+
+  const isSmallScreen = useMediaQuery((theme: any) => theme.breakpoints.down("sm"));
 
   return (
     <Grid
@@ -30,48 +28,91 @@ export default function AppCartProduct({ product }: { product: Product }) {
       xl={10}
       item
       display={"flex"}
-      flexDirection={"column"}
-      justifyContent={"start"}
+      flexDirection={isSmallScreen ? "column" : "row"}
+      justifyContent={isSmallScreen ? "center" : "space-evenly"}
       alignItems={"center"}
       width={"100%"}
     >
       <Box
         bgcolor={AppColorsHex.white}
         display={"flex"}
-        alignItems={"center"}
-        justifyContent={"space-evenly"}
+        flexDirection={isSmallScreen ? "column" : "row"}
+        alignItems={isSmallScreen ? "center" : "center"}
+        justifyContent={isSmallScreen ? "center" : "space-evenly"}
         width={"100%"}
-        padding={"30px"}
+        padding={isSmallScreen ? "15px" : "30px"}
+        gap={isSmallScreen ? "20px" : "0"}
       >
-        {/* Imagen del producto */}
-        <Box width={"15%"}>
+        <Box
+          width={isSmallScreen ? "50%" : "15%"}
+          marginBottom={isSmallScreen ? "15px" : "0"}
+        >
           <Box width={"100%"} sx={{ aspectRatio: 1, position: "relative" }}>
             <Image
               fill
               alt="product Image"
               src={product.imageUrlOriginal}
-              style={{ objectFit: "cover" }}
+              style={{ objectFit: "cover", borderRadius: "8px" }}
             />
           </Box>
         </Box>
 
-        {/* Detalles del producto */}
-        <Box>
+        <Box
+          textAlign={isSmallScreen ? "center" : "left"}
+          marginBottom={isSmallScreen ? "15px" : "0"}
+        >
           <Typography sx={{ textAlign: "center" }}>{product.name}</Typography>
-          <Typography sx={{ textAlign: "center", fontWeight: "bolder" }}>
+          <Typography
+            sx={{
+              textAlign: "center",
+              fontWeight: "bolder",
+              fontSize: isSmallScreen ? "1rem" : "1.25rem",
+            }}
+          >
             ${product.price}
           </Typography>
         </Box>
 
-        {/* Contador */}
-        <AppCounter
-          maxCount={product.maxOrder}
-          count={count}
-          setCount={handleCountChange}
-        />
+        {isSmallScreen && (
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            width="100%"
+            marginBottom="15px"
+          >
+            <AppCounter
+              maxCount={product.maxOrder}
+              count={count}
+              setCount={handleCountChange}
+            />
+          </Box>
+        )}
 
-        {/* Precio total */}
-        <Typography sx={{ fontWeight: "bolder", fontStyle: "italic" }}>
+        {!isSmallScreen && (
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            gap="10px"
+          >
+            <AppCounter
+              maxCount={product.maxOrder}
+              count={count}
+              setCount={handleCountChange}
+            />
+          </Box>
+        )}
+
+        <Typography
+          sx={{
+            fontWeight: "bolder",
+            fontStyle: "italic",
+            fontSize: isSmallScreen ? "1rem" : "1.25rem",
+          }}
+        >
           ${product.price * count}
         </Typography>
       </Box>
