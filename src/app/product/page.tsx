@@ -206,7 +206,7 @@ export default function Page() {
             }}
           >
             <Typography>Cantidad: </Typography>
-            <AppCounter maxCount={40} />
+            <AppCounter maxCount={40} count={0} setCount={() => {}} />
           </Box>
           <AppButton
             label="Añadir al carrito"

@@ -1,5 +1,6 @@
 "use client";
 
+import AppButton from "@/components/common/app_button";
 import AppFooter from "@/components/common/app_footer/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
 import { AppColorsHex } from "@/const/colors";
@@ -24,12 +25,10 @@ export default function Billing() {
       <AppNavBar />
       <Grid
         container
-        spacing={2}
         sx={{
           justifyContent: "center",
           alignItems: { xs: "center", md: "flex-start" }, // Centrado en pantallas pequeñas, alineado superior a partir de md
-          flexGrow: 1,
-          padding: 2,
+          backgroundColor: "green",
         }}
       >
         {/* Datos de contacto */}
@@ -40,6 +39,7 @@ export default function Billing() {
           sx={{
             display: "flex",
             justifyContent: "center",
+            backgroundColor: "red",
           }}
         >
           <Card
@@ -47,6 +47,7 @@ export default function Billing() {
               minWidth: "300px",
               maxWidth: "90%",
               width: "100%",
+              borderRadius: "20px",
             }}
           >
             <CardContent>
@@ -82,28 +83,66 @@ export default function Billing() {
           md={4}
           sx={{
             display: "flex",
-            justifyContent: { xs: "center", md: "flex-end" }, // Centrado en pantallas pequeñas, a la derecha a partir de md
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: { xs: "center", md: "center" },
+            backgroundColor: "yellow",
+            width: "100%",
+            height: "100%",
           }}
         >
           <Card
             sx={{
-              minWidth: "270px",
-              maxWidth: "90%",
-              width: "100%",
+              width: "270px",
+              borderRadius: "20px",
+              aspectRatio: 1,
             }}
           >
             <CardContent>
-              <Typography variant="h5" textAlign="center">
+              <Typography variant="h5" textAlign="center" fontWeight={"bold"}>
                 Resumen de compra
               </Typography>
-              <Box>
-                <Typography>Subtotal: $0.00</Typography>
-                <Typography>IVA: $0.00</Typography>
-                <Typography>Envío: $0.00</Typography>
-                <Typography>Total: $0.00</Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  backgroundColor: "blue",
+                  height: "100%",
+                }}
+              >
+                <Box
+                  sx={{
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    backgroundColor: "red",
+                  }}
+                >
+                  <Typography variant="body1">Subtotal:</Typography>
+                  <Typography variant="body1">IVA:</Typography>
+                  <Typography variant="body1">Envío:</Typography>
+                  <Typography variant="body1">Total:</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="body1" sx={{ gridColumn: 2 }}>
+                    0.00
+                  </Typography>
+                  <Typography variant="body1">0.00</Typography>
+                  <Typography variant="body1">0.00</Typography>
+                  <Typography variant="body1">0.00</Typography>
+                </Box>
               </Box>
             </CardContent>
           </Card>
+          <AppButton
+            label="siguiente"
+            sx={{
+              color: AppColorsHex.blue,
+              backgroundColor: AppColorsHex.yellow,
+              maxWidth: "90%",
+            }}
+          />
         </Grid>
       </Grid>
       <AppFooter />

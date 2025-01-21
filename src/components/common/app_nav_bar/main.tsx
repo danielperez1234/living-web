@@ -25,7 +25,6 @@ export default function AppNavBar({}) {
       marginBottom={{ sm: "20px", xs: "30px", md: "60px" }}
     >
       {" "}
-      zIndex:10
       <HideOnScroll>
         <AppBar sx={{ bgcolor: AppColorsHex.white }}>
           <AppDrawer

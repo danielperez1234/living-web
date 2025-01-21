@@ -1,9 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath:'/web',
+  basePath: '/web',
   images: {
     domains: ['livingphotos.blob.core.windows.net'],
-    
   },
 };
 
