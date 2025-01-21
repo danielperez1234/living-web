@@ -45,47 +45,47 @@ export default function Login() {
   };
   useEffect(() => {
     // Dynamically add the Openpay script
-    if (!document.getElementById('openpay-script')) {
-      const script = document.createElement('script');
-      script.src = 'https://resources.openpay.mx/lib/openpay-js/1.2.38/openpay.v1.min.js';
-      script.type = 'text/javascript';
-      script.id = 'openpay-script';
-      script.onload = () => {
-        console.log('Openpay script loaded');
-        if (window.OpenPay) {
-          // Initialize Openpay after the script loads
-          window.OpenPay.setId('mrd3wptlgzchwuuzrasn');
-          window.OpenPay.setApiKey('pk_2e3d6952209f4a778846af257f5574e1');
-          window.OpenPay.setSandboxMode(true); // Use false for production
-        }
-      };
-      document.body.appendChild(script);
-    }
+    // if (!document.getElementById('openpay-script')) {
+    //   const script = document.createElement('script');
+    //   script.src = 'https://resources.openpay.mx/lib/openpay-js/1.2.38/openpay.v1.min.js';
+    //   script.type = 'text/javascript';
+    //   script.id = 'openpay-script';
+    //   script.onload = () => {
+    //     console.log('Openpay script loaded');
+    //     if (window.OpenPay) {
+    //       // Initialize Openpay after the script loads
+    //       window.OpenPay.setId('mrd3wptlgzchwuuzrasn');
+    //       window.OpenPay.setApiKey('pk_2e3d6952209f4a778846af257f5574e1');
+    //       window.OpenPay.setSandboxMode(true); // Use false for production
+    //     }
+    //   };
+    //   document.body.appendChild(script);
+    // }
   }, []);
 
   const handlePayment = () => {
     console.log("hola")
-    if (window.OpenPay) {
-      const cardData = {
-        card_number: '4111111111111111',
-        holder_name: 'Juan Perez',
-        expiration_year: '25',
-        expiration_month: '12',
-        cvv2: '123',
-      };
+    // if (window.OpenPay) {
+    //   const cardData = {
+    //     card_number: '4111111111111111',
+    //     holder_name: 'Juan Perez',
+    //     expiration_year: '25',
+    //     expiration_month: '12',
+    //     cvv2: '123',
+    //   };
 
-      window.OpenPay.token.create(
-        cardData,
-        (response) => {
-          console.log('Token created successfully:', response.data.id);
-        },
-        (error) => {
-          console.error('Error creating token:', error);
-        }
-      );
-    } else {
-      console.error('OpenPay is not loaded');
-    }
+    //   window.OpenPay.token.create(
+    //     cardData,
+    //     (response) => {
+    //       console.log('Token created successfully:', response.data.id);
+    //     },
+    //     (error) => {
+    //       console.error('Error creating token:', error);
+    //     }
+    //   );
+    // } else {
+    //   console.error('OpenPay is not loaded');
+    // }
   };
   const handleLoginRequested = async(
   ) => {
