@@ -27,12 +27,12 @@ const useCartStore = create<cartState>()(
               cartItems: state.cartItems.map((item) =>
                 item.product.id === product.id
                   ? {
-                      ...item,
-                      quantity: Math.min(
-                        item.quantity + quantity,
-                        product.maxOrder
-                      ),
-                    }
+                    ...item,
+                    quantity: Math.min(
+                      item.quantity + quantity,
+                      product.maxOrder
+                    ),
+                  }
                   : item
               ),
             };
@@ -62,12 +62,12 @@ const useCartStore = create<cartState>()(
           cartItems: state.cartItems.map((item) =>
             item.product.id === product.id
               ? {
-                  ...item,
-                  quantity: Math.min(
-                    Math.max(1, quantity), // Asegura que sea al menos 1
-                    product.maxOrder
-                  ),
-                }
+                ...item,
+                quantity: Math.min(
+                  Math.max(1, quantity), // Asegura que sea al menos 1
+                  product.maxOrder
+                ),
+              }
               : item
           ),
         }));

@@ -4,6 +4,7 @@ export interface Subcategoria {
   id: string;
   categoryName: string;
   subcategories: Subcategory[];
+  products?: Product[];
 }
 
 export interface Subcategory {
@@ -12,10 +13,18 @@ export interface Subcategory {
 }
 
 // 12/02/2024
-export interface SubcategoryPost {
+export interface SubcategoryProducts {
+  elementos: number;
+  datosPaginados: DatosPaginados;
+}
+
+export interface DatosPaginados {
   id: string;
-  categoryId: string;
-  category: object;
-  name: string;
-  products: Product[];
+  subcategoryName: string;
+  subcategoryProductDtos: Product[];
+}
+
+export interface newSubcategory {
+  Name: string;
+  CategoryId: string;
 }

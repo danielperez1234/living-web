@@ -4,7 +4,6 @@ import AppFooter from "@/components/common/app_footer/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
 import AppBackgroundImage from "@/components/common/background_image";
 import { AppColorsHex } from "@/const/colors";
-import useBannerStore from "@/service/banners/store";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { Box, Fab, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -26,18 +25,14 @@ export default function Catalogo({
 }: CatalogoProps) {
   const router = useRouter();
 
-  const getBanners = useBannerStore((state) => state.getBannersSandbox);
-
-  const sandbox = useBannerStore((state) => state.sandbox_catalogo_banners);
-
-  // Zustand
+  // Zustand Stores
   const getCategoria = useCategoriasStore((state) => state.getCategoria);
   const categoriaContainer = useCategoriasStore((state) => state.categoria);
   const getSubcategoria = useSubcategoriasStore(
-    (state) => state.getSubcategoria
+    (state) => state.getSubcategorias
   );
   const subcategoriaContainer = useSubcategoriasStore(
-    (state) => state.subcategoria
+    (state) => state.subcategorias
   );
   const categorias = useCategoriasStore((state) => state.categorias);
   const getCategorias = useCategoriasStore((state) => state.getCategorias);
@@ -45,48 +40,37 @@ export default function Catalogo({
   const getSubcategorias = useSubcategoriasStore(
     (state) => state.getSubcategorias
   );
-  const selectedSubcategoria = useSubcategoriasStore(
-    (state) => state.getSubcategoria
-  );
-  const selectedCategoria = useCategoriasStore(
-    (state) => state.selectedCategoria
-  );
-  const cleanSubcategorias = useSubcategoriasStore((state) => state.clean);
-  // Producto
+
+  // Productos
   const products = useProductsStore((state) => state.productos);
   const getProductos = useProductsStore((state) => state.getAllProducts);
   const cleanProductos = useProductsStore((state) => state.clean);
 
   useEffect(() => {
-    if (!categoriaContainer && category != "0") {
+    getCategorias();
+    if (category !== "0") {
       getCategoria(category);
+      getSubcategorias(category);
     }
-    if (!subcategoriaContainer && subcategory != "0") {
+    if (subcategory === "0") {
+      getProductos(); // Carga todos los productos
+    } else {
+      cleanProductos(); // Limpia los productos actuales antes de cargar los nuevos
       getSubcategoria(subcategory);
     }
-    getBanners();
-    getCategorias();
-    getSubcategorias(category);
-    if (subcategory == "0") {
-      getProductos();
-    } else {
-      cleanProductos();
-      selectedSubcategoria(subcategory);
-    }
   }, [
-    cleanProductos,
-    getProductos,
-    getBanners,
-    getCategorias,
-    getSubcategorias,
     category,
     subcategory,
-    selectedSubcategoria,
-    categoriaContainer,
-    subcategoriaContainer,
+    getCategoria,
+    getSubcategoria,
+    getProductos,
+    cleanProductos,
+    getCategorias,
+    getSubcategorias,
   ]);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+
   return (
     <AppBackgroundImage>
       <AppNavBar />
@@ -100,7 +84,7 @@ export default function Catalogo({
       >
         <Typography variant="h1">
           {categoriaContainer?.categoryName
-            ? `${categoriaContainer?.categoryName} -> ${subcategoriaContainer?.name}`
+            ? `${categoriaContainer?.categoryName} -> ${subcategoriaContainer?.categoryName}`
             : "Catálogo"}
         </Typography>
         <Box height={"20px"} />
@@ -112,16 +96,14 @@ export default function Catalogo({
           rowSpacing={3}
           columnSpacing={{ xs: 0, sm: 5 }}
         >
-          {[...products, ...(subcategoriaContainer?.products ?? [])].map(
-            (o, i) => (
-              <AppProduct
-                key={`producto_${i}`}
-                titulo={o.name ?? ""}
-                image={o.imageUrlSmall ?? ""}
-                product={o}
-              />
-            )
-          )}
+          {products.map((product, i) => (
+            <AppProduct
+              key={`producto_${i}`}
+              titulo={product.name}
+              image={product.imageUrlSmall}
+              product={product}
+            />
+          ))}
         </Grid>
       </Box>
       <Fab

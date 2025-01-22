@@ -1,14 +1,20 @@
 import { create } from "zustand";
-import { GetAllProducts } from "./service";
+import { GetAllProducts, GetProduct } from "./service";
 import { Product } from "./interface";
 
 interface SubcategoriaState {
   productos: Product[];
+  producto?: Product;
   errorMsg: string | undefined;
   loading: boolean;
   getAllProducts: () => void;
-  setProducts: (x: Product[]) => void;
+  getProduct: (id: string) => void;
   clean: () => void;
+  // errorMsg: string | undefined;
+  // loading: boolean;
+  // getAllProducts: () => void;
+  // setProducts: (x: Product[]) => void;
+  // clean: () => void;
 }
 
 const useProductsStore = create<SubcategoriaState>()((set) => ({
@@ -40,12 +46,27 @@ const useProductsStore = create<SubcategoriaState>()((set) => ({
       };
     });
   },
-  setProducts: (prods) => {
+  getProduct: async (id) => {
+    set((state) => ({
+      ...state,
+      loading: true
+    }));
+    const response = await GetProduct(id);
+    console.log("Prueba de producto: ", response.data);
+    if (response.status < 300 && response.data) {
+      set((state) => {
+        return {
+          ...state,
+          loading: false,
+          producto: response.data
+        };
+      });
+      return;
+    }
     set((state) => {
       return {
         ...state,
-        loading: false,
-        productos: prods,
+        loading: false
       };
     });
   },

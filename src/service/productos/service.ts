@@ -15,3 +15,18 @@ export async function GetAllProducts(): Promise<Response<Product[]>> {
     };
   }
 }
+
+export async function GetProduct(id: string): Promise<Response<Product>> {
+  try {
+    console.log("ID: ", id);
+    return await request({
+      method: "GET",
+      endpoint: `/api/Products/${id}`
+    });
+  } catch (err) {
+    return {
+      status: 500,
+      error: `${err}`
+    };
+  }
+}
