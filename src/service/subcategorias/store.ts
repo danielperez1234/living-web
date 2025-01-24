@@ -66,7 +66,8 @@ const useSubcategoriasStore = create<SubcategoriaState>()((set) => ({
           subcategoriaProducts: response.data
         };
       });
-      const newpage = page * 10 >= response.data.elementos ? page : page + 1;
+      console.log('GET SUBCATEGORIA PRODUCTS', response.data.elementos)
+      const newpage = page * 2 >= response.data.elementos ? page : page + 1;
       return newpage;
     }
     set((state) => {

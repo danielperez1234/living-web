@@ -7,7 +7,7 @@ import AppBackgroundImage from "@/components/common/background_image";
 import { AppColorsHex } from "@/const/colors";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { Box, Fab, Grid, Typography, MenuItem, Select } from "@mui/material";
-import { SetStateAction, useEffect, useState } from "react";
+import { SetStateAction, Suspense, useEffect, useState } from "react";
 import useCategoriasStore from "@/service/categorias/store";
 import useSubcategoriasStore from "@/service/subcategorias/store";
 import useProductsStore from "@/service/productos/store";
@@ -17,7 +17,9 @@ export default function Catalogo() {
   // Zustand Stores
   const categorias = useCategoriasStore((state) => state.categorias);
   const getCategorias = useCategoriasStore((state) => state.getCategorias);
+  const getSubcategoriasProducts = useSubcategoriasStore((state) =>  state.getSubcategoriaProducts)
   const subcategorias = useSubcategoriasStore((state) => state.subcategorias);
+  const subCategoriaProducts = useSubcategoriasStore((state) => state.subcategoriaProducts)
   const getSubcategorias = useSubcategoriasStore(
     (state) => state.getSubcategorias
   );
@@ -54,6 +56,10 @@ export default function Catalogo() {
     target: { value: SetStateAction<string> };
   }) => {
     setSelectedSubcategoria(event.target.value);
+    console.log('VALOR DE EVENT', event.target.value)
+    getSubcategoriasProducts(event.target.value.toString(),1).then((res)=>{
+      console.log('RESPUESTA DE ESTA MADRE', res)
+    })
   };
 
   return (
@@ -118,12 +124,19 @@ export default function Catalogo() {
           columnSpacing={{ xs: 0, sm: 5 }}
         >
           {products.map((product, i) => (
-            <AppProduct
-              key={`producto_${i}`}
-              titulo={product.name}
-              image={product.imageUrlSmall}
-              product={product}
-            />
+             
+                (subCategoriaProducts?.datosPaginados.subcategoryProductDtos && subCategoriaProducts?.datosPaginados.subcategoryProductDtos.length > 0) ? (
+                 subCategoriaProducts.datosPaginados.subcategoryProductDtos.map((product, i) => (
+                   <AppProduct key={`subcategoria_${i}`} titulo={product.name} image={product.imageUrlSmall} product={product}/>
+                   
+              
+                 ))
+                ) : (
+                 products.map((product) => (
+                   <AppProduct key={product.id}  titulo={product.name} image={product.imageUrlSmall} product={product} />                  
+                 ))
+                )
+            
           ))}
         </Grid>
       </Box>
