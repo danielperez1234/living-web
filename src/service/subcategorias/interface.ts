@@ -23,8 +23,3 @@ export interface DatosPaginados {
   subcategoryName: string;
   subcategoryProductDtos: Product[];
 }
-
-export interface newSubcategory {
-  Name: string;
-  CategoryId: string;
-}

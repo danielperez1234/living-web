@@ -13,9 +13,9 @@ export default function AppProduct(props: {
   product: Product;
 }) {
   // Zustand
-  const { cartItems, addToCart, updateQuantity, clearCart } = useCartStore();
+  const { cartItems, addToCart } = useCartStore();
 
-  // Locak Hooks
+  // Local Hooks
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -28,6 +28,9 @@ export default function AppProduct(props: {
       setCount(0);
     }
   }, [props.product.id]);
+
+  const { price, wholesalePrice, maxOrder } = props.product;
+
   return (
     <Grid
       xs={12}
@@ -58,7 +61,7 @@ export default function AppProduct(props: {
             <Image
               fill
               alt="product Image"
-              src={props.image} // src={`/${basepath}/productos/1.jpg`}
+              src={props.image}
               style={{
                 objectFit: "cover",
               }}
@@ -88,13 +91,13 @@ export default function AppProduct(props: {
             mb={2}
           >
             <Box width={"49%"}>
-              <Typography variant="h5">${"45.00"}</Typography>
+              <Typography variant="h5">${price.toFixed(2)}</Typography>
               <Typography
                 variant="h5"
                 fontSize={"12px"}
                 textOverflow={"ellipsis"}
               >
-                {`Menudeo`}
+                Menudeo
               </Typography>
             </Box>
 
@@ -116,10 +119,10 @@ export default function AppProduct(props: {
               alignItems={"end"}
             >
               <Typography variant="h5" color={AppColorsHex.blue}>
-                ${"45.00"}
+                ${wholesalePrice.toFixed(2)}
               </Typography>
               <Typography variant="h5" fontSize={"12px"}>
-                {`a partir de ${"20"}pz`}
+                {`a partir de ${maxOrder} pz`}
               </Typography>
             </Box>
           </Box>

@@ -5,12 +5,14 @@ import { GetSubcategoria, GetSubcategorias } from "./service";
 interface SubcategoriaState {
   subcategorias: Subcategoria;
   subcategoriaProducts?: SubcategoryProducts;
+  containerSubcategoriaProducts?: SubcategoryProducts;
   errorMsg: string | undefined;
   loading: boolean;
   selectedSubcategoria?: Subcategory;
   selectSubcategoria: (Subcategoria: Subcategory) => void;
   getSubcategorias: (idCategoria: string) => void;
   getSubcategoriaProducts: (id: string, page: number) => Promise<number>;
+  getSubcategoryByID: (id: string, page: number) => Promise<SubcategoryProducts | undefined>;
   clean: () => void;
 }
 
@@ -74,6 +76,30 @@ const useSubcategoriasStore = create<SubcategoriaState>()((set) => ({
       };
     });
     return page;
+  },
+  getSubcategoryByID: async (id, page) => {
+    set((state) => ({
+      ...state,
+      loading: true,
+    }));
+    const response = await GetSubcategoria(id, page);
+    if (response.status < 300 && response.data) {
+      set((state) => {
+        return {
+          ...state,
+          loading: false,
+          containerSubcategoriaProducts: response.data
+        }
+      });
+      return response.data
+    }
+    set((state) => {
+      return {
+        ...state,
+        loading: false
+      };
+    });
+    return;
   },
   clean: () =>
     set((state) => ({

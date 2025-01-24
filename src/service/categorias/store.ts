@@ -1,7 +1,8 @@
 import { create } from "zustand";
 import { Categoria } from "./interface";
 import { GetCategoria, GetCategorias } from "./service";
-import { GetSubcategorias } from "../subcategorias/service";
+import { GetSubcategoria, GetSubcategorias } from "../subcategorias/service";
+import { SubcategoryProducts } from "../subcategorias/interface";
 
 interface CategoriaState {
   categorias: Categoria[];
