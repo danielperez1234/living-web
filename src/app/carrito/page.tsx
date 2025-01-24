@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-export default function cart() {
+export default function Cart() {
   const { cartItems } = useCartStore();
 
   const handleTotal = () => {
@@ -75,7 +75,7 @@ export default function cart() {
           justifyContent={"center"}
         >
           {cartItems.map((item, i) => (
-            <AppCartProduct product={item.product} />
+            <AppCartProduct key={`approductCart${i}`} product={item.product} />
           ))}
         </Grid>
         <Box
@@ -98,7 +98,7 @@ export default function cart() {
             justifyContent={"center"}
           >
             {cartItems.map((item, i) => (
-              <AppCartProduct product={item.product} />
+              <AppCartProduct key={`approductCart2${i}`} product={item.product} />
             ))}
           </Grid>
         </Box>
