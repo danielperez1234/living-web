@@ -4,7 +4,7 @@ import { GetSubcategoria, GetSubcategorias } from "./service";
 
 interface SubcategoriaState {
   subcategorias: Subcategoria;
-  subcategoriaProducts?: SubcategoryProducts;
+  subcategoriaProducts: SubcategoryProducts;
   containerSubcategoriaProducts?: SubcategoryProducts;
   errorMsg: string | undefined;
   loading: boolean;
@@ -18,6 +18,7 @@ interface SubcategoriaState {
 
 const useSubcategoriasStore = create<SubcategoriaState>()((set) => ({
   subcategorias: { id: "", categoryName: "", subcategories: [] },
+  subcategoriaProducts: { elementos: 0, datosPaginados: { id: "", subcategoryName: "", subcategoryProductDtos: [] } },
   errorMsg: undefined,
   loading: false,
   selectSubcategoria: (subcategoria) => {
@@ -35,6 +36,8 @@ const useSubcategoriasStore = create<SubcategoriaState>()((set) => ({
     console.log("Prueba subcategoria: " + response.data);
     if (response.status < 300 && response.data) {
       set((state) => {
+        console.log("Prueba subcategoria en getSubcategoria: " + response.data);
+
         return {
           ...state,
           loading: false,
@@ -60,6 +63,8 @@ const useSubcategoriasStore = create<SubcategoriaState>()((set) => ({
     console.log("Prueba get subcategoria: " + response.data);
     if (response.status < 300 && response.data) {
       set((state) => {
+        console.log("Prueba subcategoria en getSubcategoriaProducts: " + response.data);
+
         return {
           ...state,
           loading: false,
