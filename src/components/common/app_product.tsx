@@ -6,6 +6,7 @@ import AppCounter from "./app_counter";
 import AppButton from "./app_button";
 import useCartStore from "@/service/carrito/store";
 import { useEffect, useState } from "react";
+import { basepath } from "@/const/utils";
 
 export default function AppProduct(props: {
   titulo: string;
@@ -17,7 +18,6 @@ export default function AppProduct(props: {
 
   // Local Hooks
   const [count, setCount] = useState(0);
-
   useEffect(() => {
     const existingItem = cartItems.find(
       (item) => item.product.id === props.product.id
@@ -58,6 +58,25 @@ export default function AppProduct(props: {
       >
         <Box width={"85%"} marginY={"30px"}>
           <Box width={"100%"} sx={{ aspectRatio: 1, position: "relative" }}>
+            {/* Imagen del botón */}
+            <Image
+              src={`/${basepath}/svg/heart_svg.svg`}
+              alt="Favorito"
+              width={30}
+              height={30}
+              style={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                zIndex: 2,
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                // Aquí puedes agregar la acción que quieres cuando se haga click
+                console.log("Icono de favorito clickeado", props.titulo);
+              }}
+            />
+
             <Image
               fill
               alt="product Image"
@@ -67,6 +86,7 @@ export default function AppProduct(props: {
               }}
             />
           </Box>
+
           <Box>
             <Typography
               width={"100%"}
@@ -96,6 +116,8 @@ export default function AppProduct(props: {
                 variant="h5"
                 fontSize={"12px"}
                 textOverflow={"ellipsis"}
+                color={AppColorsHex.black}
+                sx={{ opacity: 0.6 }}
               >
                 Menudeo
               </Typography>
@@ -121,8 +143,8 @@ export default function AppProduct(props: {
               <Typography variant="h5" color={AppColorsHex.blue}>
                 ${wholesalePrice.toFixed(2)}
               </Typography>
-              <Typography variant="h5" fontSize={"12px"}>
-                {`a partir de ${maxOrder} pz`}
+              <Typography variant="h5" fontSize={"12px"} sx={{ opacity: 0.6 }}>
+                {`A partir de ${maxOrder} pz`}
               </Typography>
             </Box>
           </Box>
@@ -136,6 +158,7 @@ export default function AppProduct(props: {
           maxWidth: "75%",
           height: "2.7vw",
           width: "100%",
+          minHeight: "50px",
         }}
         onClick={() => {
           console.log("count", count);

@@ -11,6 +11,7 @@ interface PropsAppDrawer {
   categories: Categoria[];
   subcategories: Subcategoria;
   getSubcategorias: (idCategoria: string) => void;
+  getSubcategoriaProducts: (subcategoriaId: string, page: number) => void;
 }
 
 export default function AppFilterDrawer({
@@ -19,6 +20,7 @@ export default function AppFilterDrawer({
   categories,
   subcategories,
   getSubcategorias,
+  getSubcategoriaProducts,
 }: PropsAppDrawer) {
   // Router hooks
   const router = useRouter();
@@ -74,6 +76,12 @@ export default function AppFilterDrawer({
           )}
           onChange={(value) => {
             setSelectedSubcategoryId(value ?? "0");
+
+            // Llama a la función para obtener los productos de la subcategoría
+            if (value) {
+              getSubcategoriaProducts(value, 1);
+            }
+
             router.replace(`/catalogo/${selectedCategoryId}/${value}`);
           }}
           ids={subcategories.subcategories.map((subcategory) => subcategory.id)}
@@ -87,7 +95,8 @@ export default function AppFilterDrawer({
           setSelectedCategoryId("0");
           setSelectedSubcategoryId("0");
           router.replace(`/catalogo/0/0`);
-          setDrawerOpen(false);
+          router.refresh();
+          window.location.reload();
         }}
       >
         Borrar filtros

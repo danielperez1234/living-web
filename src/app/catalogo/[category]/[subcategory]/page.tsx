@@ -14,69 +14,63 @@ import useProductsStore from "@/service/productos/store";
 import AppProduct from "@/components/common/app_product";
 
 export default function Catalogo() {
-  // Zustand Stores
+  // Zustand de categorias
   const categorias = useCategoriasStore((state) => state.categorias);
   const getCategorias = useCategoriasStore((state) => state.getCategorias);
-  const getSubcategoriasProducts = useSubcategoriasStore(
-    (state) => state.getSubcategoriaProducts
-  );
+
+  // Zustand de subcategorias
   const subcategorias = useSubcategoriasStore((state) => state.subcategorias);
-  const subCategoriaProducts = useSubcategoriasStore(
-    (state) => state.subcategoriaProducts
-  );
   const getSubcategorias = useSubcategoriasStore(
     (state) => state.getSubcategorias
   );
 
-  const products = useProductsStore((state) => state.productos);
+  // Zustand de pruductos
+  const productos = useProductsStore((state) => state.productos);
   const getProductos = useProductsStore((state) => state.getAllProducts);
 
-  // Local State
+  // Zustand de subcategoriaProducts
+  const subcategoriaProducts = useSubcategoriasStore(
+    (state) => state.subcategoriaProducts
+  );
+  const getSubcategoriaProducts = useSubcategoriasStore(
+    (state) => state.getSubcategoriaProducts
+  );
+
+  // Local hooks
   const [selectedCategoria, setSelectedCategoria] = useState("");
   const [selectedSubcategoria, setSelectedSubcategoria] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // Fetch categories and products on load
+  // Handle de cambio de categoría
+  const handleCategoriaChange = (event: { target: { value: string } }) => {
+    getSubcategorias(event.target.value);
+    setSelectedCategoria(event.target.value);
+    console.log("Categoría seleccionada: ", event.target.value);
+  };
+
+  // Handle de cambio de subcategoría
+  const handleSubcategoriaChange = (event: { target: { value: string } }) => {
+    const subcategoriaId = event.target.value; // Capturamos el valor directamente
+    setSelectedSubcategoria(subcategoriaId); // Actualizamos el estado
+    getSubcategoriaProducts(subcategoriaId, 1); // Usamos el valor directamente
+    console.log("Subcategoría seleccionada: ", subcategoriaId);
+  };
+
+  // Fetch al cargar la página
   useEffect(() => {
-    if (categorias.length === 0) {
-      console.log("Categorias");
-      getCategorias();
-    }
-    if (products.length === 0) {
-      console.log("Productos");
+    if (productos.length === 0) {
+      console.log("Producto: ", productos);
       getProductos();
     }
-  }, [getCategorias, getProductos]);
-
-  // Fetch subcategories when a category is selected
-  useEffect(() => {
-    if (selectedCategoria) {
-      console.log("Subcategorias");
-      getSubcategorias(selectedCategoria);
+    if (categorias.length === 0) {
+      console.log("Categorias: ", categorias);
+      getCategorias();
     }
-  }, [selectedCategoria, getSubcategorias]);
-
-  const handleCategoriaChange = (event: {
-    target: { value: SetStateAction<string> };
-  }) => {
-    setSelectedCategoria(event.target.value);
-    setSelectedSubcategoria("");
-  };
-
-  const handleSubcategoriaChange = (event: {
-    target: { value: SetStateAction<string> };
-  }) => {
-    setSelectedSubcategoria(event.target.value);
-    console.log("VALOR DE EVENT", event.target.value);
-    getSubcategoriasProducts(event.target.value.toString(), 1).then((res) => {
-      console.log("RESPUESTA DE ESTA MADRE", res);
-    });
-  };
+  }, [productos.length, categorias.length]);
 
   return (
     <AppBackgroundImage>
       <AppNavBar />
-
       <Box
         marginX={{ xs: "5%", md: "15%" }}
         mb={{ xs: "5%", md: "15%" }}
@@ -86,81 +80,37 @@ export default function Catalogo() {
         alignItems={"center"}
       >
         <Typography variant="h1">Catálogo</Typography>
-
-        {/* Dropdowns for Categories and Subcategories */}
-        <Box mt={4} display="flex" gap={2} width="100%" justifyContent="center">
-          <Select
-            value={selectedCategoria}
-            onChange={handleCategoriaChange}
-            displayEmpty
-            sx={{ minWidth: 200 }}
-          >
-            <MenuItem value="">
-              <em>Selecciona una categoría</em>
-            </MenuItem>
-            {categorias.map((categoria) => (
-              <MenuItem key={categoria.id} value={categoria.id}>
-                {categoria.categoryName}
-              </MenuItem>
-            ))}
-          </Select>
-
-          <Select
-            value={selectedSubcategoria}
-            onChange={handleSubcategoriaChange}
-            displayEmpty
-            disabled={!selectedCategoria}
-            sx={{ minWidth: 200 }}
-          >
-            <MenuItem value="">
-              <em>Selecciona una subcategoría</em>
-            </MenuItem>
-            {subcategorias.subcategories.map((subcategoria) => (
-              <MenuItem key={subcategoria.id} value={subcategoria.id}>
-                {subcategoria.subcategoryName}
-              </MenuItem>
-            ))}
-          </Select>
-        </Box>
-
-        <Box height={20} />
-
-        {/* Products Grid */}
         <Grid
           container
           width={"100%"}
           justifyContent={{ xs: "center", sm: "start" }}
           maxWidth={1920}
-          rowSpacing={3}
-          columnSpacing={{ xs: 0, sm: 5 }}
+          rowSpacing={2}
+          columnSpacing={3}
+          sx={{ columnCount: { xs: 1, sm: 2, md: 4 }, marginTop: 5 }}
         >
-          {products.map((product, i) =>
-            subCategoriaProducts?.datosPaginados.subcategoryProductDtos &&
-            subCategoriaProducts?.datosPaginados.subcategoryProductDtos.length >
-              0
-              ? subCategoriaProducts.datosPaginados.subcategoryProductDtos.map(
-                  (product, i) => (
-                    <AppProduct
-                      key={`subcategoria_${i}`}
-                      titulo={product.name}
-                      image={product.imageUrlSmall}
-                      product={product}
-                    />
-                  )
-                )
-              : products.map((product) => (
+          {productos.length > 0 &&
+          subcategoriaProducts.datosPaginados.subcategoryProductDtos.length == 0
+            ? productos.map((producto, i) => (
+                <AppProduct
+                  key={i}
+                  product={producto}
+                  image={producto.imageUrlSmall}
+                  titulo={producto.name}
+                />
+              ))
+            : subcategoriaProducts.datosPaginados.subcategoryProductDtos.map(
+                (product, i) => (
                   <AppProduct
-                    key={product.id}
-                    titulo={product.name}
-                    image={product.imageUrlSmall}
+                    key={i}
                     product={product}
+                    image={product.imageUrlSmall}
+                    titulo={product.name}
                   />
-                ))
-          )}
+                )
+              )}
         </Grid>
       </Box>
-
-      {/* Floating Action Button for Filters */}
       <Fab
         onClick={() => setDrawerOpen(true)}
         sx={{
@@ -177,17 +127,16 @@ export default function Catalogo() {
       >
         <FilterListIcon />
       </Fab>
-
-      {/* Footer */}
       <AppFooter />
-
-      {/* Filter Drawer */}
       <AppFilterDrawer
         drawerOpen={drawerOpen}
         setDrawerOpen={(x) => setDrawerOpen(x)}
         categories={categorias}
         subcategories={subcategorias}
         getSubcategorias={(id) => getSubcategorias(id)}
+        getSubcategoriaProducts={(id, page) =>
+          getSubcategoriaProducts(id, page)
+        }
       />
     </AppBackgroundImage>
   );

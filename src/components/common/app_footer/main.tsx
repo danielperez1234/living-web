@@ -1,11 +1,9 @@
 'use client'
 import { AppColorsHex } from "@/const/colors";
-import { Box, Divider, Grid, IconButton, SvgIcon, Typography } from "@mui/material";
+import { Box, Divider, Grid, Typography } from "@mui/material";
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import YouTubeIcon from '@mui/icons-material/YouTube';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import MediaIcon from "./media_icon";
 import TextButton from "./text_button";
 import { useRouter } from "next/navigation";
