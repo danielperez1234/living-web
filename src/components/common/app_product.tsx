@@ -16,8 +16,12 @@ export default function AppProduct(props: {
   // Zustand
   const { cartItems, addToCart } = useCartStore();
 
+  // Estado local para manejar si el producto es favorito
+  const [isFavorite, setIsFavorite] = useState(false);
+
   // Local Hooks
   const [count, setCount] = useState(0);
+
   useEffect(() => {
     const existingItem = cartItems.find(
       (item) => item.product.id === props.product.id
@@ -30,6 +34,11 @@ export default function AppProduct(props: {
   }, [props.product.id]);
 
   const { price, wholesalePrice, maxOrder } = props.product;
+
+  const toggleFavorite = () => {
+    setIsFavorite((prevState) => !prevState); // Alterna el estado de favorito
+    console.log("Producto favorito:", props.titulo);
+  };
 
   return (
     <Grid
@@ -60,7 +69,9 @@ export default function AppProduct(props: {
           <Box width={"100%"} sx={{ aspectRatio: 1, position: "relative" }}>
             {/* Imagen del botón */}
             <Image
-              src={`/${basepath}/svg/heart_svg.svg`}
+              src={`/${basepath}/svg/${
+                isFavorite ? "heart_filled_svg.svg" : "heart_svg.svg"
+              }`}
               alt="Favorito"
               width={30}
               height={30}
@@ -71,10 +82,7 @@ export default function AppProduct(props: {
                 zIndex: 2,
                 cursor: "pointer",
               }}
-              onClick={() => {
-                // Aquí puedes agregar la acción que quieres cuando se haga click
-                console.log("Icono de favorito clickeado", props.titulo);
-              }}
+              onClick={toggleFavorite}
             />
 
             <Image
