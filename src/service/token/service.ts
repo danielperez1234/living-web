@@ -5,7 +5,7 @@ export default async function LoginRequested(user: UserLoginRequest): Promise<Re
   try {
     return await request({
       method: "POST",
-      endpoint: "/api/Account/login",
+      endpoint: "/api/Account/login-user",
       body: user
     })
   } catch (err) {

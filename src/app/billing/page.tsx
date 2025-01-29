@@ -3,25 +3,43 @@
 import AppButton from "@/components/common/app_button";
 import AppFooter from "@/components/common/app_footer/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
+import AppTextField from "@/components/common/app_text_field";
+import ProtectedRoute from "@/components/common/protected_route";
 import { AppColorsHex } from "@/const/colors";
+import { storageKeys } from "@/const/storage_keys";
+import { DeliveryData } from "@/service/delivery_data/interface";
+import { postMyDeliveryData } from "@/service/delivery_data/service";
 import {
   Box,
   Card,
   CardContent,
   Grid,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 export default function Billing() {
+  const router = useRouter();
+  const [user, setUser] = useState<DeliveryData>({
+    address: "",
+    city: "",
+    postalCode: "",
+    phoneNumber: "",
+    email: "",
+    name: "",
+    lastName: "",
+    secondLastName: ""
+  });
   return (
     <Box
       sx={{
         backgroundColor: AppColorsHex.blue,
-        minHeight: "100vh",
+        minHeight: "100vh"
       }}
     >
+      <ProtectedRoute />
       <AppNavBar />
       <Grid
         container
@@ -35,15 +53,13 @@ export default function Billing() {
           md={8} // En pantallas medianas, ocupa 8 de 12 columnas
           sx={{
             display: "flex",
-            justifyContent: "center", // Centra horizontalmente el contenido
+            justifyContent: "center" // Centra horizontalmente el contenido
           }}
-          maxHeight={"40vh"}
         >
           <Card
             sx={{
               borderRadius: "30px",
-              width: "90%",
-              aspectRatio: { xs: "auto", md: "16/7" },
+              width: "90%"
             }}
           >
             <CardContent>
@@ -51,29 +67,128 @@ export default function Billing() {
                 sx={{
                   marginX: "20px",
                   marginTop: "20px",
-                  width: "75%",
+                  width: "75%"
                 }}
               >
                 <Typography variant="h5" textAlign="left" fontWeight={"bold"}>
                   Datos de contacto
                 </Typography>
-                <TextField
-                  variant="standard"
-                  label="Nombre"
+                <AppTextField
+                  onChange={(s) =>
+                    setUser((state) => {
+                      var x: DeliveryData = { ...state, name: s.target.value };
+                      return x;
+                    })
+                  }
+                  label={"Nombre"}
                   fullWidth
-                  margin="dense"
+                  margin="normal"
+                  type="text"
                 />
-                <TextField
-                  variant="standard"
-                  label="Correo"
+                <Grid container spacing={2}>
+                  <Grid item md={6} xs={12}>
+                    <AppTextField
+                      onChange={(s) =>
+                        setUser((state) => {
+                          var x: DeliveryData = {
+                            ...state,
+                            lastName: s.target.value
+                          };
+                          return x;
+                        })
+                      }
+                      label={"Apellido paterno"}
+                      fullWidth
+                      margin="normal"
+                      type="text"
+                    />
+                  </Grid>
+                  <Grid item md={6} xs={12}>
+                    <AppTextField
+                      onChange={(s) =>
+                        setUser((state) => {
+                          var x: DeliveryData = {
+                            ...state,
+                            secondLastName: s.target.value
+                          };
+                          return x;
+                        })
+                      }
+                      label={"Apellido materno"}
+                      fullWidth
+                      margin="normal"
+                      type="text"
+                    />
+                  </Grid>
+                </Grid>
+                <AppTextField
+                  onChange={(s) =>
+                    setUser((state) => {
+                      var x: DeliveryData = { ...state, email: s.target.value };
+                      return x;
+                    })
+                  }
+                  label={"Correo"}
                   fullWidth
-                  margin="dense"
+                  margin="normal"
+                  type="email"
                 />
-                <TextField
-                  variant="standard"
-                  label="Teléfono"
+                <AppTextField
+                  onChange={(s) =>
+                    setUser((state) => {
+                      var x: DeliveryData = {
+                        ...state,
+                        address: s.target.value
+                      };
+                      return x;
+                    })
+                  }
+                  label={"Dirección"}
                   fullWidth
-                  margin="dense"
+                  margin="normal"
+                  type="text"
+                />
+                <AppTextField
+                  onChange={(s) =>
+                    setUser((state) => {
+                      var x: DeliveryData = {
+                        ...state,
+                        postalCode: s.target.value
+                      };
+                      return x;
+                    })
+                  }
+                  label={"Código postal"}
+                  fullWidth
+                  margin="normal"
+                  type="text"
+                />
+                <AppTextField
+                  onChange={(s) =>
+                    setUser((state) => {
+                      var x: DeliveryData = { ...state, city: s.target.value };
+                      return x;
+                    })
+                  }
+                  label={"Ciudad"}
+                  fullWidth
+                  margin="normal"
+                  type="text"
+                />
+                <AppTextField
+                  onChange={(s) =>
+                    setUser((state) => {
+                      var x: DeliveryData = {
+                        ...state,
+                        phoneNumber: s.target.value
+                      };
+                      return x;
+                    })
+                  }
+                  label={"Teléfono"}
+                  fullWidth
+                  margin="normal"
+                  type="text"
                 />
               </Box>
             </CardContent>
@@ -87,7 +202,7 @@ export default function Billing() {
           md={4} // En pantallas medianas, ocupa 4 de 12 columnas
           sx={{
             display: "flex",
-            justifyContent: "center", // Centra horizontalmente el contenido
+            justifyContent: "center" // Centra horizontalmente el contenido
           }}
         >
           <Box
@@ -97,7 +212,7 @@ export default function Billing() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center", // Mantiene el contenido centrado verticalmente
-              justifyContent: "center",
+              justifyContent: "center"
             }}
           >
             <Card sx={{ borderRadius: "30px", width: "85%" }}>
@@ -163,7 +278,20 @@ export default function Billing() {
               sx={{
                 color: AppColorsHex.blue,
                 backgroundColor: AppColorsHex.yellow,
-                maxWidth: "90%",
+                maxWidth: "90%"
+              }}
+              onClick={async () => {
+                if (
+                  Object.values(user).every((value) =>
+                    typeof value === "string" ? value.trim() !== "" : true
+                  )
+                ) {
+                  var x = localStorage.getItem(storageKeys.token);
+                  if (x) {
+                    postMyDeliveryData(user, x);
+                    router.push("/billing/pago");
+                  }
+                }
               }}
             />
           </Box>

@@ -16,11 +16,12 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Cart() {
   const { cartItems } = useCartStore();
-
+  const router = useRouter();
   const handleTotal = () => {
     let total = 0;
     cartItems.forEach((item) => {
@@ -151,7 +152,7 @@ export default function Cart() {
               justifyContent: "flex-end",
             }}
           >
-            <AppButton label="Finalizar compra" />
+            <AppButton label="Finalizar compra" onClick={()=>router.push("billing")} />
           </Box>
         </Box>
       </Box>

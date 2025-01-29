@@ -36,7 +36,7 @@ export default function Login() {
                   storageKeys.userName,
                   response.data.userName
                 );
-                router.push("/banners");
+                router.push("/home");
               }
   };
   return (
