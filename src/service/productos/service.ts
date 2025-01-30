@@ -11,7 +11,7 @@ export async function GetAllProducts(): Promise<Response<Product[]>> {
   } catch (err) {
     return {
       status: 500,
-      error: `${err}`,
+      errors: `${err}`,
     };
   }
 }
@@ -26,7 +26,7 @@ export async function GetProduct(id: string): Promise<Response<Product>> {
   } catch (err) {
     return {
       status: 500,
-      error: `${err}`
+      errors: `${err}`
     };
   }
 }

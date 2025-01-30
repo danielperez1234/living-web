@@ -1,24 +1,17 @@
 "use client";
 import AppTextField from "@/components/common/app_text_field";
 import { AppColorsHex } from "@/const/colors";
-import {
-  Backdrop,
-  Box,
-  IconButton,
-  InputAdornment,
-  Snackbar,
-  SnackbarCloseReason,
-  Typography
-} from "@mui/material";
+import { Backdrop, Box, IconButton, InputAdornment, Snackbar, SnackbarCloseReason, Typography } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import AppButton from "@/components/common/app_button";
+import AppDatePicker from "@/components/common/app_date_picker";
 import { basepath } from "@/const/utils";
-import { UserLoginRequest } from "@/service/token/interface";
-import loginRequest from "@/service/token/service";
+import { UserRegistroRequest } from "@/service/token/interface";
+import { registerRequest } from "@/service/token/service";
 import { storageKeys } from "@/const/storage_keys";
 
 export default function Login() {
@@ -26,35 +19,51 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
   const [openBackDrop, setOpenBackdrop] = useState(false);
+  
   const [errorMessage, setErrorMsg] = useState("");
-
-  const handleClick = () => {
-    setOpenSnack(true);
-  };
-
-  const handleClose = (
-    event: React.SyntheticEvent | Event,
-    reason?: SnackbarCloseReason
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpenSnack(false);
-  };
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const [user, setUser] = useState<UserLoginRequest>({
+  const [userRegister, setUserRegister] = useState<UserRegistroRequest>({
     email: "",
-    password: ""
+    password: "",
+    userName: ""
   });
+  const [userError, setUserError] = useState<UserRegistroRequest>({
+    email: "",
+    password: "",
+    userName: ""
+  });
+  const [isWorng, setIsWrong] = useState(false);
+  const [passwordConfirm, setPasswordConfirm] = useState("");
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
   };
-  const handleLoginRequested = async () => {
+  const validateUserRegistro = () => {
+    const errors: UserRegistroRequest = {...userError};
+    
+    if(userRegister.email.length == 0 ){
+      errors.email  = "";
+    }else if (!/^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(userRegister.email)) {
+      errors.email = "El correo electrónico no es válido.";
+    } else {
+      errors.email = "";
+    }
+    if(userRegister.password.length == 0 ){
+      errors.password = "";
+    }else if (userRegister.password.length < 6 ) {
+      errors.password = "La contraseña debe tener al menos 6 caracteres.";
+    } else {
+      errors.password = "";
+    }
+    setIsWrong( !Object.values(errors).every((value) =>
+      typeof value === "string" ? value.trim() === "" : false
+    ))
+    setUserError(errors);
+  };
+  const handleRegisterRequested = async () => {
     setOpenBackdrop(true);
-    const response = await loginRequest(user);
+    const response = await registerRequest(userRegister);
 
     if (response.status == 401) {
       setErrorMsg("Usuario o contraseña incorrectos.");
@@ -65,9 +74,26 @@ export default function Login() {
       localStorage.setItem(storageKeys.email, response.data.email);
       localStorage.setItem(storageKeys.userName, response.data.userName);
       router.push("/home");
+    }else{
+      setErrorMsg(response.errors?.toString() ??'');
+      setOpenSnack(true);
+      setOpenBackdrop(false);
     }
     setOpenBackdrop(false);
   };
+  const handleClose = (
+    event: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnack(false);
+  };
+  useEffect(() => {
+    validateUserRegistro();
+  }, [userRegister]);
   return (
     <Box
       marginY={"5%"}
@@ -87,7 +113,7 @@ export default function Login() {
         open={openSnack}
         autoHideDuration={6000}
         onClose={handleClose}
-        message="Note archived"
+        message={errorMessage}
       />
       <Box
         mb={10}
@@ -129,26 +155,47 @@ export default function Login() {
       >
         <Box mb={5}>
           <Typography variant="h1" color={AppColorsHex.blue}>
-            Iniciar Sesión
+            Registrate
           </Typography>
         </Box>
         <AppTextField
-          onChange={(s) =>
-            setUser((state) => {
-              var x = { ...state, email: s.target.value };
-              return x;
+          error={userError.userName.length > 0}
+          helperText={userError.userName}
+          label={"Nombre de usuario"}
+          fullWidth
+          margin="normal"
+          type="text"
+          onChange={(e) =>
+            setUserRegister((state) => {
+              return { ...state, userName: e.target.value };
             })
           }
+        />
+        <AppTextField
+          error={userError.email.length > 0}
+          helperText={userError.email}
           label={"Correo"}
           fullWidth
           margin="normal"
           type="email"
+          onChange={(e) =>
+            setUserRegister((state) => {
+              return { ...state, email: e.target.value };
+            })
+          }
         />
         <AppTextField
+          error={userError.password.length > 0}
+          helperText={userError.password}
           label={"Tu contraseña"}
           fullWidth
           margin="normal"
           type={showPassword ? "text" : "password"}
+          onChange={(e) =>
+            setUserRegister((state) => {
+              return { ...state, password: e.target.value };
+            })
+          }
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -164,20 +211,29 @@ export default function Login() {
               </InputAdornment>
             )
           }}
-          onChange={(s) =>
-            setUser((state) => {
-              var x = { ...state, password: s.target.value };
-              return x;
-            })
-          }
         />
+        {/* <AppTextField
+          label={"Vuelve a introducir tu contraseña"}
+          fullWidth
+          margin="normal"
+          type={"password"}
+          onChange={(e) => setPasswordConfirm(e.target.value)}
+        /> */}
+        {/* <AppDatePicker/> */}
       </Box>
-      <AppButton label="Acceder" onClick={handleLoginRequested} />
       <AppButton
-        label="Registrarme"
-        onClick={() => router.push("/register")}
-        color="warning"
-        sx={{ minWidth: "18vw" }}
+        label="Completar"
+        disabled={
+          !(
+            Object.values(userRegister).every((value) =>
+              typeof value === "string" ? value.trim() !== "" : true
+            ) 
+            // && passwordConfirm.trim() !== ""
+          ) || isWorng
+        }
+        onClick={async () => {
+          handleRegisterRequested();
+        }}
       />
     </Box>
   );

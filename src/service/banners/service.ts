@@ -12,6 +12,6 @@ export  async function GetBannersLocation(location:string):Promise<Response<Bann
 }catch(err){
   return  {
     status: 500,
-    error: `${err}`
+    errors: `${err}`
   };;
 }}

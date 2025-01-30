@@ -11,7 +11,7 @@ export async function GetCategorias(): Promise<Response<Categoria[]>> {
   } catch (err) {
     return {
       status: 500,
-      error: `${err}`,
+      errors: `${err}`,
     };
   }
 }
@@ -27,7 +27,7 @@ export async function GetCategoria(
   } catch (err) {
     return {
       status: 500,
-      error: `${err}`,
+      errors: `${err}`,
     };
   }
 }

@@ -18,7 +18,7 @@ export async function GetSubcategorias(
   } catch (err) {
     return {
       status: 500,
-      error: `${err}`,
+      errors: `${err}`,
     };
   }
 }
@@ -35,7 +35,7 @@ export async function GetSubcategoria(
   } catch (err) {
     return {
       status: 500,
-      error: `${err}`,
+      errors: `${err}`,
     };
   }
 }

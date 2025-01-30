@@ -14,7 +14,7 @@ export interface Response<T> {
   status: number;
   data?: T | undefined;
   message?: string; // Opcional, por si deseas incluir un mensaje en la respuesta
-  error?: string; // Opcional, por si deseas manejar errores
+  errors?: string; // Opcional, por si deseas manejar errores
 }
 
 const mainRoute = "https://livingpapeleria.com";
@@ -49,10 +49,10 @@ export async function request<T>({
       data: response.data
     };
   } catch (error: any) {
-    console.error("Error during request:", error);
+    console.error("Error during request:", error.response);
     return {
       status: error.response?.status || 500,
-      error: error.message
+      errors: error.response?.data.errors ??error.response.data ?? error.message
     };
   }
 }

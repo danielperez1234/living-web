@@ -10,7 +10,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import AppButton from "@/components/common/app_button";
 import { basepath } from "@/const/utils";
 import { UserLoginRequest } from "@/service/token/interface";
-import LoginRequested from "@/service/token/service";
+import loginRequest from "@/service/token/service";
 import { storageKeys } from "@/const/storage_keys";
 import { Password } from "@mui/icons-material";
 interface OpenPay {
@@ -89,7 +89,7 @@ export default function Login() {
   };
   const handleLoginRequested = async(
   ) => {
-    const response = await LoginRequested(user);
+    const response = await loginRequest(user);
 
               if (response.status == 401) {
                 //setErrorMsg("Usuario o contraseña incorrectos.");

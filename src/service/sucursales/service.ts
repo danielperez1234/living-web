@@ -10,7 +10,7 @@ export async function GetSucursales(): Promise<Response<Sucursal[]>> {
   } catch (err) {
     return {
       status: 500,
-      error: `${err}`
+      errors: `${err}`
     };
   }
 }

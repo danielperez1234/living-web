@@ -1,24 +1,43 @@
 "use client";
-import { AppBar, Box, Container, IconButton, Toolbar } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  IconButton,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography
+} from "@mui/material";
 import Image from "next/image";
 import NavBarTextButton from "./nav_bar_text_button";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
+import LoginIcon from "@mui/icons-material/Login";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useState } from "react";
+import { MouseEventHandler, useState } from "react";
 import AppDrawer from "./app_drawer";
 import { AppColorsHex } from "@/const/colors";
 import HideOnScroll from "./hide_on_scroll";
 import { useRouter } from "next/navigation";
 import { basepath } from "@/const/utils";
 import { LocationOn } from "@mui/icons-material";
+import { storageKeys } from "@/const/storage_keys";
 export default function AppNavBar({}) {
   //hooks
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   // router
   const router = useRouter();
-  
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget as HTMLElement); // Explicitly cast to HTMLElement
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <Box
       height={{ sm: "65px", xs: "65px", md: "70px" }}
@@ -53,7 +72,7 @@ export default function AppNavBar({}) {
                   src={`/${basepath}/marca/logo.png`}
                   alt="logo Living"
                   style={{
-                    objectFit: "contain",
+                    objectFit: "contain"
                   }}
                 />
               </Box>
@@ -100,9 +119,52 @@ export default function AppNavBar({}) {
                 <IconButton>
                   <SearchIcon color="info" />
                 </IconButton>
-                <IconButton onClick={() => router.push("/login")}>
-                  <PersonIcon color="primary" />
-                </IconButton>
+                {localStorage.getItem(storageKeys.token) != null ? (
+                  <div>
+                    <IconButton
+                      aria-controls="profile-menu"
+                      aria-haspopup="true"
+                      onClick={handleClick}
+                    >
+                      <PersonIcon color="primary" />
+                    </IconButton>
+                    <Menu
+                      sx={{ padding: 2 }}
+                      id="profile-menu"
+                      anchorEl={anchorEl}
+                      keepMounted
+                      open={Boolean(anchorEl)}
+                      onClose={handleClose}
+                    >
+                      <MenuItem>
+                        <Typography variant="body2">
+                          {localStorage.getItem(storageKeys.email)}
+                        </Typography>
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          router.push("/carrito");
+                          handleClose();
+                        }}
+                      >
+                        Mi Carrito
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>Mis Compras</MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          localStorage.clear();
+                          handleClose();
+                        }}
+                      >
+                        Cerrar Sesión
+                      </MenuItem>
+                    </Menu>
+                  </div>
+                ) : (
+                  <IconButton onClick={() => router.push("/login")}>
+                    <LoginIcon color="primary" />
+                  </IconButton>
+                )}
                 <IconButton onClick={() => router.push("/nosotros")}>
                   <LocationOn color="error" />
                 </IconButton>
