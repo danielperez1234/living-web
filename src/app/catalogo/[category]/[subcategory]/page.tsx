@@ -7,7 +7,7 @@ import AppBackgroundImage from "@/components/common/background_image";
 import { AppColorsHex } from "@/const/colors";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { Box, Fab, Grid, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useCategoriasStore from "@/service/categorias/store";
 import useSubcategoriasStore from "@/service/subcategorias/store";
 import useProductsStore from "@/service/productos/store";
@@ -40,12 +40,16 @@ export default function Catalogo() {
   const [selectedCategoria, setSelectedCategoria] = useState("");
   const [selectedSubcategoria, setSelectedSubcategoria] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
   // Handle de cambio de categoría
   const handleCategoriaChange = (event: { target: { value: string } }) => {
     getSubcategorias(event.target.value);
     setSelectedCategoria(event.target.value);
-    console.log("Categoría seleccionada: ", event.target.value);
+    setPage(1); // Reset page when category changes
+    setHasMore(true);
   };
 
   // Handle de cambio de subcategoría
@@ -53,20 +57,78 @@ export default function Catalogo() {
     const subcategoriaId = event.target.value; // Capturamos el valor directamente
     setSelectedSubcategoria(subcategoriaId); // Actualizamos el estado
     getSubcategoriaProducts(subcategoriaId, 1); // Usamos el valor directamente
-    console.log("Subcategoría seleccionada: ", subcategoriaId);
+    setPage(1);
+    setHasMore(true);
   };
+
+  // Loading
+  const loadMoreProducts = useCallback(async () => {
+    if (loading || !hasMore) return;
+
+    setLoading(true);
+    const nextPage = page + 1;
+
+    if (selectedSubcategoria) {
+      const newPage = await getSubcategoriaProducts(
+        selectedSubcategoria,
+        nextPage
+      );
+      if (newPage === nextPage) {
+        setHasMore(false); // No more products to load
+      }
+      setPage(newPage);
+    } else {
+      setPage(nextPage);
+    }
+
+    setLoading(false);
+  }, [
+    loading,
+    hasMore,
+    page,
+    selectedSubcategoria,
+    getSubcategoriaProducts,
+    getProductos,
+  ]);
 
   // Fetch al cargar la página
   useEffect(() => {
+    let timeoutId: string | number | NodeJS.Timeout | undefined;
+
+    const handleScroll = () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId); // Cancelamos el timeout anterior
+      }
+
+      timeoutId = setTimeout(() => {
+        const isBottom =
+          window.innerHeight + document.documentElement.scrollTop >=
+          document.documentElement.offsetHeight - 100; // Ajusta el valor -100 para mayor precisión
+
+        if (isBottom && !loading) {
+          console.log("Llegaste al final del scroll"); // Mensaje en consola
+          loadMoreProducts();
+        }
+      }, 200); // Espera 200ms antes de ejecutar
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (timeoutId) {
+        clearTimeout(timeoutId); // Limpia el timeout al desmontar el componente
+      }
+    };
+  }, [loading, loadMoreProducts]);
+
+  useEffect(() => {
     if (productos.length === 0) {
-      console.log("Producto: ", productos);
       getProductos();
     }
     if (categorias.length === 0) {
-      console.log("Categorias: ", categorias);
       getCategorias();
     }
-  }, [productos.length, categorias.length]);
+  }, [productos.length, categorias.length, getProductos, getCategorias, page]);
 
   return (
     <AppBackgroundImage>
@@ -110,6 +172,7 @@ export default function Catalogo() {
                 )
               )}
         </Grid>
+        {loading && <Typography>Cargando...</Typography>}
       </Box>
       <Fab
         onClick={() => setDrawerOpen(true)}
