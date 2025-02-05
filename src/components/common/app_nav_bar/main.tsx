@@ -159,6 +159,7 @@ export default function AppNavBar({}) {
                       <MenuItem
                         onClick={() => {
                           localStorage.clear();
+                          setIsLocalStorage(false);
                           handleClose();
                         }}
                       >
