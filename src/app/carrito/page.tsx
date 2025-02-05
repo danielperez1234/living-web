@@ -1,8 +1,8 @@
 "use client";
-
 import AppButton from "@/components/common/app_button";
 import AppCartProduct from "@/components/common/app_cart_product";
 import AppNavBar from "@/components/common/app_nav_bar/main";
+import { storageKeys } from "@/const/storage_keys";
 import useCartStore from "@/service/carrito/store";
 import {
   Box,
@@ -17,15 +17,15 @@ import {
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Cart() {
-  const { cartItems } = useCartStore();
+  const { cartProducts: cartItems,getCart } = useCartStore();
   const router = useRouter();
   const handleTotal = () => {
     let total = 0;
     cartItems.forEach((item) => {
-      total += item.product.price * item.quantity;
+      total += item.price * item.quantity;
     });
     return total;
   };
@@ -53,7 +53,12 @@ export default function Cart() {
   };
 
   const [count, setCount] = useState(0);
-
+  useEffect(()=>{
+    const token = localStorage.getItem(storageKeys.token);
+    if(token){
+      getCart(token);
+    }
+  },[])
   return (
     <Box>
       <Box
@@ -76,7 +81,7 @@ export default function Cart() {
           justifyContent={"center"}
         >
           {cartItems.map((item, i) => (
-            <AppCartProduct key={`approductCart${i}`} product={item.product} />
+            <AppCartProduct key={`approductCart${i}`} product={item} />
           ))}
         </Grid>
         <Box
@@ -99,7 +104,7 @@ export default function Cart() {
             justifyContent={"center"}
           >
             {cartItems.map((item, i) => (
-              <AppCartProduct key={`approductCart2${i}`} product={item.product} />
+              <AppCartProduct key={`approductCart2${i}`} product={item} />
             ))}
           </Grid>
         </Box>

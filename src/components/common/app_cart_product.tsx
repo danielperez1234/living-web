@@ -4,10 +4,11 @@ import { Product } from "@/service/productos/interface";
 import { Box, Grid, Typography, useMediaQuery } from "@mui/material";
 import Image from "next/image";
 import AppCounter from "./app_counter";
+import { CartProduct } from "@/service/carrito/interface";
 
-export default function AppCartProduct({ product }: { product: Product }) {
-  const { cartItems, updateQuantity, removeFromCart } = useCartStore();
-  const existingItem = cartItems.find((item) => item.product.id === product.id);
+export default function AppCartProduct({ product }: { product: CartProduct }) {
+  const { cartProducts: cartItems, updateQuantity, removeFromCart } = useCartStore();
+  const existingItem = cartItems.find((item) => item.productId === product.productId);
   const count = existingItem ? existingItem.quantity : 0;
 
   const handleCountChange = (newCount: number) => {
@@ -51,7 +52,7 @@ export default function AppCartProduct({ product }: { product: Product }) {
             <Image
               fill
               alt="product Image"
-              src={product.imageUrlOriginal}
+              src={product.imageUrl}
               style={{ objectFit: "cover", borderRadius: "8px" }}
             />
           </Box>
@@ -61,7 +62,7 @@ export default function AppCartProduct({ product }: { product: Product }) {
           textAlign={isSmallScreen ? "center" : "left"}
           marginBottom={isSmallScreen ? "15px" : "0"}
         >
-          <Typography sx={{ textAlign: "center" }}>{product.name}</Typography>
+          <Typography sx={{ textAlign: "center" }}>{product.productName}</Typography>
           <Typography
             sx={{
               textAlign: "center",

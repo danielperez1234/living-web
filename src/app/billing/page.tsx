@@ -7,22 +7,37 @@ import AppTextField from "@/components/common/app_text_field";
 import ProtectedRoute from "@/components/common/protected_route";
 import { AppColorsHex } from "@/const/colors";
 import { storageKeys } from "@/const/storage_keys";
-import { DeliveryData } from "@/service/delivery_data/interface";
-import { postMyDeliveryData } from "@/service/delivery_data/service";
+import useCartStore from "@/service/carrito/store";
+import { PostDeliveryData } from "@/service/delivery_data/interface";
+import { postMyDeliveryData, putMyDeliveryData } from "@/service/delivery_data/service";
+import useDeliveryDataStore from "@/service/delivery_data/store";
 import {
   Box,
   Card,
   CardContent,
   Grid,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   TextField,
   Typography
 } from "@mui/material";
+import { stat } from "fs";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Billing() {
+//suztand
+const {deliveryData,getDeliveryData,clearDeliveryData} = useDeliveryDataStore(state => state);
+const { cartProducts: cartItems,getCart } = useCartStore();
+//hooks
+
   const router = useRouter();
-  const [user, setUser] = useState<DeliveryData>({
+  const [user, setUser] = useState<PostDeliveryData>({
     address: "",
     city: "",
     postalCode: "",
@@ -32,6 +47,55 @@ export default function Billing() {
     lastName: "",
     secondLastName: ""
   });
+  const handleTotal = () => {
+    let total = 0;
+    cartItems.forEach((item) => {
+      total += item.price * item.quantity;
+    });
+    return total;
+  };
+  const handleIVA = () => {
+    let iva = handleTotal() * 0.16;
+    return iva;
+  };
+
+  const handleShipping = () => {
+    if (handleTotal() > 600) {
+      return "Gratis";
+    } else {
+      return "$100";
+    }
+  };
+
+  const handleTotalWithShipping = () => {
+    if (handleTotal() > 600) {
+      let total = handleTotal() + handleIVA();
+      return total;
+    } else {
+      let total = handleTotal() + handleIVA() + 100;
+      return total;
+    }
+  };
+  useEffect(()=>{
+    clearDeliveryData();
+    getDeliveryData();
+  },[getDeliveryData,clearDeliveryData])
+  useEffect(()=>{
+    console.log("datarecived")
+    if(deliveryData){
+    setUser((state)=>{
+      return {
+        address: deliveryData.address,
+        city: deliveryData.city,
+        postalCode: deliveryData.postalCode,
+        phoneNumber:deliveryData.phoneNumber,
+        email: deliveryData.email,
+        name: deliveryData.user.name,
+        lastName: deliveryData.user.lastName,
+        secondLastName: deliveryData.user.secondLastName
+      }
+    })}
+  },[deliveryData])
   return (
     <Box
       sx={{
@@ -76,10 +140,11 @@ export default function Billing() {
                 <AppTextField
                   onChange={(s) =>
                     setUser((state) => {
-                      var x: DeliveryData = { ...state, name: s.target.value };
+                      var x: PostDeliveryData = { ...state, name: s.target.value };
                       return x;
                     })
                   }
+                  value={user.name}
                   label={"Nombre"}
                   fullWidth
                   margin="normal"
@@ -90,13 +155,14 @@ export default function Billing() {
                     <AppTextField
                       onChange={(s) =>
                         setUser((state) => {
-                          var x: DeliveryData = {
+                          var x: PostDeliveryData = {
                             ...state,
                             lastName: s.target.value
                           };
                           return x;
                         })
                       }
+                      value={user.lastName}
                       label={"Apellido paterno"}
                       fullWidth
                       margin="normal"
@@ -107,13 +173,14 @@ export default function Billing() {
                     <AppTextField
                       onChange={(s) =>
                         setUser((state) => {
-                          var x: DeliveryData = {
+                          var x: PostDeliveryData = {
                             ...state,
                             secondLastName: s.target.value
                           };
                           return x;
                         })
                       }
+                      value={user.secondLastName}
                       label={"Apellido materno"}
                       fullWidth
                       margin="normal"
@@ -124,10 +191,11 @@ export default function Billing() {
                 <AppTextField
                   onChange={(s) =>
                     setUser((state) => {
-                      var x: DeliveryData = { ...state, email: s.target.value };
+                      var x: PostDeliveryData = { ...state, email: s.target.value };
                       return x;
                     })
                   }
+                  value={user.email}
                   label={"Correo"}
                   fullWidth
                   margin="normal"
@@ -136,13 +204,14 @@ export default function Billing() {
                 <AppTextField
                   onChange={(s) =>
                     setUser((state) => {
-                      var x: DeliveryData = {
+                      var x: PostDeliveryData = {
                         ...state,
                         address: s.target.value
                       };
                       return x;
                     })
                   }
+                  value={user.address}
                   label={"Dirección"}
                   fullWidth
                   margin="normal"
@@ -151,13 +220,14 @@ export default function Billing() {
                 <AppTextField
                   onChange={(s) =>
                     setUser((state) => {
-                      var x: DeliveryData = {
+                      var x: PostDeliveryData = {
                         ...state,
                         postalCode: s.target.value
                       };
                       return x;
                     })
                   }
+                  value={user.postalCode}
                   label={"Código postal"}
                   fullWidth
                   margin="normal"
@@ -166,10 +236,11 @@ export default function Billing() {
                 <AppTextField
                   onChange={(s) =>
                     setUser((state) => {
-                      var x: DeliveryData = { ...state, city: s.target.value };
+                      var x: PostDeliveryData = { ...state, city: s.target.value };
                       return x;
                     })
                   }
+                  value={user.city}
                   label={"Ciudad"}
                   fullWidth
                   margin="normal"
@@ -178,13 +249,14 @@ export default function Billing() {
                 <AppTextField
                   onChange={(s) =>
                     setUser((state) => {
-                      var x: DeliveryData = {
+                      var x: PostDeliveryData = {
                         ...state,
                         phoneNumber: s.target.value
                       };
                       return x;
                     })
                   }
+                  value={user.phoneNumber}
                   label={"Teléfono"}
                   fullWidth
                   margin="normal"
@@ -215,66 +287,37 @@ export default function Billing() {
               justifyContent: "center"
             }}
           >
-            <Card sx={{ borderRadius: "30px", width: "85%" }}>
-              <CardContent>
-                <Typography variant="h5" textAlign="center" fontWeight={"bold"}>
-                  Resumen de compra
-                </Typography>
-                <Grid container spacing={2} sx={{ marginTop: 2 }}>
-                  {/* Fila 1: Subtotal */}
-                  <Grid item xs={6}>
-                    <Typography variant="body1">Subtotal:</Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography variant="body1" textAlign="right">
-                      0.00
-                    </Typography>
-                  </Grid>
-
-                  {/* Fila 2: IVA */}
-                  <Grid item xs={6}>
-                    <Typography variant="body1">IVA:</Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography variant="body1" textAlign="right">
-                      0.00
-                    </Typography>
-                  </Grid>
-
-                  {/* Fila 3: Envío */}
-                  <Grid item xs={6}>
-                    <Typography variant="body1">Envío:</Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography variant="body1" textAlign="right">
-                      0.00
-                    </Typography>
-                  </Grid>
-
-                  {/* Fila 4: Total */}
-                  <Grid item xs={6}>
-                    <Typography
-                      variant="body1"
-                      fontStyle={"italic"}
-                      fontWeight={"bold"}
-                    >
-                      Total:
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Typography
-                      variant="body1"
-                      textAlign="right"
-                      fontWeight={"bold"}
-                    >
-                      0.00
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
+            <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <Typography variant="h5">Resumen de compra</Typography>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>Subtotal</TableCell>
+                  <TableCell>${handleTotal()}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>I.V.A</TableCell>
+                  <TableCell>${handleIVA()}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Envío</TableCell>
+                  <TableCell>{handleShipping()}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell sx={{ fontWeight: "bolder", fontStyle: "italic" }}>
+                    Total
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bolder", fontStyle: "italic" }}>
+                    ${handleTotalWithShipping().toFixed(2)}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
             <AppButton
-              label="Siguiente"
+              label="Pagar"
               sx={{
                 color: AppColorsHex.blue,
                 backgroundColor: AppColorsHex.yellow,
@@ -288,7 +331,11 @@ export default function Billing() {
                 ) {
                   var x = localStorage.getItem(storageKeys.token);
                   if (x) {
+                    if(deliveryData){
+                      putMyDeliveryData(user,x);
+                    }else{
                     postMyDeliveryData(user, x);
+                  }
                     router.push("/billing/pago");
                   }
                 }

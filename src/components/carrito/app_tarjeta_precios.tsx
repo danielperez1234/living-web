@@ -18,13 +18,13 @@ export default function AppTarjetaPrecios() {
   //router
   const router = useRouter();
 
-  const { cartItems, clearCart } = useCartStore();
+  const { cartProducts: cartItems, clearCart } = useCartStore();
 
   // Cálculos optimizados con useMemo
   const subtotal = React.useMemo(
     () =>
       cartItems.reduce(
-        (total, item) => total + item.product.price * item.quantity,
+        (total, item) => total + item.price * item.quantity,
         0
       ),
     [cartItems]

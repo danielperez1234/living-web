@@ -13,12 +13,14 @@ import {
   TextField,
   Typography
 } from "@mui/material";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 
 export default function Billing() {
   const [htmlContent, setHtmlContent] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
   const payButtonRef = useRef<HTMLButtonElement>(null);
+  const router = useRouter();
   useEffect(() => {
     fetch(`/${basepath}/openpay/card.html`)
       .then((response) => response.text())
@@ -84,6 +86,7 @@ export default function Billing() {
           const tokenField = document.getElementById("token_id") as HTMLInputElement;
           tokenField.value = response.data.id;
           console.log(tokenField.value)
+          router.push("/home")
           //formRef.current!.submit();
         },
         (error: any) => {

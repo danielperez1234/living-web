@@ -1,88 +1,57 @@
 import { create } from "zustand";
 import { Product } from "../productos/interface";
 import { persist } from "zustand/middleware";
+import { DeliveryData, PostDeliveryData } from "./interface";
+import { getMyDeliveryData } from "./service";
+import { storageKeys } from "@/const/storage_keys";
 
-interface cartState {
-  cartItems: { product: Product; quantity: number }[]; // Carrito con productos y cantidades
-  addToCart: (product: Product, quantity: number) => void; // Añadir producto al carrito
-  removeFromCart: (product: Product) => void; // Eliminar producto del carrito
-  updateQuantity: (product: Product, quantity: number) => void; // Actualizar cantidad del producto
-  clearCart: () => void; // Limpiar el carrito
+interface DeliveryDataStore {
+  deliveryData: DeliveryData | undefined;
+  getDeliveryData: () => void;
+  loading: boolean;
+  clearDeliveryData: () => void; // Limpiar el carrito
 }
 
-const useCartStore = create<cartState>()(
+const useDeliveryDataStore = create<DeliveryDataStore>()(
   persist(
     (set) => ({
-      cartItems: [],
-
-      // Agregar un producto al carrito
-      addToCart: (product, quantity) => {
-        set((state) => {
-          const existingItem = state.cartItems.find(
-            (item) => item.product.id === product.id
-          );
-
-          if (existingItem) {
+      deliveryData:undefined,
+      loading:false,
+      getDeliveryData:async () => {
+        set((state) => ({
+          ...state,
+          loading: true,
+        }));
+        const response = await getMyDeliveryData(localStorage.getItem(storageKeys.token) ?? '');
+        console.log("Prueba subcategoria: " + response);
+        if (response.status < 300 && response.data) {
+          set((state) => {
             return {
-              cartItems: state.cartItems.map((item) =>
-                item.product.id === product.id
-                  ? {
-                    ...item,
-                    quantity: Math.min(
-                      item.quantity + quantity,
-                      product.maxOrder
-                    ),
-                  }
-                  : item
-              ),
+              ...state,
+              loading: false,
+              deliveryData: response.data,
             };
-          }
-
+          });
+    
+          return;
+        }
+        set((state) => {
           return {
-            cartItems: [
-              ...state.cartItems,
-              { product, quantity: Math.min(quantity, product.maxOrder) },
-            ],
+            ...state,
+            loading: false,
           };
         });
       },
-
-      // Eliminar un producto del carrito
-      removeFromCart: (product) => {
-        set((state) => ({
-          cartItems: state.cartItems.filter(
-            (item) => item.product.id !== product.id
-          ),
-        }));
-      },
-
-      // Actualizar la cantidad de un producto en el carrito
-      updateQuantity: (product, quantity) => {
-        set((state) => ({
-          cartItems: state.cartItems.map((item) =>
-            item.product.id === product.id
-              ? {
-                ...item,
-                quantity: Math.min(
-                  Math.max(1, quantity), // Asegura que sea al menos 1
-                  product.maxOrder
-                ),
-              }
-              : item
-          ),
-        }));
-      },
-
       // Limpiar el carrito
-      clearCart: () => {
-        set(() => ({ cartItems: [] }));
+      clearDeliveryData: () => {
+        set(() => ({ deliveryData: undefined}));
       },
     }),
     {
-      name: "cart-storage", // Nombre del storage
+      name: "delivery-data", // Nombre del storage
       getStorage: () => localStorage, // Usar localStorage
     }
   )
 );
 
-export default useCartStore;
+export default useDeliveryDataStore;

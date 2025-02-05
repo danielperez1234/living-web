@@ -7,6 +7,7 @@ import AppButton from "./app_button";
 import useCartStore from "@/service/carrito/store";
 import { useEffect, useState } from "react";
 import { basepath } from "@/const/utils";
+import { storageKeys } from "@/const/storage_keys";
 
 export default function AppProduct(props: {
   titulo: string;
@@ -14,7 +15,7 @@ export default function AppProduct(props: {
   product: Product;
 }) {
   // Zustand
-  const { cartItems, addToCart } = useCartStore();
+  const { cartProducts: cartItems, addToCart } = useCartStore();
 
   // Estado local para manejar si el producto es favorito
   const [isFavorite, setIsFavorite] = useState(false);
@@ -24,7 +25,7 @@ export default function AppProduct(props: {
 
   useEffect(() => {
     const existingItem = cartItems.find(
-      (item) => item.product.id === props.product.id
+      (item) => item.productId === props.product.id
     );
     if (existingItem) {
       setCount(existingItem.quantity);
@@ -170,7 +171,7 @@ export default function AppProduct(props: {
         }}
         onClick={() => {
           console.log("count", count);
-          addToCart(props.product, count);
+          addToCart(props.product, count,localStorage.getItem(storageKeys.token));
         }}
       />
     </Grid>
