@@ -17,7 +17,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import LoginIcon from "@mui/icons-material/Login";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import MenuIcon from "@mui/icons-material/Menu";
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import AppDrawer from "./app_drawer";
 import { AppColorsHex } from "@/const/colors";
 import HideOnScroll from "./hide_on_scroll";
@@ -29,6 +29,7 @@ export default function AppNavBar({}) {
   //hooks
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [isLocalStorage, setIsLocalStorage] = useState(false);
   // router
   const router = useRouter();
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -38,6 +39,11 @@ export default function AppNavBar({}) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  useEffect(()=>{
+    if(localStorage.getItem(storageKeys.token) !=null){
+      setIsLocalStorage(true);
+    }
+  },[]);
   return (
     <Box
       height={{ sm: "65px", xs: "65px", md: "70px" }}
@@ -119,7 +125,7 @@ export default function AppNavBar({}) {
                 <IconButton>
                   <SearchIcon color="info" />
                 </IconButton>
-                {localStorage.getItem(storageKeys.token) != null ? (
+                {isLocalStorage ? (
                   <div>
                     <IconButton
                       aria-controls="profile-menu"
@@ -153,6 +159,7 @@ export default function AppNavBar({}) {
                       <MenuItem
                         onClick={() => {
                           localStorage.clear();
+                          setIsLocalStorage(false);
                           handleClose();
                         }}
                       >
