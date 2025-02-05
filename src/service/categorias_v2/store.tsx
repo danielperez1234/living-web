@@ -1,23 +1,22 @@
 import { create } from "zustand";
-import { Categoria } from "./interface";
-import { GetCategoria, GetCategorias } from "./service";
-import { GetSubcategorias } from "../subcategorias/service";
+import { CategoriaBase } from "./interface";
+import { GetCategorias, GetCategoriaById } from "./service";
 
 interface CategoriaState {
-  categorias: Categoria[];
+  // Default
   errorMsg: string | undefined;
   loading: boolean;
-  selectedCategoria?: Categoria;
-  categoria?: Categoria;
-  selectCategoria: (categoria: Categoria) => void;
+  // Contenedores
+  categroias?: CategoriaBase[];
+  categoriaSeleccionada?: CategoriaBase;
+  // Funciones
+  selectCategoria: (categoria: CategoriaBase) => void;
   getCategorias: () => void;
-  getCategoria: (idCategoria: string) => void;
-  getSubcategorias: (idCategorias: string) => void;
+  getCategoriaById: (idCategoria: string) => void;
   clean: () => void;
 }
 
 const useCategoriasStore = create<CategoriaState>()((set) => ({
-  categorias: [],
   errorMsg: undefined,
   loading: false,
   selectCategoria: (categoria) => {
@@ -37,7 +36,7 @@ const useCategoriasStore = create<CategoriaState>()((set) => ({
         return {
           ...state,
           loading: false,
-          categorias: response.data,
+          categroias: response.data,
         };
       });
       return;
@@ -49,18 +48,19 @@ const useCategoriasStore = create<CategoriaState>()((set) => ({
       };
     });
   },
-  getCategoria: async (idCategoria: string) => {
+  getCategoriaById: async (idCategoria: string) => {
     set((state) => ({
       ...state,
       loading: true,
     }));
-    const response = await GetCategoria(idCategoria);
+    const response = await GetCategoriaById(idCategoria);
     if (response.status < 300 && response.data) {
       set((state) => {
+        console.log("GetCategoriaById: " + response.data);
         return {
           ...state,
           loading: false,
-          categoriaContainer: response.data,
+          categoriaSeleccionada: response.data,
         };
       });
       return;
@@ -72,29 +72,11 @@ const useCategoriasStore = create<CategoriaState>()((set) => ({
       };
     });
   },
-  getSubcategorias: async (idCategoria: string) => {
+  clean: () =>
     set((state) => ({
-      ...state,
-      loading: true,
-    }));
-    const response = await GetSubcategorias(idCategoria);
-    if (response.status < 300 && response.data) {
-      set((state) => {
-        return {
-          ...state,
-          loading: false,
-          subcategorias: response.data,
-        };
-      });
-      return;
-    }
-    set((state) => {
-      return {
-        ...state,
-        loading: false,
-      };
-    });
-  },
-  clean: () => set((state) => ({ categorias: [] })),
+      categorias: undefined,
+      categoriaSeleccionada: undefined,
+    })),
 }));
+
 export default useCategoriasStore;

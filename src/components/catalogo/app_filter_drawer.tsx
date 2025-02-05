@@ -1,16 +1,14 @@
 import { Box, Button, Divider, Drawer, Typography } from "@mui/material";
 import AppSelect from "../common/app_select";
-import { Categoria } from "@/service/categorias/interface";
-import { Subcategoria } from "@/service/subcategorias/interface";
-import { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { CategoriaBase } from "@/service/categorias_v2/interface";
+import useCategoriasStore from "@/service/categorias_v2/store";
 
 interface PropsAppDrawer {
   drawerOpen: boolean;
   setDrawerOpen: (x: boolean) => void;
-  categories: Categoria[];
-  subcategories: Subcategoria;
-  getSubcategorias: (idCategoria: string) => void;
+  categories: CategoriaBase[];
   getSubcategoriaProducts: (subcategoriaId: string, page: number) => void;
 }
 
@@ -18,33 +16,64 @@ export default function AppFilterDrawer({
   drawerOpen,
   setDrawerOpen,
   categories,
-  subcategories,
-  getSubcategorias,
   getSubcategoriaProducts,
 }: PropsAppDrawer) {
+  // Zustand de categorias
+  const categoriaSeleccionada = useCategoriasStore(
+    (state) => state.categoriaSeleccionada
+  );
+  const selectCategoria = useCategoriasStore((state) => state.getCategoriaById);
+
   // Router hooks
   const router = useRouter();
-  const pathname = usePathname();
 
   // Local Hooks
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>("0");
   const [selectedSubcategoryId, setSelectedSubcategoryId] =
     useState<string>("0");
 
+  // Efecto para actualizar las subcategorías cuando se selecciona una categoría
   useEffect(() => {
-    const parts = pathname.split("/");
-    if (parts.length >= 3) {
-      const idCategoria = parts[2] || "0";
-      const idSubcategoria = parts[3] || "0";
-
-      setSelectedCategoryId(idCategoria);
-      setSelectedSubcategoryId(idSubcategoria);
-
-      if (idCategoria !== "0") {
-        getSubcategorias(idCategoria);
-      }
+    if (selectedCategoryId !== "0") {
+      selectCategoria(selectedCategoryId); // Obtener las subcategorías de la categoría seleccionada
+      console.log("Categoria seleccionada: " + selectedCategoryId);
     }
-  }, [pathname]);
+  }, [selectedCategoryId, selectCategoria]);
+
+  // Manejar cambio de categoría
+  const handleCategoryChange = (value: string | undefined) => {
+    if (value) {
+      setSelectedCategoryId(value);
+      setSelectedSubcategoryId("0"); // Resetear la subcategoría seleccionada
+    }
+  };
+
+  // Manejar cambio de subcategoría
+  const handleSubcategoryChange = (value: string) => {
+    setSelectedSubcategoryId(value);
+
+    if (value !== "0") {
+      getSubcategoriaProducts(value, 1); // Obtener productos de la subcategoría seleccionada
+      // Una vez que se selecciona la subcategoría, actualizamos la URL
+      router.replace(`/catalogo/${selectedCategoryId}/${value}`);
+    }
+  };
+
+  // Efecto para actualizar la URL solo cuando ambos, categoría y subcategoría, están seleccionados
+  useEffect(() => {
+    if (selectedCategoryId !== "0" && selectedSubcategoryId !== "0") {
+      router.replace(
+        `/catalogo/${selectedCategoryId}/${selectedSubcategoryId}`
+      );
+    }
+  }, [selectedCategoryId, selectedSubcategoryId, router]);
+
+  // Borrar filtros
+  const handleClearFilters = () => {
+    setSelectedCategoryId("0");
+    setSelectedSubcategoryId("0");
+    router.replace(`/catalogo/0/0`); // Actualizar la URL sin recargar la página
+  };
 
   return (
     <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
@@ -58,47 +87,33 @@ export default function AppFilterDrawer({
           Filtros
         </Typography>
         <Divider />
+        {/* Selector de categorías */}
         <AppSelect
           label={"Categorias"}
           options={categories.map((category) => category.categoryName)}
-          onChange={(value) => {
-            setSelectedCategoryId(value ?? "0");
-            setSelectedSubcategoryId("0");
-            router.replace(`/catalogo/${value}/0`);
-          }}
+          onChange={(value) => handleCategoryChange(value)}
           ids={categories.map((category) => category.id)}
           value={selectedCategoryId}
         />
+        {/* Selector de subcategorías */}
         <AppSelect
           label={"Sub categorias"}
-          options={subcategories.subcategories.map(
-            (subcategory) => subcategory.subcategoryName
-          )}
-          onChange={(value) => {
-            setSelectedSubcategoryId(value ?? "0");
-
-            // Llama a la función para obtener los productos de la subcategoría
-            if (value) {
-              getSubcategoriaProducts(value, 1);
-            }
-
-            router.replace(`/catalogo/${selectedCategoryId}/${value}`);
-          }}
-          ids={subcategories.subcategories.map((subcategory) => subcategory.id)}
+          options={
+            categoriaSeleccionada?.subcategories.map(
+              (subcategoria) => subcategoria.subcategoryName
+            ) || []
+          }
+          onChange={(value) => handleSubcategoryChange(value ?? "0")}
+          ids={
+            categoriaSeleccionada?.subcategories.map(
+              (subcategory) => subcategory.id
+            ) || []
+          }
           value={selectedSubcategoryId}
         />
       </Box>
-      <Button
-        fullWidth
-        color="error"
-        onClick={() => {
-          setSelectedCategoryId("0");
-          setSelectedSubcategoryId("0");
-          router.replace(`/catalogo/0/0`);
-          router.refresh();
-          window.location.reload();
-        }}
-      >
+      {/* Botón para borrar filtros */}
+      <Button fullWidth color="error" onClick={handleClearFilters}>
         Borrar filtros
       </Button>
     </Drawer>

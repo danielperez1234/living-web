@@ -3,37 +3,40 @@
 import AppFilterDrawer from "@/components/catalogo/app_filter_drawer";
 import AppFooter from "@/components/common/app_footer/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
+import AppProduct from "@/components/common/app_product";
 import AppBackgroundImage from "@/components/common/background_image";
 import { AppColorsHex } from "@/const/colors";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { Box, Fab, Grid, Typography } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
-import useCategoriasStore from "@/service/categorias/store";
-import useSubcategoriasStore from "@/service/subcategorias/store";
-import useProductsStore from "@/service/productos/store";
-import AppProduct from "@/components/common/app_product";
+import useCategoriasStore from "@/service/categorias_v2/store";
+import useSubcategoriasStore from "@/service/subcategorias-v2/store";
+import useProductosStore from "@/service/productos_v2/store";
 
 export default function Catalogo() {
   // Zustand de categorias
-  const categorias = useCategoriasStore((state) => state.categorias);
+  const listaDeCategorias = useCategoriasStore((state) => state.categroias);
   const getCategorias = useCategoriasStore((state) => state.getCategorias);
+  const selectCategoria = useCategoriasStore((state) => state.selectCategoria);
 
   // Zustand de subcategorias
-  const subcategorias = useSubcategoriasStore((state) => state.subcategorias);
+  const listaDeSubcategorias = useSubcategoriasStore(
+    (state) => state.subcategoriasBase
+  );
   const getSubcategorias = useSubcategoriasStore(
-    (state) => state.getSubcategorias
+    (state) => state.getSubcategoriasBase
   );
 
   // Zustand de pruductos
-  const productos = useProductsStore((state) => state.productos);
-  const getProductos = useProductsStore((state) => state.getAllProducts);
+  const listaDeProductos = useProductosStore((state) => state.productos);
+  const getProductos = useProductosStore((state) => state.getAllProducts);
 
   // Zustand de subcategoriaProducts
-  const subcategoriaProducts = useSubcategoriasStore(
-    (state) => state.subcategoriaProducts
+  const subcategoriaPaginada = useSubcategoriasStore(
+    (state) => state.subcategoriaPaginada
   );
-  const getSubcategoriaProducts = useSubcategoriasStore(
-    (state) => state.getSubcategoriaProducts
+  const getSubcategoriaPaginada = useSubcategoriasStore(
+    (state) => state.getSubcategoriasPaginadas
   );
 
   // Local hooks
@@ -46,10 +49,7 @@ export default function Catalogo() {
 
   // Handle de cambio de categoría
   const handleCategoriaChange = (event: { target: { value: string } }) => {
-    getSubcategorias(event.target.value);
-    setSelectedCategoria(event.target.value);
-    setPage(1); // Reset page when category changes
-    setHasMore(true);
+    getCa;
   };
 
   // Handle de cambio de subcategoría
@@ -194,7 +194,8 @@ export default function Catalogo() {
       <AppFilterDrawer
         drawerOpen={drawerOpen}
         setDrawerOpen={(x) => setDrawerOpen(x)}
-        categories={categorias}
+        categories={listaDeCategorias}
+        subcategories={listaDeSubcategorias}
         getSubcategoriaProducts={(id, page) =>
           getSubcategoriaProducts(id, page)
         }

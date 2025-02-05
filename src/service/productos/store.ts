@@ -10,11 +10,6 @@ interface SubcategoriaState {
   getAllProducts: () => void;
   getProduct: (id: string) => void;
   clean: () => void;
-  // errorMsg: string | undefined;
-  // loading: boolean;
-  // getAllProducts: () => void;
-  // setProducts: (x: Product[]) => void;
-  // clean: () => void;
 }
 
 const useProductsStore = create<SubcategoriaState>()((set) => ({
