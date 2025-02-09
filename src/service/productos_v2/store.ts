@@ -27,6 +27,7 @@ const useProductosStore = create<ProductosState>()((set) => ({
         console.log("Get al products: " + response.data);
 
         if (response.status < 300 && response.data) {
+            console.log("Get all products: ", response.data);
             set((state) => {
                 return {
                     ...state,

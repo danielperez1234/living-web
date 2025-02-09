@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { CategoriaBase } from "@/service/categorias_v2/interface";
 import useCategoriasStore from "@/service/categorias_v2/store";
+import useSubcategoriasStore from "@/service/subcategorias-v2/store";
 
 interface PropsAppDrawer {
   drawerOpen: boolean;
@@ -23,6 +24,9 @@ export default function AppFilterDrawer({
     (state) => state.categoriaSeleccionada
   );
   const selectCategoria = useCategoriasStore((state) => state.getCategoriaById);
+  const cleanSubcategoriaPaginada = useSubcategoriasStore(
+    (state) => state.clean
+  );
 
   // Router hooks
   const router = useRouter();
@@ -36,7 +40,6 @@ export default function AppFilterDrawer({
   useEffect(() => {
     if (selectedCategoryId !== "0") {
       selectCategoria(selectedCategoryId); // Obtener las subcategorías de la categoría seleccionada
-      console.log("Categoria seleccionada: " + selectedCategoryId);
     }
   }, [selectedCategoryId, selectCategoria]);
 
@@ -72,7 +75,12 @@ export default function AppFilterDrawer({
   const handleClearFilters = () => {
     setSelectedCategoryId("0");
     setSelectedSubcategoryId("0");
-    router.replace(`/catalogo/0/0`); // Actualizar la URL sin recargar la página
+    router.replace(`/catalogo/0/0`);
+    cleanSubcategoriaPaginada();
+    console.log(
+      "Datos paginados: " +
+        useSubcategoriasStore.getState().subcategoriasConProductos
+    );
   };
 
   return (

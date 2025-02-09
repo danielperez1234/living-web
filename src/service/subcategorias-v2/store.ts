@@ -77,7 +77,7 @@ const useSubcategoriasStore = create<SubcategoriaState>()((set) => ({
             loading: true
         }));
         const response = await GetSubcategoriasPaginadas(id, page);
-        console.log("Get subcategorias base: " + response.data);
+        console.log("Get subcategorias paginada: " + response.data);
         if (response.status < 300 && response.data) {
             set((state) => {
                 return {
@@ -101,7 +101,8 @@ const useSubcategoriasStore = create<SubcategoriaState>()((set) => ({
             subcategoriasConProductos: [],
             subcategoriaPaginada: undefined,
             subcategoriaBaseSeleccionada: undefined
-        }))
+        }
+        ))
 }));
 
 export default useSubcategoriasStore;
