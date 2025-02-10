@@ -5,9 +5,8 @@ import { persist } from "zustand/middleware";
 import { AddToCart, GetCart } from "./service";
 
 interface cartState {
-  // Carrito con productos y cantidades
-  getCart:(token:string)=>void;
-  addToCart: (product: Product, quantity: number,token:string | null) => void; // Añadir producto al carrito
+  getCart: (token: string) => void;
+  addToCart: (product: Product, quantity: number, token: string | null) => void; // Añadir producto al carrito
   removeFromCart: (product: CartProduct) => void; // Eliminar producto del carrito
   updateQuantity: (product: CartProduct, quantity: number) => void; // Actualizar cantidad del producto
   clearCart: () => void; // Limpiar el carrito
@@ -19,7 +18,7 @@ const useCartStore = create<cartState & CartGet>()(
       cartProducts: [],
       cartId: "",
       userId: "",
-      getCart:async (token) => {
+      getCart: async (token) => {
         set((state) => ({
           ...state,
         }));
@@ -29,12 +28,12 @@ const useCartStore = create<cartState & CartGet>()(
           set((state) => {
             return {
               ...state,
-              cartProducts:response.data!.cartProducts,
-              userId:response.data!.userId,
-              cartId:response.data!.cartId,
+              cartProducts: response.data!.cartProducts,
+              userId: response.data!.userId,
+              cartId: response.data!.cartId,
             };
           });
-    
+
           return;
         }
         set((state) => {
@@ -44,7 +43,7 @@ const useCartStore = create<cartState & CartGet>()(
         });
       },
       // Agregar un producto al carrito
-      addToCart: (product, quantity,token) => {
+      addToCart: (product, quantity, token) => {
         set((state) => {
           const existingItem = state.cartProducts.find(
             (item) => item.productId === product.id
@@ -55,22 +54,23 @@ const useCartStore = create<cartState & CartGet>()(
               cartProducts: state.cartProducts.map((item) =>
                 item.productId === product.id
                   ? {
-                      ...item,
-                      quantity: Math.min(
-                        item.quantity + quantity,
-                        product.maxOrder
-                      )
-                    }
+                    ...item,
+                    quantity: Math.min(
+                      item.quantity + quantity,
+                      product.maxOrder
+                    )
+                  }
                   : item
               )
             };
           }
-          if(token != null){
+          if (token != null) {
             console.log("adding")
-          AddToCart({
-            productId:product.id,
-            quantity:Math.min(quantity, product.maxOrder)
-          }, token)}
+            AddToCart({
+              productId: product.id,
+              quantity: Math.min(quantity, product.maxOrder)
+            }, token)
+          }
           return {
             cartProducts: [
               ...state.cartProducts,
@@ -80,7 +80,7 @@ const useCartStore = create<cartState & CartGet>()(
                 price: product.price,
                 imageUrl: product.imageUrlSmall,
                 quantity: Math.min(quantity, product.maxOrder),
-                maxOrder:200
+                maxOrder: 200
               }
             ]
           };
@@ -102,12 +102,12 @@ const useCartStore = create<cartState & CartGet>()(
           cartProducts: state.cartProducts.map((item) =>
             item.productId === product.productId
               ? {
-                  ...item,
-                  quantity: Math.min(
-                    Math.max(1, quantity), // Asegura que sea al menos 1
-                    product.maxOrder
-                  )
-                }
+                ...item,
+                quantity: Math.min(
+                  Math.max(1, quantity), // Asegura que sea al menos 1
+                  product.maxOrder
+                )
+              }
               : item
           )
         }));

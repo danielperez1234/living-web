@@ -170,8 +170,13 @@ export default function AppProduct(props: {
           minHeight: "50px",
         }}
         onClick={() => {
-          console.log("count", count);
-          addToCart(props.product, count,localStorage.getItem(storageKeys.token));
+          count > 0
+            ? addToCart(
+                props.product,
+                count,
+                localStorage.getItem(storageKeys.token)
+              )
+            : null;
         }}
       />
     </Grid>

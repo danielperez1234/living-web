@@ -1,14 +1,14 @@
 "use client";
+
 import {
   AppBar,
   Box,
-  Button,
   Container,
   IconButton,
   Menu,
   MenuItem,
   Toolbar,
-  Typography
+  Typography,
 } from "@mui/material";
 import Image from "next/image";
 import NavBarTextButton from "./nav_bar_text_button";
@@ -17,7 +17,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import LoginIcon from "@mui/icons-material/Login";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import MenuIcon from "@mui/icons-material/Menu";
-import { MouseEventHandler, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AppDrawer from "./app_drawer";
 import { AppColorsHex } from "@/const/colors";
 import HideOnScroll from "./hide_on_scroll";
@@ -39,11 +39,21 @@ export default function AppNavBar({}) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  useEffect(()=>{
-    if(localStorage.getItem(storageKeys.token) !=null){
+
+  const handleCarrito = () => {
+    if (localStorage.getItem(storageKeys.token) == null) {
+      router.push("/carrito");
+    } else {
+      router.push("/mi-carrito");
+    }
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem(storageKeys.token) != null) {
       setIsLocalStorage(true);
     }
-  },[]);
+  }, []);
+
   return (
     <Box
       height={{ sm: "65px", xs: "65px", md: "70px" }}
@@ -78,7 +88,7 @@ export default function AppNavBar({}) {
                   src={`/${basepath}/marca/logo.png`}
                   alt="logo Living"
                   style={{
-                    objectFit: "contain"
+                    objectFit: "contain",
                   }}
                 />
               </Box>
@@ -149,7 +159,7 @@ export default function AppNavBar({}) {
                       </MenuItem>
                       <MenuItem
                         onClick={() => {
-                          router.push("/carrito");
+                          handleCarrito();
                           handleClose();
                         }}
                       >

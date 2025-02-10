@@ -62,6 +62,8 @@ export default function Cart() {
 
   return (
     <Box>
+      {/* ToDO - Reactivar el protected route */}
+      {/*<ProtectedRoute />*/}
       <Box
         sx={{
           position: "fixed",
