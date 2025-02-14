@@ -6,6 +6,7 @@ interface ProductosState {
     allProducts: ProductoBase[];
     productos?: ProductoBase;
     errorMsg: string | undefined;
+    producto: ProductoBase;
     loading: boolean;
     getAllProducts: () => void;
     getProductById: (id: string) => void;
@@ -13,6 +14,16 @@ interface ProductosState {
 }
 
 const useProductosStore = create<ProductosState>()((set) => ({
+    producto: {
+        id: "",
+        subcategoryId: "",
+        name: "",
+        price: 0,
+        wholesalePrice: 0,
+        maxOrder: 0,
+        imageUrlOriginal: "",
+        imageUrlSmall: ""
+    },
     allProducts: [],
     errorMsg: undefined,
     loading: false,

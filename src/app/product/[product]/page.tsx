@@ -1,15 +1,20 @@
 "use client";
+
 import AppButton from "@/components/common/app_button";
 import AppCounter from "@/components/common/app_counter";
 import AppFooter from "@/components/common/app_footer/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
 import { AppColorsHex } from "@/const/colors";
 import { basepath } from "@/const/utils";
+import { ProductoBase } from "@/service/productos_v2/interface";
+import useProductosStore from "@/service/productos_v2/store";
 import { Box, Radio, Typography } from "@mui/material";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 
 export default function Page() {
+  //Estatico
   // Radio Buttons Color
   const [selectedValueColor, setSelectedValueColor] = useState<string>("");
   const handleChangeColor = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,6 +40,19 @@ export default function Page() {
     value: item,
     inputProps: { "aria-label": item },
   });
+
+  //--------------------------------------------
+  const { product } = useParams();
+  const producto = useProductosStore((state) => state.producto);
+  const getProductById = useProductosStore((state) => state.getProductById);
+
+  useEffect(() => {
+    if (producto.id !== product.toString()) {
+      getProductById(product.toString());
+    } else {
+      console.log("Producto cargado:", producto);
+    }
+  }, [producto.id, product]);
 
   return (
     <Box width={"100%"}>
@@ -68,8 +86,8 @@ export default function Page() {
             <Box width={"100%"} sx={{ aspectRatio: 1, position: "relative" }}>
               <Image
                 fill
-                alt="product Image"
-                src={`/${basepath}/productos/notebook.jpeg`}
+                alt={`${producto.name}`}
+                src={producto.imageUrlOriginal}
                 style={{
                   objectFit: "cover",
                 }}
@@ -78,7 +96,7 @@ export default function Page() {
           </Box>
         </Box>
         <Box>
-          <Typography variant="h1">Libreta espiral</Typography>
+          <Typography variant="h1">{producto.name}</Typography>
           <Typography
             mb={1}
             style={{
@@ -90,7 +108,7 @@ export default function Page() {
             }}
             variant="h5"
           >
-            Marca: Normal
+            Marca: {producto.productOptions?.[0] || "Sin marca"}
           </Typography>
           <Typography
             mb={1}
@@ -206,7 +224,7 @@ export default function Page() {
             }}
           >
             <Typography>Cantidad: </Typography>
-            <AppCounter maxCount={40} count={0} setCount={()=>{} } />
+            <AppCounter maxCount={40} count={0} setCount={() => {}} />
           </Box>
           <AppButton
             label="Añadir al carrito"

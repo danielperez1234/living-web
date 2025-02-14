@@ -8,12 +8,16 @@ import useCartStore from "@/service/carrito/store";
 import { useEffect, useState } from "react";
 import { basepath } from "@/const/utils";
 import { storageKeys } from "@/const/storage_keys";
+import { useRouter } from "next/navigation";
 
 export default function AppProduct(props: {
   titulo: string;
   image: string;
   product: Product;
 }) {
+  // Router
+  const router = useRouter();
+
   // Zustand
   const { cartProducts: cartItems, addToCart } = useCartStore();
 
@@ -67,94 +71,103 @@ export default function AppProduct(props: {
         }}
       >
         <Box width={"85%"} marginY={"30px"}>
-          <Box width={"100%"} sx={{ aspectRatio: 1, position: "relative" }}>
-            {/* Imagen del botón */}
-            <Image
-              src={`/${basepath}/svg/${
-                isFavorite ? "heart_filled_svg.svg" : "heart_svg.svg"
-              }`}
-              alt="Favorito"
-              width={30}
-              height={30}
-              style={{
-                position: "absolute",
-                top: "10px",
-                right: "10px",
-                zIndex: 2,
-                cursor: "pointer",
-              }}
-              onClick={toggleFavorite}
-            />
-
-            <Image
-              fill
-              alt="product Image"
-              src={props.image}
-              style={{
-                objectFit: "cover",
-              }}
-            />
-          </Box>
-
-          <Box>
-            <Typography
-              width={"100%"}
-              mb={2}
-              height={"50px"}
-              textOverflow={"ellipsis"}
-              style={{
-                display: "-webkit-box",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: "vertical",
-              }}
-            >
-              {props.titulo}
-            </Typography>
-          </Box>
           <Box
-            width={"100%"}
-            display={"flex"}
-            justifyContent={"space-between"}
-            mb={2}
+            onClick={() => {
+              router.push(`/product/${props.product.id}`);
+            }}
           >
-            <Box width={"49%"}>
-              <Typography variant="h5">${price.toFixed(2)}</Typography>
-              <Typography
-                variant="h5"
-                fontSize={"12px"}
-                textOverflow={"ellipsis"}
-                color={AppColorsHex.black}
-                sx={{ opacity: 0.6 }}
-              >
-                Menudeo
-              </Typography>
+            <Box width={"100%"} sx={{ aspectRatio: 1, position: "relative" }}>
+              <Image
+                src={`/${basepath}/svg/${
+                  isFavorite ? "heart_filled_svg.svg" : "heart_svg.svg"
+                }`}
+                alt="Favorito"
+                width={30}
+                height={30}
+                style={{
+                  position: "absolute",
+                  top: "10px",
+                  right: "10px",
+                  zIndex: 2,
+                  cursor: "pointer",
+                }}
+                onClick={toggleFavorite}
+              />
+
+              <Image
+                fill
+                alt="product Image"
+                src={props.image}
+                style={{
+                  objectFit: "cover",
+                }}
+              />
             </Box>
 
-            <Divider
-              orientation="vertical"
-              sx={{
-                height: "50px",
-                borderWidth: "0.5px",
-                borderColor: AppColorsHex.black,
-                margin: "0px",
-                padding: "0px",
-                opacity: 0.6,
-              }}
-            />
+            <Box>
+              <Typography
+                width={"100%"}
+                mb={2}
+                height={"50px"}
+                textOverflow={"ellipsis"}
+                style={{
+                  display: "-webkit-box",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: "vertical",
+                }}
+              >
+                {props.titulo}
+              </Typography>
+            </Box>
             <Box
-              width={"49%"}
+              width={"100%"}
               display={"flex"}
-              flexDirection={"column"}
-              alignItems={"end"}
+              justifyContent={"space-between"}
+              mb={2}
             >
-              <Typography variant="h5" color={AppColorsHex.blue}>
-                ${wholesalePrice.toFixed(2)}
-              </Typography>
-              <Typography variant="h5" fontSize={"12px"} sx={{ opacity: 0.6 }}>
-                {`A partir de ${maxOrder} pz`}
-              </Typography>
+              <Box width={"49%"}>
+                <Typography variant="h5">${price.toFixed(2)}</Typography>
+                <Typography
+                  variant="h5"
+                  fontSize={"12px"}
+                  textOverflow={"ellipsis"}
+                  color={AppColorsHex.black}
+                  sx={{ opacity: 0.6 }}
+                >
+                  Menudeo
+                </Typography>
+              </Box>
+
+              <Divider
+                orientation="vertical"
+                sx={{
+                  height: "50px",
+                  borderWidth: "0.5px",
+                  borderColor: AppColorsHex.black,
+                  margin: "0px",
+                  padding: "0px",
+                  opacity: 0.6,
+                }}
+              />
+              <Box
+                width={"49%"}
+                display={"flex"}
+                flexDirection={"column"}
+                alignItems={"end"}
+              >
+                <Typography variant="h5" color={AppColorsHex.blue}>
+                  ${wholesalePrice.toFixed(2)}
+                </Typography>
+                <Typography
+                  variant="h5"
+                  fontSize={"12px"}
+                  sx={{ opacity: 0.6 }}
+                >
+                  {`A partir de ${maxOrder} pz`}
+                </Typography>
+              </Box>
             </Box>
           </Box>
           <AppCounter maxCount={40} count={count} setCount={setCount} />
