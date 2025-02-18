@@ -5,8 +5,6 @@ import AppCounter from "@/components/common/app_counter";
 import AppFooter from "@/components/common/app_footer/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
 import { AppColorsHex } from "@/const/colors";
-import { basepath } from "@/const/utils";
-import { ProductoBase } from "@/service/productos_v2/interface";
 import useProductosStore from "@/service/productos_v2/store";
 import { Box, Radio, Typography } from "@mui/material";
 import Image from "next/image";
