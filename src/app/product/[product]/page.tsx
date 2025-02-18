@@ -10,6 +10,8 @@ import { Box, Radio, Typography } from "@mui/material";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import useCartStore from "@/service/carrito/store";
+import { storageKeys } from "@/const/storage_keys";
 
 export default function Page() {
   //Estatico
@@ -44,11 +46,24 @@ export default function Page() {
   const producto = useProductosStore((state) => state.producto);
   const getProductById = useProductosStore((state) => state.getProductById);
 
+  //Cart Zustand
+  const { cartProducts: cartItems, addToCart } = useCartStore();
+
+  //Local Hooks
+  const [count, setCount] = useState(0);
+
   useEffect(() => {
     if (producto.id !== product.toString()) {
       getProductById(product.toString());
+    }
+
+    const existingItem = cartItems.find(
+      (item) => item.productId === producto.id
+    );
+    if (existingItem) {
+      setCount(existingItem.quantity);
     } else {
-      console.log("Producto cargado:", producto);
+      setCount(0);
     }
   }, [producto.id, product]);
 
@@ -215,6 +230,26 @@ export default function Page() {
               }}
             />
           </Box>
+          <Typography
+            mb={1}
+            style={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+            variant="h5"
+          >
+            Orden Maxima: {producto.maxOrder}
+          </Typography>
+          <Typography
+            mb={1}
+            style={{
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+            variant="h5"
+          >
+            Precio unitario: ${producto.price}
+          </Typography>
           <Box
             sx={{
               display: "flex",
@@ -222,11 +257,20 @@ export default function Page() {
             }}
           >
             <Typography>Cantidad: </Typography>
-            <AppCounter maxCount={40} count={0} setCount={() => {}} />
+            <AppCounter maxCount={40} count={count} setCount={setCount} />
           </Box>
           <AppButton
             label="Añadir al carrito"
-            sx={{ marginY: "5%", width: "100%", aspectRatio: 6 }}
+            sx={{ marginY: "5%", aspectRatio: 6 }}
+            onClick={() => {
+              count > 0
+                ? addToCart(
+                    producto,
+                    count,
+                    localStorage.getItem(storageKeys.token)
+                  )
+                : null;
+            }}
           />
         </Box>
       </Box>

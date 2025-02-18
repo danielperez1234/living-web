@@ -75,6 +75,7 @@ export default function AppProduct(props: {
             onClick={() => {
               router.push(`/product/${props.product.id}`);
             }}
+            sx={{ cursor: "pointer" }}
           >
             <Box width={"100%"} sx={{ aspectRatio: 1, position: "relative" }}>
               <Image
@@ -91,7 +92,10 @@ export default function AppProduct(props: {
                   zIndex: 2,
                   cursor: "pointer",
                 }}
-                onClick={toggleFavorite}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  toggleFavorite();
+                }}
               />
 
               <Image
