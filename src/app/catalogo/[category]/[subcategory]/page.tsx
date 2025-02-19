@@ -39,13 +39,20 @@ export default function Catalogo() {
 
   // Cargar más productos con paginación
   const loadMoreProducts = useCallback(async () => {
+    
     if (loading || !hasMore) return;
 
+    
     setLoading(true);
     const nextPage = page + 1;
 
-    if (selectedSubcategoria) {
-      await getSubcategoriaPaginada(selectedSubcategoria, nextPage);
+    if (subcategoriaPaginada) {
+      console.log("hola")
+      setLoading(true);
+      await getSubcategoriaPaginada(subcategoriaPaginada.datosPaginados.id, nextPage);
+      setLoading(false)
+      
+      setPage(nextPage);
     } else {
       setPage(nextPage);
     }
