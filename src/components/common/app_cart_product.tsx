@@ -1,14 +1,19 @@
 import { AppColorsHex } from "@/const/colors";
 import useCartStore from "@/service/carrito/store";
-import { Product } from "@/service/productos/interface";
 import { Box, Grid, Typography, useMediaQuery } from "@mui/material";
 import Image from "next/image";
 import AppCounter from "./app_counter";
 import { CartProduct } from "@/service/carrito/interface";
 
 export default function AppCartProduct({ product }: { product: CartProduct }) {
-  const { cartProducts: cartItems, updateQuantity, removeFromCart } = useCartStore();
-  const existingItem = cartItems.find((item) => item.productId === product.productId);
+  const {
+    cartProducts: cartItems,
+    updateQuantity,
+    removeFromCart,
+  } = useCartStore();
+  const existingItem = cartItems.find(
+    (item) => item.productId === product.productId
+  );
   const count = existingItem ? existingItem.quantity : 0;
 
   const handleCountChange = (newCount: number) => {
@@ -19,7 +24,9 @@ export default function AppCartProduct({ product }: { product: CartProduct }) {
     }
   };
 
-  const isSmallScreen = useMediaQuery((theme: any) => theme.breakpoints.down("sm"));
+  const isSmallScreen = useMediaQuery((theme: any) =>
+    theme.breakpoints.down("sm")
+  );
 
   return (
     <Grid
@@ -62,7 +69,9 @@ export default function AppCartProduct({ product }: { product: CartProduct }) {
           textAlign={isSmallScreen ? "center" : "left"}
           marginBottom={isSmallScreen ? "15px" : "0"}
         >
-          <Typography sx={{ textAlign: "center" }}>{product.productName}</Typography>
+          <Typography sx={{ textAlign: "center" }}>
+            {product.productName}
+          </Typography>
           <Typography
             sx={{
               textAlign: "center",
