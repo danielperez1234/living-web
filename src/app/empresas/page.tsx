@@ -1,10 +1,16 @@
 "use client";
-import AppFooter from "@/components/common/app_footer/main";
-import AppNavBar from "@/components/common/app_nav_bar/main";
-import AppBackgroundImage from "@/components/common/background_image";
-import { AppColorsHex } from "@/const/colors";
+
+// Material-UI
 import { Box, Typography } from "@mui/material";
-import { useState } from "react";
+
+// Constantes y utilidades
+import { AppColorsHex } from "@/const/colors";
+
+// Componentes comunes
+import AppNavBar from "@/components/common/app_nav_bar/main";
+import AppFooter from "@/components/common/app_footer/main";
+import AppBackgroundImage from "@/components/common/background_image";
+
 interface CatalogoProps {
   params: {
     category: string;
@@ -14,7 +20,6 @@ interface CatalogoProps {
 export default function Empresas({
   params: { category, subcategory },
 }: CatalogoProps) {
-  const [drawerOpen, setDrawerOpen] = useState(false);
   return (
     <AppBackgroundImage>
       <AppNavBar />

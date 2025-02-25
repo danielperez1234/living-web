@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function Valor({
   text,
-  valor
+  valor,
 }: {
   text: string;
   valor: string;
@@ -16,7 +16,7 @@ export default function Valor({
         <Grid
           height={{
             xs: "75px",
-            sm: "100px"
+            sm: "100px",
           }}
           position={"relative"}
           sx={{ aspectRatio: "1" }}
@@ -39,7 +39,9 @@ export default function Valor({
           </Typography>
         </Grid>
       </Grid>
-      <Typography variant="body2">{text}</Typography>
+      <Typography variant="body2" sx={{ textAlign: "justify" }}>
+        {text}
+      </Typography>
     </Grid>
   );
 }

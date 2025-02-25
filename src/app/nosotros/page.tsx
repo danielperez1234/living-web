@@ -1,15 +1,27 @@
 "use client";
+
+// CSS y dependencias externas
 import "leaflet/dist/leaflet.css";
+
+// Material-UI
 import { Box, Divider, FormControl, Typography } from "@mui/material";
+
+// React
 import { useMemo, useState } from "react";
+
+// Next.js
 import dynamic from "next/dynamic";
+
+// Componentes comunes
 import AppBackgroundImage from "@/components/common/background_image";
 import AppNavBar from "@/components/common/app_nav_bar/main";
 import App_dataform from "@/components/common/app_dataform";
-import { AppColorsHex } from "@/const/colors";
 import AppButton from "@/components/common/app_button";
 import AppTextField from "@/components/common/app_text_field";
 import AppFooter from "@/components/common/app_footer/main";
+
+// Constantes y utilidades
+import { AppColorsHex } from "@/const/colors";
 
 export default function Page() {
   const Map = useMemo(
@@ -36,7 +48,9 @@ export default function Page() {
         justifyContent={"start"}
         alignItems={"center"}
       >
-        <Typography variant="h1" marginBottom={6}>Contacto</Typography>
+        <Typography variant="h1" marginBottom={6}>
+          Contacto
+        </Typography>
         <Box
           width={"100%"}
           borderRadius={"25px"}

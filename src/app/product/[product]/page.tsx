@@ -1,17 +1,30 @@
 "use client";
 
+// React
+import React, { useEffect, useState } from "react";
+
+// Next.js
+import { useParams } from "next/navigation";
+
+// Material-UI
+import { Box, Radio, Typography } from "@mui/material";
+
+// Componentes comunes
 import AppButton from "@/components/common/app_button";
 import AppCounter from "@/components/common/app_counter";
 import AppFooter from "@/components/common/app_footer/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
-import { AppColorsHex } from "@/const/colors";
+
+// Servicios y estado
 import useProductosStore from "@/service/productos_v2/store";
-import { Box, Radio, Typography } from "@mui/material";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
 import useCartStore from "@/service/carrito/store";
+
+// Constantes y utilidades
+import { AppColorsHex } from "@/const/colors";
 import { storageKeys } from "@/const/storage_keys";
+
+// Otros
+import Image from "next/image";
 
 export default function Page() {
   //Estatico

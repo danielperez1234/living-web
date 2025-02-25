@@ -1,10 +1,10 @@
 "use client";
 
-import AppButton from "@/components/common/app_button";
-import AppCartProduct from "@/components/common/app_cart_product";
-import AppNavBar from "@/components/common/app_nav_bar/main";
-import { storageKeys } from "@/const/storage_keys";
-import useCartStore from "@/service/carrito/store";
+// React y Next.js
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
+// Material-UI
 import {
   Box,
   Grid,
@@ -17,8 +17,17 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+
+// Constantes y utilidades
+import { storageKeys } from "@/const/storage_keys";
+
+// Servicios y lógica de negocio
+import useCartStore from "@/service/carrito/store";
+
+// Componentes comunes
+import AppButton from "@/components/common/app_button";
+import AppCartProduct from "@/components/common/app_cart_product";
+import AppNavBar from "@/components/common/app_nav_bar/main";
 
 export default function Cart() {
   const { cartProducts: cartItems, getCart } = useCartStore();

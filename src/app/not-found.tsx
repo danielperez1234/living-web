@@ -1,10 +1,16 @@
 // pages/404.tsx
-"use client";
+// Librerías y hooks
+import React from "react"; // React
+import { useRouter } from "next/navigation"; // Router de Next.js
+
+// Componentes comunes
 import AppButton from "@/components/common/app_button";
-import { AppColorsHex } from "@/const/colors";
+
+// Material-UI
 import { Box, Typography, Container } from "@mui/material";
-import { useRouter } from "next/navigation";
-import React from "react";
+
+// Constantes y utilidades
+import { AppColorsHex } from "@/const/colors";
 
 const NotFoundPage = () => {
   const router = useRouter();
@@ -22,7 +28,7 @@ const NotFoundPage = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
-        textAlign: "center"
+        textAlign: "center",
       }}
     >
       <Typography
@@ -35,7 +41,7 @@ const NotFoundPage = () => {
       <Typography variant="h6" sx={{ mb: 4 }}>
         Oops! La página que buscas no fue encontrada.
       </Typography>
-      
+
       <AppButton
         color="primary"
         onClick={handleGoBack}

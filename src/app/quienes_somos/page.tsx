@@ -1,17 +1,32 @@
 "use client";
+
+// React
+import { useEffect, useState } from "react";
+
+// Next.js
+import Image from "next/image";
+
+// Material-UI
+import { Box, FormControl, Grid, Typography } from "@mui/material";
+
+// Componentes comunes
 import AppButton from "@/components/common/app_button";
 import AppFooter from "@/components/common/app_footer/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
 import AppTextField from "@/components/common/app_text_field";
 import AppBackgroundImage from "@/components/common/background_image";
 import AppDataForm from "@/components/common/app_dataform";
+
+// Componentes específicos
 import Valor from "@/components/quienes_somos/valor";
+
+// Servicios y estado
+import useBannerStore from "@/service/banners/store";
+
+// Constantes y utilidades
 import { AppColorsHex } from "@/const/colors";
 import { basepath } from "@/const/utils";
-import useBannerStore from "@/service/banners/store";
-import { Box, FormControl, Grid, Typography } from "@mui/material";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+
 interface CatalogoProps {
   params: {
     category: string;
@@ -78,7 +93,7 @@ export default function QuienesSomos({
               style={{ objectFit: "cover", objectPosition: "10% 50%" }}
             ></Image>
           </Box>
-          <Box width={"100%"} ml={3}>
+          <Box width={"100%"} pl={3} pr={3}>
             <Typography variant="h4" mb={2}>
               Living
             </Typography>
@@ -86,14 +101,14 @@ export default function QuienesSomos({
               Presentación
             </Typography>
             <Box>
-              <Typography variant="body1" mb={2}>
+              <Typography variant="body1" mb={2} sx={{ textAlign: "justify" }}>
                 Nosotros somos Grupo Living, una empresa comprometida con la
                 excelencia en la venta minorista de artículos de oficina,
                 escolares y servicios de centro de copiado. Nos enorgullece
                 ofrecer una amplia gama de productos de alta calidad que
                 satisfacen sus necesidades.
               </Typography>
-              <Typography variant="body1" mb={2}>
+              <Typography variant="body1" mb={2} sx={{ textAlign: "justify" }}>
                 En grupo Living, nos esforzamos cada día por ser una de las
                 papelerías más reconocidas de León, Guanajuato y México a la
                 posteridad. Creemos firmemente que la clave de nuestro éxito
@@ -102,7 +117,7 @@ export default function QuienesSomos({
                 sólo los mejores productos del mercado, sino tambien una
                 experiencia de compra excepcional.
               </Typography>
-              <Typography variant="body1">
+              <Typography variant="body1" sx={{ textAlign: "justify" }}>
                 Aspiramos a seguir creciendo y mejorando, siempre con la vista
                 puesta en la innovación y la excelencia. Queremos ser su primera
                 opción cuando piense en artículos de oficina y escolares, y
@@ -112,12 +127,12 @@ export default function QuienesSomos({
           </Box>
         </Box>
         <Box sx={boxCardStyle}>
-          <Box width={"100%"} mr={3}>
+          <Box width={"100%"} pl={3} pr={3}>
             <Typography variant="h2" mb={3}>
               Misión
             </Typography>
             <Box>
-              <Typography variant="body1" mb={2}>
+              <Typography variant="body1" mb={2} sx={{ textAlign: "justify" }}>
                 En LIVING PAPELERIA nos dedicamos a ofrecer soluciones
                 integrales en papelería, artículos de oficina, escolar y
                 servicios de centro de copiado. Nuestra misión es brindar a
@@ -176,12 +191,12 @@ export default function QuienesSomos({
               style={{ objectFit: "cover", objectPosition: "10% 50%" }}
             ></Image>
           </Box>
-          <Box width={"100%"} ml={3}>
+          <Box width={"100%"} pl={3} pr={3}>
             <Typography variant="h2" mb={3}>
               Visión
             </Typography>
             <Box>
-              <Typography variant="body1" mb={2}>
+              <Typography variant="body1" mb={2} sx={{ textAlign: "justify" }}>
                 Nos esforzamos por ser la principal empresa minorista en el ramo
                 papelero en México, destacando por nuestra excelencia en la
                 atención al cliente y la calidad de nuestros productos y

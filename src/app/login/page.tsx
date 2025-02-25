@@ -1,7 +1,11 @@
 "use client";
 
-import AppTextField from "@/components/common/app_text_field";
-import { AppColorsHex } from "@/const/colors";
+// React y Next.js
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+
+// Material-UI
 import {
   Backdrop,
   Box,
@@ -9,18 +13,23 @@ import {
   InputAdornment,
   Snackbar,
   SnackbarCloseReason,
-  Typography
+  Typography,
 } from "@mui/material";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import AppButton from "@/components/common/app_button";
+
+// Constantes y utilidades
+import { AppColorsHex } from "@/const/colors";
 import { basepath } from "@/const/utils";
+import { storageKeys } from "@/const/storage_keys";
+
+// Servicios y lógica de negocio
 import { UserLoginRequest } from "@/service/token/interface";
 import loginRequest from "@/service/token/service";
-import { storageKeys } from "@/const/storage_keys";
+
+// Componentes comunes
+import AppTextField from "@/components/common/app_text_field";
+import AppButton from "@/components/common/app_button";
 
 export default function Login() {
   const router = useRouter();
@@ -46,7 +55,7 @@ export default function Login() {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const [user, setUser] = useState<UserLoginRequest>({
     email: "",
-    password: ""
+    password: "",
   });
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -82,7 +91,6 @@ export default function Login() {
       <Backdrop
         sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
         open={openBackDrop}
-        
       ></Backdrop>
       <Snackbar
         open={openSnack}
@@ -108,7 +116,7 @@ export default function Login() {
           alt="logo Living"
           style={{
             objectPosition: "100%",
-            objectFit: "contain"
+            objectFit: "contain",
           }}
         />
       </Box>
@@ -125,7 +133,7 @@ export default function Login() {
         mb={2}
         sx={{
           boxShadow:
-            "0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3)"
+            "0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3)",
         }}
       >
         <Box mb={5}>
@@ -163,7 +171,7 @@ export default function Login() {
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
-            )
+            ),
           }}
           onChange={(s) =>
             setUser((state) => {

@@ -1,14 +1,24 @@
 "use client";
+
+// Material-UI
+import { Box, Grid, Typography } from "@mui/material";
+
+// React
+import { useEffect } from "react";
+
+// Componentes comunes
 import AppFooter from "@/components/common/app_footer/main";
-import AppHalfBanner from "@/components/common/app_half_banner/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
 import AppSpace from "@/components/common/app_space";
 import AppBackgroundImage from "@/components/common/background_image";
+
+// Componentes específicos de ofertas
+import AppHalfBanner from "@/components/common/app_half_banner/main";
 import AppQuartBanner from "@/components/ofertas/app_quart_banner/main";
 import Oferta from "@/components/ofertas/oferta";
+
+// Servicios y estado
 import useBannerStore from "@/service/banners/store";
-import { Box, Grid, Typography } from "@mui/material";
-import { useEffect } from "react";
 
 export default function Ofertas() {
   const getBanners = useBannerStore((state) => state.getBannersOfertas);

@@ -1,16 +1,23 @@
 "use client";
+
+// Material-UI
+import { Box, Typography } from "@mui/material";
+
+// Constantes y utilidades
+import { AppColorsHex } from "@/const/colors";
+
+// Componentes comunes
 import AppFooter from "@/components/common/app_footer/main";
 import AppNavBar from "@/components/common/app_nav_bar/main";
 import AppBackgroundImage from "@/components/common/background_image";
-import { AppColorsHex } from "@/const/colors";
-import { Box, Typography } from "@mui/material";
-import { useState } from "react";
+
 interface CatalogoProps {
   params: {
     category: string;
     subcategory: string;
   };
 }
+
 const boxCardStyle = {
   bgcolor: AppColorsHex.white,
   mb: 5,
@@ -23,10 +30,10 @@ const boxCardStyle = {
   boxShadow:
     "0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3)",
 };
+
 export default function QuienesSomos({
   params: { category, subcategory },
 }: CatalogoProps) {
-  const [drawerOpen, setDrawerOpen] = useState(false);
   return (
     <AppBackgroundImage>
       <AppNavBar />

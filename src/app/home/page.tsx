@@ -1,15 +1,25 @@
 "use client";
-import AppFooter from "@/components/common/app_footer/main";
-import AppNavBar from "@/components/common/app_nav_bar/main";
-import AppSpace from "@/components/common/app_space";
-import AppBackgroundImage from "@/components/common/background_image";
-import AppFlatBanner from "@/components/home/app_flat_banner/main";
-import AppHalfBanner from "@/components/common/app_half_banner/main";
-import AppPrincipalBanner from "@/components/home/app_principal_banner/main";
-import useBannerStore from "@/service/banners/store";
-import { Box, Grid } from "@mui/material";
+
+// Next.js y React
 import { NextPage } from "next";
 import { useEffect } from "react";
+
+// Material-UI
+import { Box, Grid } from "@mui/material";
+
+// Stores (Estado global)
+import useBannerStore from "@/service/banners/store";
+
+// Componentes comunes
+import AppNavBar from "@/components/common/app_nav_bar/main";
+import AppFooter from "@/components/common/app_footer/main";
+import AppSpace from "@/components/common/app_space";
+import AppBackgroundImage from "@/components/common/background_image";
+import AppHalfBanner from "@/components/common/app_half_banner/main";
+
+// Componentes específicos de Home
+import AppFlatBanner from "@/components/home/app_flat_banner/main";
+import AppPrincipalBanner from "@/components/home/app_principal_banner/main";
 
 interface Props {}
 

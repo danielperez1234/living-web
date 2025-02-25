@@ -1,7 +1,11 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from "next"; // Tipado de Next.js
+import { Inter } from "next/font/google"; // Fuentes de Google
+import "./globals.css"; // Estilos globales
+
+// Componentes comunes
 import AppTheme from "@/components/common/app_theme";
+
+// Constantes y utilidades
 import { AppColorsHex } from "@/const/colors";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -17,11 +21,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-
-      <body style={{background:AppColorsHex.white,padding:'0px',margin:'0px'}} >
-        <AppTheme>
-        {children}
-        </AppTheme>
+      <body
+        style={{
+          background: AppColorsHex.white,
+          padding: "0px",
+          margin: "0px",
+        }}
+      >
+        <AppTheme>{children}</AppTheme>
       </body>
     </html>
   );

@@ -1,11 +1,17 @@
-"use client";
-import { basepath } from "@/const/utils";
-import useBannerStore from "@/service/banners/store";
-import { Box } from "@mui/material";
-import { NextPage } from "next";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+// Librerías y hooks
+import { useEffect } from "react"; // Hooks de React
+import { useRouter } from "next/navigation"; // Router de Next.js
+
+// Componentes y servicios
+import Image from "next/image"; // Next.js Image
+import { Box } from "@mui/material"; // Material-UI Box
+import { NextPage } from "next"; // Next.js NextPage
+
+// Constantes y utilidades
+import { basepath } from "@/const/utils"; // Utilidades del proyecto
+
+// Servicios
+import useBannerStore from "@/service/banners/store"; // Store de banners
 
 interface Props {}
 

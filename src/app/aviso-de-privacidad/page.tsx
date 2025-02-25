@@ -1,13 +1,13 @@
 "use client";
-import AppFooter from "@/components/common/app_footer/main";
+
+import { Box, Typography } from "@mui/material"; // Librerías externas
+
+import { AppColorsHex } from "@/const/colors"; // Constantes y configuraciones
+
+import AppBackgroundImage from "@/components/common/background_image"; // Componentes comunes
 import AppNavBar from "@/components/common/app_nav_bar/main";
-import AppBackgroundImage from "@/components/common/background_image";
-import Valor from "@/components/quienes_somos/valor";
-import { AppColorsHex } from "@/const/colors";
-import { basepath } from "@/const/utils";
-import { Box, Grid, Typography } from "@mui/material";
-import Image from "next/image";
-import { useState } from "react";
+import AppFooter from "@/components/common/app_footer/main";
+
 interface CatalogoProps {
   params: {
     category: string;
@@ -29,7 +29,6 @@ const boxCardStyle = {
 export default function QuienesSomos({
   params: { category, subcategory },
 }: CatalogoProps) {
-  const [drawerOpen, setDrawerOpen] = useState(false);
   return (
     <AppBackgroundImage>
       <AppNavBar />
@@ -41,7 +40,6 @@ export default function QuienesSomos({
         justifyContent={"start"}
         alignItems={"center"}
       >
-       
         <Box sx={boxCardStyle}>
           <Box width={"100%"} ml={3}>
             <Typography variant="h4" mb={2}>

@@ -1,36 +1,57 @@
 "use client";
-import AppTextField from "@/components/common/app_text_field";
-import { AppColorsHex } from "@/const/colors";
-import { Backdrop, Box, IconButton, InputAdornment, Snackbar, SnackbarCloseReason, Typography } from "@mui/material";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+
+// React
 import { useEffect, useState } from "react";
+
+// Next.js
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+
+// Material-UI
+import {
+  Backdrop,
+  Box,
+  IconButton,
+  InputAdornment,
+  Snackbar,
+  SnackbarCloseReason,
+  Typography,
+} from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+
+// Componentes comunes
+import AppTextField from "@/components/common/app_text_field";
 import AppButton from "@/components/common/app_button";
-import AppDatePicker from "@/components/common/app_date_picker";
-import { basepath } from "@/const/utils";
-import { UserRegistroRequest } from "@/service/token/interface";
+
+// Servicios y estado
 import { registerRequest } from "@/service/token/service";
+
+// Constantes y utilidades
+import { AppColorsHex } from "@/const/colors";
+import { basepath } from "@/const/utils";
 import { storageKeys } from "@/const/storage_keys";
+
+// Interfaces
+import { UserRegistroRequest } from "@/service/token/interface";
 
 export default function Login() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
   const [openBackDrop, setOpenBackdrop] = useState(false);
-  
+
   const [errorMessage, setErrorMsg] = useState("");
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const [userRegister, setUserRegister] = useState<UserRegistroRequest>({
     email: "",
     password: "",
-    userName: ""
+    userName: "",
   });
   const [userError, setUserError] = useState<UserRegistroRequest>({
     email: "",
     password: "",
-    userName: ""
+    userName: "",
   });
   const [isWorng, setIsWrong] = useState(false);
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -40,25 +61,29 @@ export default function Login() {
     event.preventDefault();
   };
   const validateUserRegistro = () => {
-    const errors: UserRegistroRequest = {...userError};
-    
-    if(userRegister.email.length == 0 ){
-      errors.email  = "";
-    }else if (!/^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(userRegister.email)) {
+    const errors: UserRegistroRequest = { ...userError };
+
+    if (userRegister.email.length == 0) {
+      errors.email = "";
+    } else if (
+      !/^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(userRegister.email)
+    ) {
       errors.email = "El correo electrónico no es válido.";
     } else {
       errors.email = "";
     }
-    if(userRegister.password.length == 0 ){
+    if (userRegister.password.length == 0) {
       errors.password = "";
-    }else if (userRegister.password.length < 6 ) {
+    } else if (userRegister.password.length < 6) {
       errors.password = "La contraseña debe tener al menos 6 caracteres.";
     } else {
       errors.password = "";
     }
-    setIsWrong( !Object.values(errors).every((value) =>
-      typeof value === "string" ? value.trim() === "" : false
-    ))
+    setIsWrong(
+      !Object.values(errors).every((value) =>
+        typeof value === "string" ? value.trim() === "" : false
+      )
+    );
     setUserError(errors);
   };
   const handleRegisterRequested = async () => {
@@ -74,8 +99,8 @@ export default function Login() {
       localStorage.setItem(storageKeys.email, response.data.email);
       localStorage.setItem(storageKeys.userName, response.data.userName);
       router.push("/home");
-    }else{
-      setErrorMsg(response.errors?.toString() ??'');
+    } else {
+      setErrorMsg(response.errors?.toString() ?? "");
       setOpenSnack(true);
       setOpenBackdrop(false);
     }
@@ -107,7 +132,6 @@ export default function Login() {
       <Backdrop
         sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
         open={openBackDrop}
-        
       ></Backdrop>
       <Snackbar
         open={openSnack}
@@ -133,7 +157,7 @@ export default function Login() {
           alt="logo Living"
           style={{
             objectPosition: "100%",
-            objectFit: "contain"
+            objectFit: "contain",
           }}
         />
       </Box>
@@ -150,7 +174,7 @@ export default function Login() {
         mb={2}
         sx={{
           boxShadow:
-            "0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3)"
+            "0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3)",
         }}
       >
         <Box mb={5}>
@@ -209,7 +233,7 @@ export default function Login() {
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
-            )
+            ),
           }}
         />
         {/* <AppTextField
@@ -227,7 +251,7 @@ export default function Login() {
           !(
             Object.values(userRegister).every((value) =>
               typeof value === "string" ? value.trim() !== "" : true
-            ) 
+            )
             // && passwordConfirm.trim() !== ""
           ) || isWorng
         }

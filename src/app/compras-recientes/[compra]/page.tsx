@@ -1,9 +1,16 @@
 "use client";
 
+// Material-UI
 import { Box, Card, Grid } from "@mui/material";
+
+// Estado global (Zustand)
+import useCartStore from "@/service/carrito/store";
+
+// Componentes comunes
 import AppNavBar from "@/components/common/app_nav_bar/main";
 import AppFooter from "@/components/common/app_footer/main";
-import useCartStore from "@/service/carrito/store";
+
+// Componentes específicos
 import AppProductDetail from "@/components/detalle/app_product_detail";
 
 export default function PurchaseDetail() {

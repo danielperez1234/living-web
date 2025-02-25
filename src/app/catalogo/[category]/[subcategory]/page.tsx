@@ -1,17 +1,28 @@
 "use client";
 
-import AppFilterDrawer from "@/components/catalogo/app_filter_drawer";
-import AppFooter from "@/components/common/app_footer/main";
-import AppNavBar from "@/components/common/app_nav_bar/main";
-import AppProduct from "@/components/common/app_product";
-import AppBackgroundImage from "@/components/common/background_image";
-import { AppColorsHex } from "@/const/colors";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import { Box, Fab, Grid, Typography } from "@mui/material";
+// React hooks
 import { useCallback, useEffect, useState } from "react";
+
+// Material-UI
+import { Box, Fab, Grid, Typography } from "@mui/material";
+import FilterListIcon from "@mui/icons-material/FilterList";
+
+// Constantes y utilidades
+import { AppColorsHex } from "@/const/colors";
+
+// Estado global (Zustand)
 import useCategoriasStore from "@/service/categorias_v2/store";
 import useProductosStore from "@/service/productos_v2/store";
 import useSubcategoriasStore from "@/service/subcategorias-v2/store";
+
+// Componentes comunes
+import AppBackgroundImage from "@/components/common/background_image";
+import AppFooter from "@/components/common/app_footer/main";
+import AppNavBar from "@/components/common/app_nav_bar/main";
+import AppProduct from "@/components/common/app_product";
+
+// Componentes específicos del catálogo
+import AppFilterDrawer from "@/components/catalogo/app_filter_drawer";
 
 export default function Catalogo() {
   // Zustand de categorías y productos
