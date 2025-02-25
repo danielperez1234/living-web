@@ -13,6 +13,8 @@ import { basepath } from "@/const/utils";
 // Componentes comunes
 import AppNavBar from "@/components/common/app_nav_bar/main";
 import AppFooter from "@/components/common/app_footer/main";
+import { PostOpenPayment } from "@/service/pago/service";
+import { storageKeys } from "@/const/storage_keys";
 
 export default function Billing() {
   const [htmlContent, setHtmlContent] = useState("");
@@ -59,9 +61,8 @@ export default function Billing() {
           );
 
           console.log("Device Session ID:", deviceSessionId);
-
           // Add click event to the Pay button
-          payButtonRef.current?.addEventListener("click", handlePayment);
+          payButtonRef.current?.addEventListener("click", ()=>handlePayment(deviceSessionId));
         }
       };
     };
@@ -71,26 +72,28 @@ export default function Billing() {
     return () => {
       // Cleanup scripts and event listeners
       if (payButtonRef.current) {
-        payButtonRef.current.removeEventListener("click", handlePayment);
+        payButtonRef.current.removeEventListener("click", ()=>handlePayment(""));
       }
     };
   }, []);
-  const handlePayment = () => {
+  const handlePayment = async (sesionId:string) => {
     if (window.OpenPay && formRef.current) {
       window.OpenPay.token.extractFormAndCreate(
         formRef.current,
-        (response: any) => {
-          console.log("Token created:", response.data.id);
+        async (response: any) => {
           const tokenField = document.getElementById(
             "token_id"
           ) as HTMLInputElement;
           tokenField.value = response.data.id;
-          console.log(tokenField.value);
+          await PostOpenPayment({
+            sessionId:sesionId,
+            token:tokenField.value
+          },localStorage.getItem(storageKeys.token) ?? '')
           router.push("/home");
           //formRef.current!.submit();
         },
         (error: any) => {
-          console.error("Error creating token:", error);
+         
           alert(`ERROR [${error.status}] ${error.message}`);
           if (payButtonRef.current) payButtonRef.current.disabled = false;
         }

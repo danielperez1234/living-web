@@ -1,5 +1,6 @@
 // pages/404.tsx
 // Librerías y hooks
+'use client'
 import React from "react"; // React
 import { useRouter } from "next/navigation"; // Router de Next.js
 

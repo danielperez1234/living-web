@@ -1,3 +1,4 @@
+'use client'
 // Librerías y hooks
 import { useEffect } from "react"; // Hooks de React
 import { useRouter } from "next/navigation"; // Router de Next.js

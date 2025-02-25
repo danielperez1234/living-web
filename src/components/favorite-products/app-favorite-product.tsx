@@ -1,20 +1,18 @@
 import { AppColorsHex } from "@/const/colors";
-import { Product } from "@/service/productos/interface";
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import Image from "next/image";
-import AppCounter from "./app_counter";
-import AppButton from "./app_button";
 import useCartStore from "@/service/carrito/store";
 import { useEffect, useState } from "react";
 import { basepath } from "@/const/utils";
 import { storageKeys } from "@/const/storage_keys";
 import { useRouter } from "next/navigation";
+import { FavoriteProduct } from "@/service/favorite-products/interface";
 import useFavoriteProductosStore from "@/service/favorite-products/store";
 
-export default function AppProduct(props: {
+export default function AppFavoriteProduct(props: {
   titulo: string;
   image: string;
-  product: Product;
+  product: FavoriteProduct;
 }) {
   // Router
   const router = useRouter();
@@ -24,7 +22,7 @@ export default function AppProduct(props: {
   const { addProductToFavorites, removeProductToFavorites } = useFavoriteProductosStore(state => state);
 
   // Estado local para manejar si el producto es favorito
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(true);
   const [laodingFavorite, setLoadingFavorite] = useState(false);
 
   // Local Hooks
@@ -41,8 +39,7 @@ export default function AppProduct(props: {
     }
   }, [props.product.id]);
 
-  const { price, wholesalePrice, maxOrder } = props.product;
-  
+
   const toggleFavorite = async () => {
     if(laodingFavorite) return;
     setLoadingFavorite(true);
@@ -94,8 +91,9 @@ export default function AppProduct(props: {
           >
             <Box width={"100%"} sx={{ aspectRatio: 1, position: "relative" }}>
               <Image
-                src={`/${basepath}/svg/${isFavorite ? "heart_filled_svg.svg" : "heart_svg.svg"
-                  }`}
+                src={`/${basepath}/svg/${
+                  isFavorite ? "heart_filled_svg.svg" : "heart_svg.svg"
+                }`}
                 alt="Favorito"
                 width={30}
                 height={30}
@@ -146,7 +144,7 @@ export default function AppProduct(props: {
               mb={2}
             >
               <Box width={"49%"}>
-                <Typography variant="h5">${price.toFixed(2)}</Typography>
+                <Typography variant="h5">${props.product.price.toFixed(2)}</Typography>
                 <Typography
                   variant="h5"
                   fontSize={"12px"}
@@ -175,41 +173,15 @@ export default function AppProduct(props: {
                 flexDirection={"column"}
                 alignItems={"end"}
               >
-                <Typography variant="h5" color={AppColorsHex.blue}>
-                  ${wholesalePrice.toFixed(2)}
-                </Typography>
-                <Typography
-                  variant="h5"
-                  fontSize={"12px"}
-                  sx={{ opacity: 0.6 }}
-                >
-                  {`A partir de ${maxOrder} pz`}
-                </Typography>
+                
+                
               </Box>
             </Box>
           </Box>
-          <AppCounter maxCount={40} count={count} setCount={setCount} />
+          
         </Box>
       </Box>
-      <AppButton
-        label={"Agregar al carrito"}
-        sx={{
-          minWidth: "20%",
-          maxWidth: "75%",
-          height: "2.7vw",
-          width: "100%",
-          minHeight: "50px",
-        }}
-        onClick={() => {
-          count > 0
-            ? addToCart(
-              props.product,
-              count,
-              localStorage.getItem(storageKeys.token)
-            )
-            : null;
-        }}
-      />
+      
     </Grid>
   );
 }

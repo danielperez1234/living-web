@@ -13,7 +13,6 @@ export default function AppBackgroundImage({
 
   useEffect(()=>{
     if(fondosWeb.length == 0){
-      console.log("hola")
     getFondosWeb();}
   },[])
   return (
