@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import usePurchaseHistory from "@/service/purchase-history/store";
 
 export default function AppPurchaceHistoryElement({ item }: { item: PurchaseHistoryElement }) {
-  const {selectPurchase} = usePurchaseHistory(state=>state);
+  const { selectPurchase } = usePurchaseHistory(state => state);
   const isSmallScreen = useMediaQuery((theme: any) =>
     theme.breakpoints.down("sm")
   );
@@ -29,7 +29,7 @@ export default function AppPurchaceHistoryElement({ item }: { item: PurchaseHist
       width={"100%"}
     >
       <Box
-        onClick={()=>{
+        onClick={() => {
           selectPurchase(item);
           router.push('/purchase-history/detail');
         }}
@@ -43,6 +43,18 @@ export default function AppPurchaceHistoryElement({ item }: { item: PurchaseHist
         gap={isSmallScreen ? "10px" : "20px"}
         borderRadius={"8px"}
         boxShadow={3}
+        sx={{
+          cursor: "pointer", // Cambia el cursor a pointer para indicar que es clickeable
+          transition: "background-color 0.3s ease, transform 0.2s ease", // Agrega una transición suave
+          "&:hover": {
+            backgroundColor: "#f5f5f5", // Cambia el color de fondo al pasar el mouse
+            transform: "scale(1.02)", // Aumenta ligeramente el tamaño al hacer hover
+          },
+          "&:active": {
+            backgroundColor: "#e0e0e0", // Cambia el color de fondo al hacer clic
+            transform: "scale(0.98)", // Reduce ligeramente el tamaño al hacer clic
+          },
+        }}
       >
         {/* Estado y Monto */}
         <Box textAlign={isSmallScreen ? "center" : "left"}>

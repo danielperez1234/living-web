@@ -27,7 +27,7 @@ export default function AppBackgroundImage({
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundAttachment: "fixed",
-          backgroundImage: `url(${fondosWeb[0]?.assetUrl ?? `/${basepath}/marca/fondo.svg`})`,
+          backgroundImage: `url(${fondosWeb.find(e=>true)?.assetUrl ?? `/${basepath}/marca/fondo.svg`})`,
           zIndex: -1,
         }}
       />

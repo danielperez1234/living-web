@@ -21,6 +21,10 @@ export interface ProductsBought {
   productsBoughtId: string;
   purchaseDetailId: string;
   productId:        string;
+  name:             string;
+  imageUrlOriginal: string;
+  imageUrlSmall:    string;
   price:            number;
   quantity:         number;
+  totalPrice:       number;
 }

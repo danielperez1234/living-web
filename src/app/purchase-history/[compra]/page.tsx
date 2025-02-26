@@ -32,15 +32,14 @@ export default function PurchaseDetail() {
         <AppNavBar />
         <Grid
           container
-          marginX={"10%"}
-          width={"80vw"}
+          width={"100%"}
           xs={12}
           alignContent={"center"}
           justifyContent={"center"}
         >
           <Card
             sx={{
-              width: "70%",
+              width: {md:"90%",s:"90%",xs:"80%"},
               maxHeight: "60vh", // Altura máxima para evitar que crezca demasiado
               overflowY: "auto", // Habilita el scroll vertical si los productos sobrepasan la altura
               padding: "20px", // Añade padding para mejor presentación
@@ -48,11 +47,11 @@ export default function PurchaseDetail() {
               flexDirection: "column",
             }}
           >
-            {cartItems.map((item, i) => (
+            {purchaseSelected?.purchaseDetail.productsBought.map((item, i) => (
               <AppProductDetail
                 key={`approductCart${i}`}
                 producto={item}
-                cantidad={2} //TODO: Cambiar por numero dinámico
+                 //TODO: Cambiar por numero dinámico
               />
             ))}
           </Card>
