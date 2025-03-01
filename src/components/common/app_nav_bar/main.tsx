@@ -48,12 +48,10 @@ export default function AppNavBar({}) {
     }
   };
   const handleMisCompras = () => {
-      router.push("/purchase-history");
-    
+    router.push("/purchase-history");
   };
   const handleFavorite = () => {
-      router.push("/favorite-products");
-    
+    router.push("/favorite-products");
   };
 
   useEffect(() => {
@@ -173,14 +171,22 @@ export default function AppNavBar({}) {
                       >
                         Mi Carrito
                       </MenuItem>
-                      <MenuItem onClick={() => {
+                      <MenuItem
+                        onClick={() => {
                           handleMisCompras();
                           handleClose();
-                        }} >Mis Compras</MenuItem>
-                      <MenuItem onClick={() => {
+                        }}
+                      >
+                        Mis Compras
+                      </MenuItem>
+                      <MenuItem
+                        onClick={() => {
                           handleFavorite();
                           handleClose();
-                        }} >Favoritos</MenuItem>
+                        }}
+                      >
+                        Favoritos
+                      </MenuItem>
                       <MenuItem
                         onClick={() => {
                           localStorage.clear();

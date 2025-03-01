@@ -86,7 +86,7 @@ export default function AppFilterDrawer({
   return (
     <Drawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
       <Box
-        display={{ sm: "none", md: "flex", xs: "none" }}
+        display={{ sm: "flex", md: "flex", xs: "flex" }}
         padding={5}
         minWidth={"20vw"}
         flexDirection={"column"}
