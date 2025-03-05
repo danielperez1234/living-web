@@ -45,18 +45,18 @@ export default function Catalogo() {
   const [selectedSubcategoria, setSelectedSubcategoria] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(1);
 
   // Cargar más productos con paginación
   const loadMoreProducts = useCallback(async () => {
-    if (loading || !hasMore) return;
-
-    setLoading(true);
+    
     const nextPage = page + 1;
+    
 
     if (subcategoriaPaginada) {
-      console.log("hola");
+      const hasMore = nextPage * 20 <= subcategoriaPaginada.elementos
+      if (loading || !hasMore) return;
+  
       setLoading(true);
       await getSubcategoriaPaginada(
         subcategoriaPaginada.datosPaginados.id,
@@ -70,7 +70,7 @@ export default function Catalogo() {
     }
 
     setLoading(false);
-  }, [loading, hasMore, page, selectedSubcategoria, getSubcategoriaPaginada]);
+  }, [loading, page, selectedSubcategoria, getSubcategoriaPaginada]);
 
   // Manejo del scroll para paginación
   useEffect(() => {
@@ -81,7 +81,6 @@ export default function Catalogo() {
         document.documentElement.offsetHeight - 100;
 
       if (isBottom) {
-        console.log("¡Has llegado al final de la página!"); // Aquí agregamos el log
         loadMoreProducts();
       }
     };
@@ -104,15 +103,7 @@ export default function Catalogo() {
     getProductos,
     getCategorias,
   ]);
-
-  // Determinar si hay más productos
-  useEffect(() => {
-    if (
-      subcategoriaPaginada?.datosPaginados?.subcategoryProductDtos?.length === 0
-    ) {
-      setHasMore(false); // No hay más productos
-    }
-  }, [subcategoriaPaginada]);
+ 
 
   return (
     <AppBackgroundImage>
@@ -138,25 +129,25 @@ export default function Catalogo() {
           {(subcategoriaPaginada?.datosPaginados?.subcategoryProductDtos ?? [])
             .length > 0
             ? (
-                subcategoriaPaginada?.datosPaginados?.subcategoryProductDtos ??
-                []
-              ).map((product, i) => (
-                <AppProduct
-                  key={i}
-                  product={product}
-                  image={product.imageUrlSmall}
-                  titulo={product.name}
-                />
-              ))
+              subcategoriaPaginada?.datosPaginados?.subcategoryProductDtos ??
+              []
+            ).map((product, i) => (
+              <AppProduct
+                key={i}
+                product={product}
+                image={product.imageUrlSmall}
+                titulo={product.name}
+              />
+            ))
             : listaDeProductos.length > 0 &&
-              listaDeProductos.map((producto, i) => (
-                <AppProduct
-                  key={i}
-                  product={producto}
-                  image={producto.imageUrlSmall}
-                  titulo={producto.name}
-                />
-              ))}
+            listaDeProductos.map((producto, i) => (
+              <AppProduct
+                key={i}
+                product={producto}
+                image={producto.imageUrlSmall}
+                titulo={producto.name}
+              />
+            ))}
         </Grid>
         {loading && <Typography>Cargando...</Typography>}
       </Box>

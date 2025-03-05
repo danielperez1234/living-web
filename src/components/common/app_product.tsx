@@ -42,9 +42,9 @@ export default function AppProduct(props: {
   }, [props.product.id]);
 
   const { price, wholesalePrice, maxOrder } = props.product;
-  
+
   const toggleFavorite = async () => {
-    if(laodingFavorite) return;
+    if (laodingFavorite) return;
     setLoadingFavorite(true);
     try {
       if (isFavorite) {
@@ -146,7 +146,11 @@ export default function AppProduct(props: {
               mb={2}
             >
               <Box width={"49%"}>
-                <Typography variant="h5">${price.toFixed(2)}</Typography>
+                <Typography
+                  variant="h5"
+                  color={count < props.product.maxOrder ? AppColorsHex.blue : AppColorsHex.black}
+                  fontWeight={count < props.product.maxOrder ? 400 : 200}>${price.toFixed(2)}
+                </Typography>
                 <Typography
                   variant="h5"
                   fontSize={"12px"}
@@ -175,7 +179,9 @@ export default function AppProduct(props: {
                 flexDirection={"column"}
                 alignItems={"end"}
               >
-                <Typography variant="h5" color={AppColorsHex.blue}>
+                <Typography variant="h5"
+                  color={count >= props.product.maxOrder ? AppColorsHex.blue : AppColorsHex.black}
+                  fontWeight={count >= props.product.maxOrder ? 400 : 200}>
                   ${wholesalePrice.toFixed(2)}
                 </Typography>
                 <Typography
@@ -188,7 +194,7 @@ export default function AppProduct(props: {
               </Box>
             </Box>
           </Box>
-          <AppCounter maxCount={40} count={count} setCount={setCount} />
+          <AppCounter maxCount={1000} count={count} setCount={setCount} />
         </Box>
       </Box>
       <AppButton

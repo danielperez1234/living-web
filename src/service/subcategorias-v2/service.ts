@@ -44,7 +44,7 @@ export async function GetSubcategoriasPaginadas(id: string, page: number): Promi
         var token = localStorage.getItem(storageKeys.token);
         return await request({
             method: "GET",
-            endpoint: `/${id}?pageNumber=${page}&pageSize=10`,
+            endpoint: `/${id}?pageNumber=${page}&pageSize=24`,
             headers: {
                 authorization: `bearer ${token}`,
             },
