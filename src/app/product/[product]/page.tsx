@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
 // Material-UI
-import { Box, Radio, Typography } from "@mui/material";
+import { Box, Modal, Radio, Typography } from "@mui/material";
 
 // Componentes comunes
 import AppButton from "@/components/common/app_button";
@@ -58,27 +58,49 @@ export default function Page() {
   const { product } = useParams();
   const producto = useProductosStore((state) => state.producto);
   const getProductById = useProductosStore((state) => state.getProductById);
+  const imagenesDelProducto = useProductosStore(
+    (state) => state.imagenesDelProducto
+  );
+  const getProductImagesById = useProductosStore(
+    (state) => state.getProductImagesById
+  );
 
   //Cart Zustand
   const { cartProducts: cartItems, addToCart } = useCartStore();
 
   //Local Hooks
   const [count, setCount] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
+    getProductImagesById(product.toString());
     if (producto.id !== product.toString()) {
       getProductById(product.toString());
     }
-
     const existingItem = cartItems.find(
       (item) => item.productId === producto.id
     );
-    if (existingItem) {
-      setCount(existingItem.quantity);
-    } else {
-      setCount(0);
-    }
+    setCount(existingItem ? existingItem.quantity : 0);
   }, [producto.id, product]);
+
+  useEffect(() => {
+    if (!isPaused) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex(
+          (prevIndex) => (prevIndex + 1) % imagenesDelProducto.length
+        );
+      }, 5000);
+
+      return () => clearInterval(interval);
+    }
+  }, [imagenesDelProducto.length, isPaused]);
+
+  const handleImageClick = () => {
+    setIsPaused(!isPaused); // Pausa el cambio de imágenes
+    setOpenModal(true); // Abre la imagen en grande
+  };
 
   return (
     <Box width={"100%"}>
@@ -110,14 +132,26 @@ export default function Page() {
         >
           <Box width={"90%"}>
             <Box width={"100%"} sx={{ aspectRatio: 1, position: "relative" }}>
-              <Image
-                fill
-                alt={`${producto.name}`}
-                src={producto.imageUrlOriginal}
-                style={{
-                  objectFit: "cover",
-                }}
-              />
+              {imagenesDelProducto.length > 0 ? (
+                <Image
+                  fill
+                  alt={`${producto.name}`}
+                  src={imagenesDelProducto[currentImageIndex]}
+                  style={{
+                    objectFit: "cover",
+                  }}
+                  onClick={handleImageClick}
+                />
+              ) : (
+                <Image
+                  fill
+                  alt={`${producto.name}`}
+                  src={producto.imageUrlOriginal}
+                  style={{
+                    objectFit: "cover",
+                  }}
+                />
+              )}
             </Box>
           </Box>
         </Box>
@@ -288,6 +322,39 @@ export default function Page() {
         </Box>
       </Box>
       <AppFooter />
+      <Modal
+        open={openModal}
+        onClose={() => {
+          setOpenModal(false);
+          setIsPaused(false);
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
+          }}
+          onClick={() => {
+            setOpenModal(false);
+            setIsPaused(false);
+          }}
+        >
+          <Image
+            src={imagenesDelProducto[currentImageIndex]}
+            alt="Imagen ampliada"
+            width={600}
+            height={600}
+            style={{ objectFit: "contain" }}
+          />
+        </Box>
+      </Modal>
     </Box>
   );
 }

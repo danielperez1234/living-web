@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { ProductoBase } from "./interface";
-import { GetAllProducts, GetProductById } from "./service";
+import { GetAllProducts, GetProductById, GetProductImagesById } from "./service";
 
 interface ProductosState {
     allProducts: ProductoBase[];
@@ -8,8 +8,10 @@ interface ProductosState {
     errorMsg: string | undefined;
     producto: ProductoBase;
     loading: boolean;
+    imagenesDelProducto: string[];
     getAllProducts: () => void;
     getProductById: (id: string) => void;
+    getProductImagesById: (id: string) => void;
     clean: () => void;
 }
 
@@ -27,6 +29,7 @@ const useProductosStore = create<ProductosState>()((set) => ({
     allProducts: [],
     errorMsg: undefined,
     loading: false,
+    imagenesDelProducto: [],
     getAllProducts: async () => {
         set((state) => ({
             ...state,
@@ -80,11 +83,36 @@ const useProductosStore = create<ProductosState>()((set) => ({
             };
         });
     },
+    getProductImagesById: async (id) => {
+        set((state) => ({
+            ...state,
+            loading: true
+        }));
+        const response = await GetProductImagesById(id);
+        console.log("Obtener imagenes para el carousel: ", response.data);
+        if (response.status < 300 && response.data) {
+            set((state) => {
+                return {
+                    ...state,
+                    loading: false,
+                    imagenesDelProducto: response.data
+                };
+            });
+            return;
+        }
+        set((state) => {
+            return {
+                ...state,
+                loading: false
+            };
+        });
+    },
     clean: () =>
         set(() => ({
             errorMsg: undefined,
             loading: false,
             productos: undefined,
+            imagenesDelProducto: [],
         })),
 }));
 
