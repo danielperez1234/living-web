@@ -150,6 +150,7 @@ export default function Page() {
                   style={{
                     objectFit: "cover",
                   }}
+                  onClick={handleImageClick}
                 />
               )}
             </Box>
@@ -346,13 +347,23 @@ export default function Page() {
             setIsPaused(false);
           }}
         >
-          <Image
-            src={imagenesDelProducto[currentImageIndex]}
-            alt="Imagen ampliada"
-            width={600}
-            height={600}
-            style={{ objectFit: "contain" }}
-          />
+          {imagenesDelProducto.length > 0 ? (
+            <Image
+              src={imagenesDelProducto[currentImageIndex]}
+              alt="Imagen ampliada"
+              width={600}
+              height={600}
+              style={{ objectFit: "contain" }}
+            />
+          ) : (
+            <Image
+              src={producto.imageUrlOriginal}
+              alt="Imagen ampliada"
+              width={600}
+              height={600}
+              style={{ objectFit: "contain" }}
+            />
+          )}
         </Box>
       </Modal>
     </Box>
