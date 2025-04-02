@@ -1,8 +1,12 @@
 import { create } from "zustand";
 import { ProductoBase } from "./interface";
-import { GetAllProducts, GetProductById, GetProductImagesById } from "./service";
+import { GetAllProducts, GetProductById, GetProductImagesById, SearchForProduct } from "./service";
 
 interface ProductosState {
+    category?: string;
+    subcategory?: string;
+    searchQuery?: string;
+    searchedProducts?: ProductoBase[];
     allProducts: ProductoBase[];
     productos?: ProductoBase;
     errorMsg: string | undefined;
@@ -12,6 +16,7 @@ interface ProductosState {
     getAllProducts: () => void;
     getProductById: (id: string) => void;
     getProductImagesById: (id: string) => void;
+    searchForProduct: (query: string, category?: string, subcategory?: string) => void;
     clean: () => void;
 }
 
@@ -106,6 +111,23 @@ const useProductosStore = create<ProductosState>()((set) => ({
                 loading: false
             };
         });
+    },
+    searchForProduct: async(query, Category, subcategory) => {
+        set((state) => ({
+            ...state,
+            loading: true,
+        }));
+        const response = await SearchForProduct(query, Category, subcategory);
+        if(response.status < 300 && response.data) {
+            set((state) => {
+                return {
+                    ...state,
+                    loading: false,
+                    searchedProducts: response.data
+                };
+            });
+            return;
+        }
     },
     clean: () =>
         set(() => ({

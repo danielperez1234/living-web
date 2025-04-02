@@ -45,3 +45,20 @@ export async function GetProductImagesById(id: string): Promise<Response<string[
     };
   }
 }
+
+export async function SearchForProduct(query: string, category?: string, subcategory?: string): Promise<Response<ProductoBase[]>> {
+  try {
+    console.log("Categoria: ", category);
+    console.log('Subcategoria: ', subcategory);
+    console.log('Query: ', query);
+    return await request({
+      method: "GET",
+      endpoint: `/api/Product/search-product?query=${query}&category=${category}&subcategory=${subcategory}`
+    });
+  } catch (err) {
+    return {
+      status: 500,
+      errors: `${err}`
+    };
+  }
+}

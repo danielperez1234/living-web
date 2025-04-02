@@ -13,6 +13,7 @@ import {
 import Image from "next/image";
 import NavBarTextButton from "./nav_bar_text_button";
 import SearchIcon from "@mui/icons-material/Search";
+import CloseIcon from "@mui/icons-material/Close";
 import PersonIcon from "@mui/icons-material/Person";
 import LoginIcon from "@mui/icons-material/Login";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -25,6 +26,7 @@ import { useRouter } from "next/navigation";
 import { basepath } from "@/const/utils";
 import { LocationOn } from "@mui/icons-material";
 import { storageKeys } from "@/const/storage_keys";
+
 export default function AppNavBar({}) {
   //hooks
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -59,6 +61,18 @@ export default function AppNavBar({}) {
       setIsLocalStorage(true);
     }
   }, []);
+
+  /////////Buscador
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearchClick = () => {
+    setIsSearchOpen(!isSearchOpen);
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
 
   return (
     <Box
@@ -138,7 +152,11 @@ export default function AppNavBar({}) {
                 flexDirection={"row"}
                 justifyContent={"end"}
               >
-                <IconButton>
+                <IconButton
+                  onClick={() => {
+                    console.log("search");
+                  }}
+                >
                   <SearchIcon color="info" />
                 </IconButton>
                 {isLocalStorage ? (
