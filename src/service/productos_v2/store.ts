@@ -3,8 +3,8 @@ import { ProductoBase } from "./interface";
 import { GetAllProducts, GetProductById, GetProductImagesById, SearchForProduct } from "./service";
 
 interface ProductosState {
-    category?: string;
-    subcategory?: string;
+    // category?: string;
+    // subcategory?: string;
     searchQuery?: string;
     searchedProducts?: ProductoBase[];
     allProducts: ProductoBase[];

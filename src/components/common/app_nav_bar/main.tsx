@@ -9,6 +9,7 @@ import {
   MenuItem,
   Toolbar,
   Typography,
+  TextField,
 } from "@mui/material";
 import Image from "next/image";
 import NavBarTextButton from "./nav_bar_text_button";
@@ -26,16 +27,18 @@ import { useRouter } from "next/navigation";
 import { basepath } from "@/const/utils";
 import { LocationOn } from "@mui/icons-material";
 import { storageKeys } from "@/const/storage_keys";
+import useProductosStore from "@/service/productos_v2/store";
+import useCategoriasStore from "@/service/categorias_v2/store";
+import useSubcategoriasStore from "@/service/subcategorias-v2/store";
 
 export default function AppNavBar({}) {
-  //hooks
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [isLocalStorage, setIsLocalStorage] = useState(false);
-  // router
   const router = useRouter();
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget as HTMLElement); // Explicitly cast to HTMLElement
+    setAnchorEl(event.currentTarget as HTMLElement);
   };
 
   const handleClose = () => {
@@ -49,9 +52,11 @@ export default function AppNavBar({}) {
       router.push("/mi-carrito");
     }
   };
+
   const handleMisCompras = () => {
     router.push("/purchase-history");
   };
+
   const handleFavorite = () => {
     router.push("/favorite-products");
   };
@@ -63,6 +68,9 @@ export default function AppNavBar({}) {
   }, []);
 
   /////////Buscador
+  const searchProduct = useProductosStore((state) => state.searchForProduct);
+  const searchedProducts = useProductosStore((state) => state.searchedProducts);
+
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -74,12 +82,21 @@ export default function AppNavBar({}) {
     setSearchTerm(event.target.value);
   };
 
+  const category = useCategoriasStore((state) => state.categoriaSeleccionada);
+  const subcategory = useSubcategoriasStore((state) => state.subcategoriaPaginada);
+
+  useEffect(() => {
+    searchProduct(searchTerm, category?.id, subcategory?.datosPaginados.id);
+    if (searchedProducts && searchedProducts[1]) {
+      console.log("Searched Products: ", searchedProducts.length);
+    }
+  }, [searchTerm])
+
   return (
     <Box
       height={{ sm: "65px", xs: "65px", md: "70px" }}
       marginBottom={{ sm: "20px", xs: "30px", md: "60px" }}
     >
-      {" "}
       <HideOnScroll>
         <AppBar sx={{ bgcolor: AppColorsHex.white }}>
           <AppDrawer
@@ -112,53 +129,78 @@ export default function AppNavBar({}) {
                   }}
                 />
               </Box>
+
               <Box
                 flexGrow={1}
                 display={{ md: "flex", sm: "none", xs: "none" }}
                 flexDirection={"row"}
                 justifyContent={"space-between"}
               >
-                <IconButton onClick={() => setDrawerOpen(true)}>
-                  <MenuIcon />
-                </IconButton>
                 <NavBarTextButton
                   title={"Catálogo"}
-                  onClick={() => {
-                    router.push("/catalogo/0/0");
-                  }}
+                  onClick={() => router.push("/catalogo/0/0")}
                 />
                 <NavBarTextButton
                   title={"Ofertas"}
-                  onClick={() => {
-                    router.push("/ofertas");
-                  }}
+                  onClick={() => router.push("/ofertas")}
                 />
                 <NavBarTextButton
                   title={"Servicios"}
-                  onClick={() => {
-                    router.push("/servicios");
-                  }}
+                  onClick={() => router.push("/servicios")}
                 />
                 <NavBarTextButton
                   title={"Quiénes Somos"}
-                  onClick={() => {
-                    router.push("/quienes_somos");
-                  }}
+                  onClick={() => router.push("/quienes_somos")}
                 />
               </Box>
+
               <Box
                 flexGrow={2}
-                display={"flex"}
-                flexDirection={"row"}
-                justifyContent={"end"}
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="end"
               >
-                <IconButton
-                  onClick={() => {
-                    console.log("search");
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    transition: "width 0.3s ease-in-out",
+                    width: isSearchOpen ? "auto" : "auto",
                   }}
                 >
-                  <SearchIcon color="info" />
-                </IconButton>
+                    <Box
+                      sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      overflow: "hidden",
+                      transition: "width 0.4s ease-in-out, opacity 0.3s ease-in-out",
+                      width: isSearchOpen || searchTerm ? "200px" : "0px",
+                      opacity: isSearchOpen || searchTerm ? 1 : 0,
+                      }}
+                    >
+                      <TextField
+                      autoFocus={isSearchOpen}
+                      value={searchTerm}
+                      onChange={handleSearchChange}
+                      placeholder="Buscar..."
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                      onBlur={() => {
+                        if (!searchTerm) setIsSearchOpen(false);
+                      }}
+                      />
+                    </Box>
+                  <IconButton onClick={handleSearchClick}>
+                    {isSearchOpen ? (
+                      <CloseIcon color="primary" />
+                    ) : (
+                      <SearchIcon color="info" />
+                    )}
+                  </IconButton>
+                </Box>
+
                 {isLocalStorage ? (
                   <div>
                     <IconButton
@@ -221,6 +263,7 @@ export default function AppNavBar({}) {
                     <LoginIcon color="primary" />
                   </IconButton>
                 )}
+
                 <IconButton onClick={() => router.push("/nosotros")}>
                   <LocationOn color="error" />
                 </IconButton>

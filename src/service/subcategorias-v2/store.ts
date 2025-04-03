@@ -9,7 +9,6 @@ import {
   GetSubcategoriasConProductos,
   GetSubcategoriasPaginadas
 } from "./service";
-import { stat } from "fs";
 
 interface SubcategoriaState {
   // Default
@@ -92,14 +91,14 @@ const useSubcategoriasStore = create<SubcategoriaState>()((set) => ({
         var aux;
         if (response.data) {
           if (state.subcategoriaPaginada) {
-            aux = {...state.subcategoriaPaginada};
+            aux = { ...state.subcategoriaPaginada };
             aux.datosPaginados.subcategoryProductDtos = [
               ...state.subcategoriaPaginada.datosPaginados
                 .subcategoryProductDtos,
               ...response.data.datosPaginados.subcategoryProductDtos
             ];
-          }else{
-            aux =response.data
+          } else {
+            aux = response.data
           }
         }
         return {
