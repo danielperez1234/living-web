@@ -44,6 +44,7 @@ export default function AppNavBar() {
   const [isLocalStorage, setIsLocalStorage] = useState(false);
   const router = useRouter();
   const searchRef = useRef<HTMLDivElement>(null);
+  const dropSearchRef = useRef<HTMLDivElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget as HTMLElement);
@@ -106,8 +107,9 @@ export default function AppNavBar() {
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
-        searchRef.current &&
-        !searchRef.current.contains(event.target as Node)
+        (dropSearchRef.current || searchRef.current) && // Al menos uno existe
+        !dropSearchRef.current?.contains(event.target as Node) && // No está dentro del Paper
+        !searchRef.current?.contains(event.target as Node) // No está dentro del search input
       ) {
         setIsSearchOpen(false);
         setSearchTerm(""); // Limpiar campo de búsqueda
@@ -301,6 +303,7 @@ export default function AppNavBar() {
 
       {(searchedProducts?.length ?? 0) > 0 && searchTerm && (
         <Paper
+          ref={dropSearchRef}
           sx={{
             position: "fixed",
             top: "70px",
