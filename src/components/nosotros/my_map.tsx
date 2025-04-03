@@ -95,20 +95,19 @@ export default function MyMap() {
           sx={{
             position: "absolute",
             top: 0,
-            right:0,
+            right: 0,
             boxShadow: 3,
             zIndex: 1000, // Ensure the box is above the map
             height: "100%",
             width: "50%",
-            bgcolor: AppColorsHex.white,
-            backgroundSize: "cover  ",
-            backgroundPosition: "center",
-            backgroundImage: `url(${selectedSucursal.image})`,
+            bgcolor: 'transparent',
+
             opacity: 1,
             display: "flex",
             justifyContent: "end",
           }}
         >
+          <img src={selectedSucursal.image} alt={'banner_image'} style={{ objectFit: 'contain', maxWidth: "100%", alignSelf: 'center', position: 'absolute', opacity: 1 }} />
           <Box
             bgcolor={"black"}
             sx={{ opacity: 0.7 }}
