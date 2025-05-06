@@ -1,5 +1,6 @@
 export interface ProductoBase {
     id: string;
+    description: string;
     subcategoryId: string;
     name: string;
     price: number;

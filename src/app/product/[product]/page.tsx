@@ -118,7 +118,7 @@ export default function Page() {
         <Box
           bgcolor={AppColorsHex.white}
           borderRadius={"9px"}
-          width={"40%"}
+          width={{xs:"98%",sm:"80%", md:"40%"}}
           maxWidth={"500px"}
           minWidth={"200px"}
           sx={{
@@ -156,8 +156,21 @@ export default function Page() {
             </Box>
           </Box>
         </Box>
-        <Box>
+        <Box width={{xs:"98%",sm:"80%", md:"40%"}}>
           <Typography variant="h1">{producto.name}</Typography>
+          <Typography
+            mb={1}
+            style={{
+              width: "100%",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+            }}
+            variant="h5"
+          >
+            {producto.description }
+          </Typography>
           <Typography
             mb={1}
             style={{
