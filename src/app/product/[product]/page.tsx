@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
 // Material-UI
-import { Box, Modal, Radio, Typography } from "@mui/material";
+import { Box, Chip, FormControl, InputLabel, MenuItem, Modal, OutlinedInput, Radio, Select, Typography } from "@mui/material";
 
 // Componentes comunes
 import AppButton from "@/components/common/app_button";
@@ -57,7 +57,11 @@ export default function Page() {
   //--------------------------------------------
   const { product } = useParams();
   const producto = useProductosStore((state) => state.producto);
+  const productOptions = useProductosStore((state) => state.productOptions);
+  const properties = useProductosStore((state) => state.properties);
   const getProductById = useProductosStore((state) => state.getProductById);
+  const getProductOptions = useProductosStore((state) => state.getProductOptions);
+  const fetchSubcategoryProperties = useProductosStore((state) => state.fetchSubcategoryProperties);
   const imagenesDelProducto = useProductosStore(
     (state) => state.imagenesDelProducto
   );
@@ -73,11 +77,19 @@ export default function Page() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-
+  const [selectedOptions, setSelectedOpptions] = useState(new Map<string, string>([
+  ]));
+  useEffect(()=>{
+    if(producto){
+      fetchSubcategoryProperties(producto.subcategoryId)
+    }
+  },[producto])
   useEffect(() => {
     getProductImagesById(product.toString());
     if (producto.id !== product.toString()) {
       getProductById(product.toString());
+      getProductOptions(product.toString());
+      
     }
     const existingItem = cartItems.find(
       (item) => item.productId === producto.id
@@ -171,126 +183,64 @@ export default function Page() {
           >
             {producto.description }
           </Typography>
-          <Typography
-            mb={1}
-            style={{
-              width: "100%",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: "vertical",
-            }}
-            variant="h5"
-          >
-            Marca: {producto.productOptions?.[0] || "Sin marca"}
-          </Typography>
-          <Typography
-            mb={1}
-            style={{
-              width: "100%",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: "vertical",
-            }}
-            variant="h5"
-          >
-            Modelo:
-            <Radio
-              {...controlPropsModelo("azul")}
-              sx={{
-                width: "1px",
-                height: "1px",
-                borderRadius: "50%",
-                border: "1px solid black",
-                "&.Mui-checked": {
-                  width: "16px",
-                  height: "16px",
-                  backgroundColor: AppColorsHex.blue,
-                },
-                "&.MuiRadio-colorPrimary": {
-                  color: AppColorsHex.blue,
-                },
-                marginX: "5px",
-                bottom: "3px",
+          
+          
+          {properties.filter(element => productOptions.some(option => element.options.some(sOption=> sOption.id == option.propertyOptionId))).map((element,index)=>(
+            <FormControl key={`MultiPropsSelector_${element.id}`} sx={{ m: 1, width: 300 }}>
+            <InputLabel id="demo-multiple-chip-label">{element.name}</InputLabel>
+            <Select
+              labelId="demo-multiple-chip-label"
+              id="demo-multiple-chip"
+              
+              
+              onChange={event =>{
+                setSelectedOpptions(state=>{
+                  var aux = new Map<string, string>([
+                  ]);
+                  state.entries().forEach(
+                    entry=> aux.set(entry[0],entry[1])
+                  )
+                  aux.set(element.id,event.target.value.toString())
+                  console.log(aux)
+                  return aux  ;
+                })
               }}
-            />
-            <Radio
-              {...controlPropsModelo("amarillo")}
-              sx={{
-                width: "1px",
-                height: "1px",
-                borderRadius: "50%",
-                border: "1px solid black",
-                "&.Mui-checked": {
-                  width: "16px",
-                  height: "16px",
-                  backgroundColor: AppColorsHex.yellow,
-                },
-                "&.MuiRadio-colorPrimary": {
-                  color: AppColorsHex.yellow,
-                },
-                marginX: "5px",
-                bottom: "3px",
-              }}
-            />
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              alignContent: "center",
-            }}
-          >
-            <Typography
-              mb={1}
-              style={{
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-              variant="h5"
+              
+              input={<OutlinedInput id="select-multiple-chip" label={element.name} />}
+              value={selectedOptions.has(element.id) ? selectedOptions.get(element.id):0}
+              renderValue={(value)=>{
+                var x = element.options.filter(elementOption=> productOptions.some(pO=>elementOption.id == pO.propertyOptionId) )[value]
+                return(
+                <Box
+                  sx={{
+                    display:'flex',
+                    alignItems:'center'}}
+                >
+                  { x.image &&
+                  <Image src={x.image ??''} width={30} height={30} style={{marginRight:10}} alt={`image_${x.text}`}/>}
+                  {x.text}
+                </Box>
+              )}}
             >
-              Color:
-            </Typography>
-            <Radio
-              {...controlPropsColor("azul")}
-              sx={{
-                width: "1px",
-                height: "1px",
-                borderRadius: "50%",
-                border: "1px solid black",
-                "&.Mui-checked": {
-                  width: "16px",
-                  height: "16px",
-                  backgroundColor: AppColorsHex.blue,
-                },
-                "&.MuiRadio-colorPrimary": {
-                  color: AppColorsHex.blue,
-                },
-                marginX: "5px",
-                bottom: "3px",
-              }}
-            />
-            <Radio
-              {...controlPropsColor("amarillo")}
-              sx={{
-                width: "1px",
-                height: "1px",
-                borderRadius: "50%",
-                border: "1px solid black",
-                "&.Mui-checked": {
-                  width: "16px",
-                  height: "16px",
-                  backgroundColor: AppColorsHex.yellow,
-                },
-                "&.MuiRadio-colorPrimary": {
-                  color: AppColorsHex.yellow,
-                },
-                marginX: "5px",
-                bottom: "3px",
-              }}
-            />
-          </Box>
+
+              {element.options.filter(elementOption=> productOptions.some(pO=>elementOption.id == pO.propertyOptionId) ).map((name,index) => (
+                <MenuItem
+
+                  key={name.id}
+                  value={index}
+                  style={{}}
+                >
+                  {
+                    name.image &&
+                  <Image src={name.image ??''} width={30} height={30} style={{marginRight:10}} alt={`image_${name.text}`}/>
+                  }
+                  {name.text}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          ))}
+          
           <Typography
             mb={1}
             style={{

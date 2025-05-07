@@ -1,26 +1,31 @@
 import { create } from "zustand";
-import { ProductoBase } from "./interface";
-import { GetAllProducts, GetProductById, GetProductImagesById, SearchForProduct } from "./service";
+import { GetProductOptionsResponse, ProductoBase, Property } from "./interface";
+import { GetAllProducts, GetProductById, GetProductImagesById, GetProductOptions, GetSubcategoryProperties, SearchForProduct } from "./service";
 
 interface ProductosState {
     // category?: string;
     // subcategory?: string;
+    properties: Property[];
     searchQuery?: string;
     searchedProducts?: ProductoBase[];
     allProducts: ProductoBase[];
     productos?: ProductoBase;
     errorMsg: string | undefined;
     producto: ProductoBase;
+    productOptions: GetProductOptionsResponse[];
     loading: boolean;
     imagenesDelProducto: string[];
     getAllProducts: () => void;
+    getProductOptions: (id:string) => void;
     getProductById: (id: string) => void;
+    fetchSubcategoryProperties: (id: string) => void;
     getProductImagesById: (id: string) => void;
     searchForProduct: (query: string, category?: string, subcategory?: string) => void;
     clean: () => void;
 }
 
 const useProductosStore = create<ProductosState>()((set) => ({
+    properties:[],
     producto: {
         id: "",
         subcategoryId: "",
@@ -29,8 +34,10 @@ const useProductosStore = create<ProductosState>()((set) => ({
         wholesalePrice: 0,
         maxOrder: 0,
         imageUrlOriginal: "",
-        imageUrlSmall: ""
+        imageUrlSmall: "",
+        description: ""
     },
+    productOptions:[],
     allProducts: [],
     errorMsg: undefined,
     loading: false,
@@ -52,6 +59,50 @@ const useProductosStore = create<ProductosState>()((set) => ({
                     ...state,
                     loading: false,
                     allProducts: response.data,
+                };
+            });
+
+            return;
+        }
+        set((state) => {
+            return {
+                ...state,
+                loading: false,
+            };
+        });
+    },
+    fetchSubcategoryProperties: async (subcategoryId) => {
+        set({ loading: true});
+        try {
+          const response = await GetSubcategoryProperties(subcategoryId);
+          if (response.data) {
+            set((state) => ({
+              properties: response.data ?? [],
+              loading: false
+            }));
+          }
+        } catch (err) {
+          set({  loading: false });
+        }
+      },
+    
+    getProductOptions: async (id) => {
+        set((state) => ({
+            ...state,
+            loading: true,
+        }));
+
+        const response = await GetProductOptions(id);
+
+        console.log("Get  product options: " + response.data);
+
+        if (response.status < 300 && response.data) {
+            console.log("Get product options: ", response.data);
+            set((state) => {
+                return {
+                    ...state,
+                    loading: false,
+                    productOptions: response.data ?? [],
                 };
             });
 

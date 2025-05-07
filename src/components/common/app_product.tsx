@@ -115,7 +115,7 @@ export default function AppProduct(props: {
               <Image
                 fill
                 alt="product Image"
-                src={props.image}
+                src={props.product.imageUrlSmall}
                 style={{
                   objectFit: "cover",
                 }}

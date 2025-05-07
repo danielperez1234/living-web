@@ -1,5 +1,5 @@
 import "../service";
-import { ProductoBase } from "./interface";
+import { GetProductOptionsResponse, ProductoBase, Property } from "./interface";
 import { Response, request } from "../service";
 
 export async function GetAllProducts(): Promise<Response<ProductoBase[]>> {
@@ -15,7 +15,38 @@ export async function GetAllProducts(): Promise<Response<ProductoBase[]>> {
     };
   }
 }
-
+export async function GetSubcategoryProperties(
+  subcategoryId: string
+): Promise<Response<Property[]>> {
+  try {
+    return await request<Property[]>({
+      method: "GET",
+      endpoint: `/subcategories/${subcategoryId}/properties`,
+      headers: {
+        "accept": "*/*",
+      }
+    });
+  } catch (err) {
+    return {
+      status: 500,
+      errors: `${err}`
+    };
+  }
+}
+export async function GetProductOptions(id: string): Promise<Response<GetProductOptionsResponse[]>> {
+  try {
+    console.log("ID: ", id);
+    return await request({
+      method: "GET",
+      endpoint: `/api/Product/products/${id}/options`
+    });
+  } catch (err) {
+    return {
+      status: 500,
+      errors: `${err}`
+    };
+  }
+}
 export async function GetProductById(id: string): Promise<Response<ProductoBase>> {
   try {
     console.log("ID: ", id);
