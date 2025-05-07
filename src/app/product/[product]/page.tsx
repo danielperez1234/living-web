@@ -195,11 +195,8 @@ export default function Page() {
               
               onChange={event =>{
                 setSelectedOpptions(state=>{
-                  var aux = new Map<string, string>([
-                  ]);
-                  state.entries().forEach(
-                    entry=> aux.set(entry[0],entry[1])
-                  )
+                  var aux = new Map<string, string>(state.entries());
+                  
                   aux.set(element.id,event.target.value.toString())
                   console.log(aux)
                   return aux  ;
@@ -209,7 +206,7 @@ export default function Page() {
               input={<OutlinedInput id="select-multiple-chip" label={element.name} />}
               value={selectedOptions.has(element.id) ? selectedOptions.get(element.id):0}
               renderValue={(value)=>{
-                var x = element.options.filter(elementOption=> productOptions.some(pO=>elementOption.id == pO.propertyOptionId) )[value]
+                var x = element.options.filter(elementOption=> productOptions.some(pO=>elementOption.id == pO.propertyOptionId) )[value as number]
                 return(
                 <Box
                   sx={{
