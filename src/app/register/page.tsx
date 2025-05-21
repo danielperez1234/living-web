@@ -98,6 +98,7 @@ export default function Login() {
       localStorage.setItem(storageKeys.token, response.data.token);
       localStorage.setItem(storageKeys.email, response.data.email);
       localStorage.setItem(storageKeys.userName, response.data.userName);
+      localStorage.setItem(storageKeys.refreshToken, response.data.refreshToken);
       router.push("/home");
     } else {
       setErrorMsg(response.errors?.toString() ?? "");

@@ -2,6 +2,7 @@ export interface Token {
   userName: string;
   email:    string;
   token:    string;
+  refreshToken:    string;
 }
 export interface UserLoginRequest {
   email: string,

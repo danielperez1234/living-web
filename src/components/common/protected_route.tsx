@@ -7,7 +7,7 @@ import { useEffect } from "react";
 export default function ProtectedRoute() {
   const router = useRouter();
   useEffect(() => {
-    if (localStorage.getItem(storageKeys.token) == null) {
+    if (localStorage.getItem(storageKeys.token) == null || localStorage.getItem(storageKeys.refreshToken) == null) {
       router.replace("/login");
     }
   }, []);

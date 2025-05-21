@@ -28,6 +28,7 @@ import useCartStore from "@/service/carrito/store";
 import AppButton from "@/components/common/app_button";
 import AppCartProduct from "@/components/common/app_cart_product";
 import AppNavBar from "@/components/common/app_nav_bar/main";
+import ProtectedRoute from "@/components/common/protected_route";
 
 export default function Cart() {
   const { cartProducts: cartItems, getCart } = useCartStore();
@@ -72,17 +73,8 @@ export default function Cart() {
   return (
     <Box>
       {/* ToDO - Reactivar el protected route */}
-      {/*<ProtectedRoute />*/}
-      <Box
-        sx={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100vh",
-          zIndex: -1,
-        }}
-      >
+      <ProtectedRoute />
+
         <AppNavBar />
         <Grid
           container
@@ -184,6 +176,5 @@ export default function Cart() {
           </Box>
         </Box>
       </Box>
-    </Box>
   );
 }
