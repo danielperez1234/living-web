@@ -108,7 +108,7 @@ export default function Cart() {
       >
         {renderCartItems()}
       </Grid>
- 
+      <Box height={ 300}></Box>
 
         {/* Removed the redundant Box with zIndex: -1 and duplicate cart rendering logic */}
 
