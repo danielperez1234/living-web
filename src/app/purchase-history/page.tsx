@@ -31,6 +31,7 @@ import AppNavBar from "@/components/common/app_nav_bar/main";
 import usePurchaseHistory from "@/service/purchase-history/store";
 import ProtectedRoute from "@/components/common/protected_route";
 import AppPurchaceHistoryElement from "@/components/purchase-history/app_cart_product";
+import AppBackgroundImage from "@/components/common/background_image";
 
 export default function Cart() {
   const { purchaseHistory: puchaseHistory, getPurchaseHistory } = usePurchaseHistory();
@@ -48,43 +49,12 @@ export default function Cart() {
   }, []);
 
   return (
-    <Box>
+    <AppBackgroundImage>
       <ProtectedRoute/>
       {/* ToDO - Reactivar el protected route */}
       {/*<ProtectedRoute />*/}
-      <Box
-        sx={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100vh",
-          zIndex: -1,
-        }}
-      >
-        <AppNavBar />
-        <Grid
-          container
-          marginX={"10%"}
-          width={"80vw"}
-          xs={12}
-          alignContent={"center"}
-          justifyContent={"center"}
-        >
-          {puchaseHistory?.map((item, i) => (
-            <AppPurchaceHistoryElement key={`app-historyelement-${i}`} item={item} />
-          ))}
-        </Grid>
-        <Box
-          sx={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100vh",
-            zIndex: -1,
-          }}
-        >
+      
+        
           <AppNavBar />
           <Grid
             container
@@ -93,6 +63,7 @@ export default function Cart() {
             xs={12}
             alignContent={"center"}
             justifyContent={"center"}
+            
           >
             {(puchaseHistory?.length ?? 0) > 0 ? (
               puchaseHistory?.map((item, i) => (
@@ -108,9 +79,7 @@ export default function Cart() {
               </Box>
             )}
           </Grid>
-        </Box>
        
-      </Box>
-    </Box>
+      </AppBackgroundImage>
   );
 }

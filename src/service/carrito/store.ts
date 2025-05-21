@@ -6,7 +6,7 @@ import { AddToCart, GetCart } from "./service";
 
 interface cartState {
   getCart: (token: string) => void;
-  addToCart: (product: Product, quantity: number, token: string | null) => void; // Añadir producto al carrito
+  addToCart: (product: Product, quantity: number, selectedOptions:String[], token: string | null) => void; // Añadir producto al carrito
   removeFromCart: (product: CartProduct) => void; // Eliminar producto del carrito
   updateQuantity: (product: CartProduct, quantity: number) => void; // Actualizar cantidad del producto
   clearCart: () => void; // Limpiar el carrito
@@ -43,7 +43,7 @@ const useCartStore = create<cartState & CartGet>()(
         });
       },
       // Agregar un producto al carrito
-      addToCart: (product, quantity, token) => {
+      addToCart: (product, quantity, selectedOptions ,token) => {
         set((state) => {
           const existingItem = state.cartProducts.find(
             (item) => item.productId === product.id
@@ -68,7 +68,8 @@ const useCartStore = create<cartState & CartGet>()(
             console.log("adding")
             AddToCart({
               productId: product.id,
-              quantity: Math.min(quantity, product.maxOrder)
+              quantity: Math.min(quantity, product.maxOrder),
+              selectedOptions: selectedOptions
             }, token)
           }
           return {
@@ -80,7 +81,8 @@ const useCartStore = create<cartState & CartGet>()(
                 price: product.price,
                 imageUrl: product.imageUrlSmall,
                 quantity: Math.min(quantity, product.maxOrder),
-                maxOrder: 200
+                maxOrder: 200,
+                selectedOptions:selectedOptions??[]
               }
             ]
           };

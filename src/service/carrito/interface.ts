@@ -11,6 +11,7 @@ export interface CartProduct {
     price: number;
     imageUrl: string;
     maxOrder: 200;
+    selectedOptions:String[]
 }
 
 export interface CartTotal {
@@ -21,4 +22,5 @@ export interface CartTotal {
 export interface ProductToCart {
     productId: string;
     quantity:  number;
+    selectedOptions:String[]
 }

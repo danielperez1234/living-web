@@ -211,6 +211,7 @@ export default function AppProduct(props: {
             ? addToCart(
               props.product,
               count,
+              [],
               localStorage.getItem(storageKeys.token)
             )
             : null;

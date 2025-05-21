@@ -275,6 +275,7 @@ export default function Page() {
                 ? addToCart(
                     producto,
                     count,
+                    Array.from(selectedOptions.keys()),
                     localStorage.getItem(storageKeys.token)
                   )
                 : null;

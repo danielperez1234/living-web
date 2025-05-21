@@ -18,7 +18,7 @@ export default function AppFavoriteProduct(props: {
   const router = useRouter();
 
   // Zustand
-  const { cartProducts: cartItems, addToCart } = useCartStore();
+  const { cartProducts: cartItems } = useCartStore();
   const { addProductToFavorites, removeProductToFavorites } = useFavoriteProductosStore(state => state);
 
   // Estado local para manejar si el producto es favorito
