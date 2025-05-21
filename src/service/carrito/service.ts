@@ -57,7 +57,7 @@ export async function AddToCart(product: ProductToCart, token: string): Promise<
 export async function RemoveFromCart(product: ProductToCart, token: string): Promise<Response<Object>> {
     try {
         return await request({
-            method: "GET",
+            method: "POST",
             endpoint: `/api/Cart/remove-from-cart`,
             headers: {
                 "authorization": `Bearer ${token}`

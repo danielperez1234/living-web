@@ -1,7 +1,7 @@
 "use client";
 
 // React y Next.js
-import { useEffect } from "react";
+import { useEffect, useState } from "react"; // Import useState
 import { useRouter } from "next/navigation";
 
 // Material-UI
@@ -33,6 +33,8 @@ import ProtectedRoute from "@/components/common/protected_route";
 export default function Cart() {
   const { cartProducts: cartItems, getCart } = useCartStore();
   const router = useRouter();
+  const [isClient, setIsClient] = useState(false); // State to track client-side mount
+
   const handleTotal = () => {
     let total = 0;
     cartItems.forEach((item) => {
@@ -40,141 +42,138 @@ export default function Cart() {
     });
     return total;
   };
-  const handleIVA = () => {
-    let iva = handleTotal() * 0.16;
-    return iva;
-  };
+
+
 
   const handleShipping = () => {
-    if (handleTotal() > 600) {
+    if (handleTotal() >= 600) {
       return "Gratis";
     } else {
-      return "$100";
+      return "$100.00"; // Consistent formatting
     }
   };
 
   const handleTotalWithShipping = () => {
-    if (handleTotal() > 600) {
-      let total = handleTotal() + handleIVA();
-      return total;
-    } else {
-      let total = handleTotal() + handleIVA() + 100;
-      return total;
+    let total = handleTotal()
+    if (total <= 600) {
+      total += 100;
     }
+    return total;
   };
 
   useEffect(() => {
+    setIsClient(true); // Component has mounted on the client
     const token = localStorage.getItem(storageKeys.token);
     if (token) {
+      // Ensure getCart is stable or add to dependency array if it changes
       getCart(token);
     }
-  }, []);
+  }, [getCart]); // Add getCart to dependency array if appropriate
+
+  // Display loading or placeholder for cart items until client-side hydration and data fetch
+  const renderCartItems = () => {
+    if (!isClient) {
+      // Or some placeholder like <Typography>Cargando productos del carrito...</Typography>
+      return <Typography sx={{ textAlign: 'center', marginY: 4 }}>Cargando carrito...</Typography>;
+    }
+    if (cartItems.length === 0) {
+      return (
+        <Box sx={{ textAlign: 'center', marginY: 4, width: '100%' }}>
+          <Typography variant="h6" gutterBottom>Oops... tu carrito parece vacío</Typography>
+          <AppButton
+            label="Ir al Catálogo"
+            onClick={() => router.push("/catalogo/0/0")}
+          />
+        </Box>
+      );
+    }
+    return cartItems.map((item, i) => (
+      // Ensure AppCartProduct is wrapped in a Grid item for proper layout in a Grid container
+      <AppCartProduct key={`approductCart${i}`} product={item} />
+    ));
+  };
 
   return (
     <Box>
-      {/* ToDO - Reactivar el protected route */}
       <ProtectedRoute />
 
-        <AppNavBar />
-        <Grid
-          container
-          marginX={"10%"}
-          width={"80vw"}
-          xs={12}
-          alignContent={"center"}
-          justifyContent={"center"}
-        >
-          {cartItems.map((item, i) => (
-            <AppCartProduct key={`approductCart${i}`} product={item} />
-          ))}
-        </Grid>
-        <Box
-          sx={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100vh",
-            zIndex: -1,
-          }}
-        >
-          <AppNavBar />
-          <Grid
-            container
-            marginX={"10%"}
-            width={"80vw"}
-            xs={12}
-            alignContent={"center"}
-            justifyContent={"center"}
-          >
-            {cartItems.length > 0 ? (
-              cartItems.map((item, i) => (
-                <AppCartProduct key={`approductCart2${i}`} product={item} />
-              ))
-            ) : (
-              <Box>
-                <Typography>Oops... tu carrito parece vacío</Typography>
-                <AppButton
-                  label="Ir al Catálogo"
-                  onClick={() => router.push("/catalogo/0/0")}
-                />
-              </Box>
-            )}
-          </Grid>
-        </Box>
-        <Box
-          sx={{
-            position: "fixed", // Mantiene la posición fija
-            bottom: 0, // Alinea al fondo de la ventana
-            right: 0, // Alinea a la derecha
-            padding: "16px", // Espaciado interno
-            backgroundColor: "white", // Fondo blanco para visibilidad
-            borderRadius: "16px", // Bordes redondeados
-            zIndex: 10, // Asegura que esté por encima de otros elementos
-          }}
-        >
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <Typography variant="h5">Resumen de compra</Typography>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>Subtotal</TableCell>
-                  <TableCell>${handleTotal()}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>I.V.A</TableCell>
-                  <TableCell>${handleIVA()}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Envío</TableCell>
-                  <TableCell>{handleShipping()}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell sx={{ fontWeight: "bolder", fontStyle: "italic" }}>
-                    Total
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: "bolder", fontStyle: "italic" }}>
-                    ${handleTotalWithShipping().toFixed(2)}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
+      <AppNavBar />
+      <Grid
+        container
+        marginX={"10%"}
+        width={"80vw"}
+        xs={12}
+        alignContent={"center"}
+        justifyContent={"center"}
+      >
+        {renderCartItems()}
+      </Grid>
+ 
+
+        {/* Removed the redundant Box with zIndex: -1 and duplicate cart rendering logic */}
+
+        {/* Summary Box - only render its content fully on the client */}
+        {isClient && cartItems.length > 0 && ( // Render summary only if client and cart has items
           <Box
             sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "flex-end",
+              position: "fixed",
+              bottom: 16, // Use theme spacing or numbers
+              right: 16,
+              padding: 2, // Use theme spacing or numbers (e.g., theme.spacing(2))
+              backgroundColor: "background.paper", // Use theme colors
+              borderRadius: "16px",
+              zIndex: 10,
+              boxShadow: 3, // Material-UI shadow
+              minWidth: 300, // Ensure it has some minimum width
             }}
           >
-            <AppButton
-              label="Finalizar compra"
-              onClick={() => router.push("billing")}
-            />
+            <TableContainer component={Paper} elevation={0}> {/* Remove double shadow if parent has one */}
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    {/* Corrected TableHead: Typography should be within a TableCell */}
+                    <TableCell colSpan={2} sx={{ borderBottom: 'none', paddingBottom: 0 }}>
+                      <Typography variant="h6" component="div">Resumen de compra</Typography>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Subtotal</TableCell>
+                    <TableCell align="right">${handleTotal().toFixed(2)}</TableCell>
+                  </TableRow>
+
+                  <TableRow>
+                    <TableCell>Envío</TableCell>
+                    <TableCell align="right">{handleShipping()}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell sx={{ fontWeight: "bold", fontStyle: "italic" }}>
+                      Total
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold", fontStyle: "italic" }} align="right">
+                      ${handleTotalWithShipping().toFixed(2)}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "flex-end",
+                marginTop: 2, // Use theme spacing or numbers
+              }}
+            >
+              <AppButton
+                label="Finalizar compra"
+                onClick={() => router.push("/billing")}
+                disabled={cartItems.length === 0} // Already good
+              />
+            </Box>
           </Box>
-        </Box>
-      </Box>
+        )}
+    </Box>
   );
 }

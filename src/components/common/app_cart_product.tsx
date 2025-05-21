@@ -9,7 +9,6 @@ export default function AppCartProduct({ product }: { product: CartProduct }) {
   const {
     cartProducts: cartItems,
     updateQuantity,
-    removeFromCart,
   } = useCartStore();
   const existingItem = cartItems.find(
     (item) => item.productId === product.productId
@@ -17,11 +16,11 @@ export default function AppCartProduct({ product }: { product: CartProduct }) {
   const count = existingItem ? existingItem.quantity : 0;
 
   const handleCountChange = (newCount: number) => {
-    if (newCount === 0) {
-      removeFromCart(product);
-    } else {
-      updateQuantity(product, newCount);
-    }
+        console.log(product.quantity)
+        console.log(newCount)
+        
+      updateQuantity(product,product.quantity ,newCount);
+    
   };
 
   const isSmallScreen = useMediaQuery((theme: any) =>
@@ -93,7 +92,7 @@ export default function AppCartProduct({ product }: { product: CartProduct }) {
             marginBottom="15px"
           >
             <AppCounter
-              maxCount={product.maxOrder}
+              maxCount={1000}
               count={count}
               setCount={handleCountChange}
             />
@@ -109,7 +108,7 @@ export default function AppCartProduct({ product }: { product: CartProduct }) {
             gap="10px"
           >
             <AppCounter
-              maxCount={product.maxOrder}
+              maxCount={1000}
               count={count}
               setCount={handleCountChange}
             />

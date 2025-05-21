@@ -2,13 +2,13 @@ import { create } from "zustand";
 import { Product } from "../productos/interface";
 import { CartGet, CartProduct } from "@/service/carrito/interface";
 import { persist } from "zustand/middleware";
-import { AddToCart, GetCart } from "./service";
+import { AddToCart, GetCart, RemoveFromCart } from "./service";
+import { storageKeys } from "@/const/storage_keys";
 
 interface cartState {
   getCart: (token: string) => void;
   addToCart: (product: Product, quantity: number, selectedOptions:String[], token: string | null) => void; // Añadir producto al carrito
-  removeFromCart: (product: CartProduct) => void; // Eliminar producto del carrito
-  updateQuantity: (product: CartProduct, quantity: number) => void; // Actualizar cantidad del producto
+  updateQuantity: (product: CartProduct,oldQuantity:number, quantity: number) => void; // Actualizar cantidad del producto
   clearCart: () => void; // Limpiar el carrito
 }
 
@@ -89,26 +89,44 @@ const useCartStore = create<cartState & CartGet>()(
         });
       },
 
-      // Eliminar un producto del carrito
-      removeFromCart: (product) => {
-        set((state) => ({
-          cartProducts: state.cartProducts.filter(
-            (item) => item.productId !== product.productId
-          )
-        }));
-      },
 
       // Actualizar la cantidad de un producto en el carrito
-      updateQuantity: (product, quantity) => {
+      updateQuantity: (product,oldQuantity, quantity) => {
+        const differenceQty = quantity - oldQuantity;
+        const token = localStorage.getItem(storageKeys.token)
+        console.log('token')
+        console.log(token)
+        if (token != null) {
+          console.log("adding")
+          if(differenceQty >0){
+
+            AddToCart({
+              productId: product.productId,
+              quantity: differenceQty,
+              selectedOptions: []
+            }, token)
+          }else{
+            RemoveFromCart({
+              productId: product.productId,
+              quantity: 0-(differenceQty),
+              selectedOptions: []
+            }, token)
+          }
+        }
+        if(quantity == 0){
+          set((state) => ({
+            cartProducts: state.cartProducts.filter(
+              (item) => item.productId !== product.productId
+            )
+          }));
+          return
+        }
         set((state) => ({
           cartProducts: state.cartProducts.map((item) =>
             item.productId === product.productId
               ? {
                 ...item,
-                quantity: Math.min(
-                  Math.max(1, quantity), // Asegura que sea al menos 1
-                  product.maxOrder
-                )
+                quantity: quantity
               }
               : item
           )
