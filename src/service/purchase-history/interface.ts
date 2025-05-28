@@ -3,6 +3,7 @@ export interface PurchaseHistoryElement {
   userId:            string;
   amount:            number;
   status:            string;
+  message:           string;
   purchaseDetail:    PurchaseDetail;
 }
 
@@ -27,4 +28,11 @@ export interface ProductsBought {
   price:            number;
   quantity:         number;
   totalPrice:       number;
+  selectedOptions:  SelectedOption[];
+}
+
+export interface SelectedOption {
+  id:    string;
+  text:  string;
+  image: string;
 }
