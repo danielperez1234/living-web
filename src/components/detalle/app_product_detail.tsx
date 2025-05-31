@@ -119,27 +119,27 @@ export default function AppProductDetail({ producto }: {
 
             ${producto.price * producto.quantity}
           </Typography>
-        </Box>
-        {producto.selectedOptions.length && <Box
-          textAlign={isSmallScreen ? "center" : "left"}
-          width={isSmallScreen ? "100%" : "30%"} // Ajuste del ancho
-        >
-          {producto.selectedOptions.map((element) =>
-            <Box key={`selectedOption_${producto.productId}_${element.id}`} display={'flex'} flexDirection={'row'} justifyContent={isSmallScreen ? "center" : "start"} alignItems={'center'} gap={2}>
-              <Image width={25} height={25} style={{ borderRadius: 25 }} src={element.image} alt={`image_${producto.productId}_${element.id}`} />
-              <Typography
-                sx={{
-                  textAlign: isSmallScreen ? "center" : "left",
-                  fontWeight: "bolder",
-                  fontSize: isSmallScreen ? "1rem" : "1.25rem",
-                }}
-              >
-                {element.text}
-              </Typography>
-            </Box>)}
+          </Box>
+          {producto.selectedOptions.length && <Box
+            textAlign={isSmallScreen ? "center" : "left"}
+            width={isSmallScreen ? "100%" : "30%"} // Ajuste del ancho
+          >
+            {producto.selectedOptions.map((element) =>
+              <Box key={`selectedOption_${producto.productId}_${element.id}`} display={'flex'} flexDirection={'row'} justifyContent={isSmallScreen ? "center" : "start"} alignItems={'center'} gap={2}>
+                <Image width={25} height={25} style={{ borderRadius: 25 }} src={element.image} alt={`image_${producto.productId}_${element.id}`} />
+                <Typography
+                  sx={{
+                    textAlign: isSmallScreen ? "center" : "left",
+                    fontWeight: "bolder",
+                    fontSize: isSmallScreen ? "1rem" : "1.25rem",
+                  }}
+                >
+                  {element.text}
+                </Typography>
+              </Box>)}
 
-        </Box>}
-      </Box>
+          </Box>}
+        </Box>
 
       {/* Divisor */}
       <Divider sx={{ width: "100%", my: 1 }} />

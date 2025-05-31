@@ -89,7 +89,7 @@ export default function Cart() {
     }
     return cartItems.map((item, i) => (
       // Ensure AppCartProduct is wrapped in a Grid item for proper layout in a Grid container
-      <AppCartProduct key={`approductCart${i}`} product={item} />
+      <AppCartProduct key={`approductCart${item.productId}_${item.selectedOptions.map(e=>e.id).join()}`} product={item} />
     ));
   };
 

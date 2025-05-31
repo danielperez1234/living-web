@@ -1,26 +1,31 @@
 export interface CartGet {
-    userId: string;
-    cartId: string;
+    userId: String;
+    cartId: String;
     cartProducts: CartProduct[];
 }
 
 export interface CartProduct {
-    productId: string;
-    productName: string;
+    productId: String;
+    productName: String;
     quantity: number;
     price: number;
-    imageUrl: string;
-    maxOrder: 200;
-    selectedOptions:String[]
+    imageUrl: String;
+    maxOrder: number;
+    selectedOptions: SelectedOption[];
 }
 
+export interface SelectedOption {
+    id:    String;
+    text?:  String | "";
+    image?: String | undefined;
+}
 export interface CartTotal {
-    cartId: string;
-    userId: string;
+    cartId: String;
+    userId: String;
     total: number;
 }
 export interface ProductToCart {
-    productId: string;
+    productId: String;
     quantity:  number;
     selectedOptions:String[]
 }

@@ -194,10 +194,10 @@ export default function AppProduct(props: {
               </Box>
             </Box>
           </Box>
-          <AppCounter maxCount={1000} count={count} setCount={setCount} />
+          {/* <AppCounter maxCount={1000} count={count} setCount={setCount} /> */}
         </Box>
       </Box>
-      <AppButton
+      {/* <AppButton
         label={"Agregar al carrito"}
         sx={{
           minWidth: "20%",
@@ -216,7 +216,7 @@ export default function AppProduct(props: {
             )
             : null;
         }}
-      />
+      /> */}
     </Grid>
   );
 }

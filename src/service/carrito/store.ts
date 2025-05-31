@@ -46,9 +46,18 @@ const useCartStore = create<cartState & CartGet>()(
       addToCart: (product, quantity, selectedOptions ,token) => {
         set((state) => {
           const existingItem = state.cartProducts.find(
-            (item) => item.productId === product.id
+            (item) => item.productId === product.id && item.selectedOptions.map(e=>e.id) == selectedOptions
           );
 
+          
+          if (token != null) {
+            console.log("adding")
+            AddToCart({
+              productId: product.id,
+              quantity: Math.min(quantity, product.maxOrder),
+              selectedOptions: selectedOptions
+            }, token)
+          }
           if (existingItem) {
             return {
               cartProducts: state.cartProducts.map((item) =>
@@ -63,29 +72,22 @@ const useCartStore = create<cartState & CartGet>()(
                   : item
               )
             };
-          }
-          if (token != null) {
-            console.log("adding")
-            AddToCart({
+          } else {
+            const cartprod:CartProduct = {
               productId: product.id,
+              productName: product.name,
+              price: product.price,
+              imageUrl: product.imageUrlSmall,
               quantity: Math.min(quantity, product.maxOrder),
-              selectedOptions: selectedOptions
-            }, token)
-          }
-          return {
+              maxOrder: 200,
+              selectedOptions: selectedOptions.map(e=>({id:e})) 
+            }
+            return {
             cartProducts: [
               ...state.cartProducts,
-              {
-                productId: product.id,
-                productName: product.name,
-                price: product.price,
-                imageUrl: product.imageUrlSmall,
-                quantity: Math.min(quantity, product.maxOrder),
-                maxOrder: 200,
-                selectedOptions:selectedOptions??[]
-              }
+              
             ]
-          };
+          }};
         });
       },
 
@@ -94,36 +96,33 @@ const useCartStore = create<cartState & CartGet>()(
       updateQuantity: (product,oldQuantity, quantity) => {
         const differenceQty = quantity - oldQuantity;
         const token = localStorage.getItem(storageKeys.token)
-        console.log('token')
-        console.log(token)
         if (token != null) {
-          console.log("adding")
           if(differenceQty >0){
 
             AddToCart({
               productId: product.productId,
               quantity: differenceQty,
-              selectedOptions: []
+              selectedOptions: product.selectedOptions.map(e=>e.id)
             }, token)
           }else{
             RemoveFromCart({
               productId: product.productId,
               quantity: 0-(differenceQty),
-              selectedOptions: []
+              selectedOptions: product.selectedOptions.map(e=>e.id)
             }, token)
           }
         }
         if(quantity == 0){
           set((state) => ({
             cartProducts: state.cartProducts.filter(
-              (item) => item.productId !== product.productId
+              (item) => item.productId !== product.productId ||  product.selectedOptions.some(e => !item.selectedOptions.map(e=>e.id).includes(e.id)) 
             )
           }));
           return
         }
         set((state) => ({
           cartProducts: state.cartProducts.map((item) =>
-            item.productId === product.productId
+            item.productId === product.productId && product.selectedOptions == item.selectedOptions
               ? {
                 ...item,
                 quantity: quantity

@@ -70,7 +70,7 @@ export default function Page() {
   );
 
   //Cart Zustand
-  const { cartProducts: cartItems, addToCart } = useCartStore();
+  const { addToCart } = useCartStore();
 
   //Local Hooks
   const [count, setCount] = useState(0);
@@ -94,10 +94,6 @@ export default function Page() {
       getProductOptions(product.toString());
       
     }
-    const existingItem = cartItems.find(
-      (item) => item.productId === producto.id
-    );
-    setCount(existingItem ? existingItem.quantity : 0);
   }, [producto.id, product]);
 
   useEffect(() => {
@@ -275,6 +271,7 @@ export default function Page() {
             label="Añadir al carrito"
             sx={{ marginY: "5%", aspectRatio: 6 }}
             onClick={() => {
+              console.log(count)
               count > 0
                 ? addToCart(
                     producto,
