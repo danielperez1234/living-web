@@ -1,7 +1,7 @@
 "use client";
 
 // React
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 // Next.js
 import { useRouter, useSearchParams } from "next/navigation";
@@ -35,8 +35,12 @@ import { storageKeys } from "@/const/storage_keys";
 
 // Interfaces
 import { ResetPasswordRequest, UserRegistroRequest } from "@/service/token/interface";
-
-export default function Login() {
+export default function SuspendPage(){
+  return <Suspense>
+    <Page/>
+  </Suspense>
+}
+  function Page() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
