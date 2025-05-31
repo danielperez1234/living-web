@@ -142,7 +142,7 @@ export default function Billing() {
         return undefined;
       case "expiration_year":
         if (!value.trim()) return "El año es obligatorio.";
-        if (!/^(\d{2}|\d{4})$/.test(value)) return "Año debe ser 2 (AA) o 4 (AAAA) dígitos.";
+        if (!/^(\d{2})$/.test(value)) return "Año debe ser a 2 (AA) dígitos.";
         let year = parseInt(value, 10);
         if (value.length === 2) year += 2000;
 
@@ -477,7 +477,7 @@ export default function Billing() {
                                 <TextField
                                   fullWidth
                                   name="expiration_year"
-                                  placeholder="AA o AAAA"
+                                  placeholder="AA"
                                   type="tel"
                                   inputMode="numeric"
                                   value={formData.expiration_year}

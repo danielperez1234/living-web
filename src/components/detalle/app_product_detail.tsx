@@ -120,7 +120,7 @@ export default function AppProductDetail({ producto }: {
             ${producto.price * producto.quantity}
           </Typography>
           </Box>
-          {producto.selectedOptions.length && <Box
+          {producto.selectedOptions.length >0 && <Box
             textAlign={isSmallScreen ? "center" : "left"}
             width={isSmallScreen ? "100%" : "30%"} // Ajuste del ancho
           >
