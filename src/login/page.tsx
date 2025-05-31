@@ -243,7 +243,7 @@ export default function Login() {
           }
           required // Añade validación básica HTML5
         />
-        <Link href={"recover-password"} color="primary" underline="hover">
+        <Link href={"/"} color="primary" underline="hover">
         <Typography typography={'body2'}>
 
         Recuperar contraseña

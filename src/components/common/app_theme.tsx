@@ -75,12 +75,24 @@ export default function AppTheme({
             },
           },
           body1:{
+            
             fontSize: "14px", // XS
             "@media (min-width:600px)": {
               fontSize: "16px", // MD
             },
             "@media (min-width:960px)": {
               fontSize: "18px", // LG
+            },
+          },
+          body2:{
+            color:'primary',
+            fontWeight:500,
+            fontSize: "10px", // XS
+            "@media (min-width:600px)": {
+              fontSize: "12px", // MD
+            },
+            "@media (min-width:960px)": {
+              fontSize: "12px", // LG
             },
           }
         },

@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 
 // Next.js
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 // Material-UI
@@ -16,6 +16,7 @@ import {
   Snackbar,
   SnackbarCloseReason,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -25,7 +26,7 @@ import AppTextField from "@/components/common/app_text_field";
 import AppButton from "@/components/common/app_button";
 
 // Servicios y estado
-import { registerRequest } from "@/service/token/service";
+import { registerRequest, resetPassword } from "@/service/token/service";
 
 // Constantes y utilidades
 import { AppColorsHex } from "@/const/colors";
@@ -33,9 +34,10 @@ import { basepath } from "@/const/utils";
 import { storageKeys } from "@/const/storage_keys";
 
 // Interfaces
-import { UserRegistroRequest } from "@/service/token/interface";
+import { ResetPasswordRequest, UserRegistroRequest } from "@/service/token/interface";
 
 export default function Login() {
+  const searchParams = useSearchParams();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
@@ -43,40 +45,36 @@ export default function Login() {
 
   const [errorMessage, setErrorMsg] = useState("");
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const [userRegister, setUserRegister] = useState<UserRegistroRequest>({
+  const [userRegister, setUserRegister] = useState<ResetPasswordRequest>({
     email: "",
-    password: "",
-    userName: "",
+    token:'',
+    newPassword:''
   });
-  const [userError, setUserError] = useState<UserRegistroRequest>({
+  const [userError, setUserError] = useState<ResetPasswordRequest>({
     email: "",
-    password: "",
-    userName: "",
+    token:'',
+    newPassword:''
   });
   const [isWorng, setIsWrong] = useState(false);
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const isSmallScreen = useMediaQuery((theme: any) =>
+      theme.breakpoints.down("sm")
+    );
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
   };
   const validateUserRegistro = () => {
-    const errors: UserRegistroRequest = { ...userError };
+    const errors: ResetPasswordRequest = { ...userError };
 
-    if (userRegister.email.length == 0) {
-      errors.email = "";
-    } else if (
-      !/^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(userRegister.email)
-    ) {
-      errors.email = "El correo electrónico no es válido.";
+    
+    if (userRegister.newPassword.length == 0) {
+      errors.newPassword = "";
+    } else if (userRegister.newPassword.length < 6) {
+      errors.newPassword = "La contraseña debe tener al menos 6 caracteres.";
     } else {
-      errors.email = "";
-    }
-    if (userRegister.password.length == 0) {
-      errors.password = "";
-    } else if (userRegister.password.length < 6) {
-      errors.password = "La contraseña debe tener al menos 6 caracteres.";
-    } else {
-      errors.password = "";
+      errors.newPassword = "";
     }
     setIsWrong(
       !Object.values(errors).every((value) =>
@@ -87,18 +85,14 @@ export default function Login() {
   };
   const handleRegisterRequested = async () => {
     setOpenBackdrop(true);
-    const response = await registerRequest(userRegister);
+    const response = await resetPassword(userRegister);
 
-    if (response.status == 401) {
-      setErrorMsg("Usuario o contraseña incorrectos.");
-      setOpenSnack(true);
-      setOpenBackdrop(false);
-    } else if (response.status == 200 && response.data) {
-      localStorage.setItem(storageKeys.token, response.data.token);
-      localStorage.setItem(storageKeys.email, response.data.email);
-      localStorage.setItem(storageKeys.userName, response.data.userName);
-      localStorage.setItem(storageKeys.refreshToken, response.data.refreshToken);
-      router.push("/home");
+   if (response.status == 200 && response.data) {
+    setErrorMsg("Cambio de contraseña exitoso");
+    setOpenSnack(true);
+      const delay = (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms));
+      await delay(3000)
+      router.push("/login");
     } else {
       setErrorMsg(response.errors?.toString() ?? "");
       setOpenSnack(true);
@@ -119,6 +113,27 @@ export default function Login() {
   useEffect(() => {
     validateUserRegistro();
   }, [userRegister]);
+  useEffect(() => {
+    const tokenFromUrl = searchParams.get('token');
+    const emailFromUrl = searchParams.get('email');
+
+    if (tokenFromUrl) {
+      setUserRegister(state=>({...state,token:tokenFromUrl}));
+      console.log("Token:", tokenFromUrl);
+    }
+    if (emailFromUrl) {
+      setUserRegister(state=>({...state,email:emailFromUrl}));
+      console.log("Email:", emailFromUrl);
+    }
+    // Aquí puedes usar el token y el email para tu lógica de reseteo de contraseña
+  }, [searchParams]); // El efecto se re-ejecuta si searchParams cambia
+
+  if (!userRegister.token || !userRegister.email) {
+    return <p>Cargando parámetros o parámetros no encontrados...</p>;
+  }
+
+  
+
   return (
     <Box
       marginY={"5%"}
@@ -162,14 +177,16 @@ export default function Login() {
         />
       </Box>
       <Box
+        
         position={"relative"}
         bgcolor={AppColorsHex.white}
         display={"flex"}
         flexDirection={"column"}
-        alignItems={"start"}
+        alignItems={"center"}
         borderRadius={"50px"}
-        width={"95%"}
-        padding={"5%"}
+        justifyContent={'center'}
+        width={{sm:"95%", xs:'100%'}}
+        padding={ {md:"5%",sm:'20px', xs:'50px'}}
         maxWidth={"800px"}
         mb={2}
         sx={{
@@ -179,46 +196,48 @@ export default function Login() {
       >
         <Box mb={5}>
           <Typography variant="h1" color={AppColorsHex.blue}>
-            Registrate
+            Ingreesa tu nueva contraseña
           </Typography>
         </Box>
+        
+        
         <AppTextField
-          error={userError.userName.length > 0}
-          helperText={userError.userName}
-          label={"Nombre de usuario"}
-          fullWidth
-          margin="normal"
-          type="text"
-          onChange={(e) =>
-            setUserRegister((state) => {
-              return { ...state, userName: e.target.value };
-            })
-          }
-        />
-        <AppTextField
-          error={userError.email.length > 0}
-          helperText={userError.email}
-          label={"Correo"}
-          fullWidth
-          margin="normal"
-          type="email"
-          onChange={(e) =>
-            setUserRegister((state) => {
-              return { ...state, email: e.target.value };
-            })
-          }
-        />
-        <AppTextField
-          error={userError.password.length > 0}
-          helperText={userError.password}
-          label={"Tu contraseña"}
+          error={userError.newPassword.length > 0}
+          helperText={userError.newPassword}
+          label={"Tú nueva contraseña"}
           fullWidth
           margin="normal"
           type={showPassword ? "text" : "password"}
           onChange={(e) =>
             setUserRegister((state) => {
-              return { ...state, password: e.target.value };
+              return { ...state, newPassword: e.target.value };
             })
+          }
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  color="primary"
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+        <AppTextField
+          error={passwordConfirm != userRegister.newPassword}
+          helperText={passwordConfirm != userRegister.newPassword ? `La contraseña no coincide ${passwordConfirm}  ${userRegister.newPassword}`:""}
+          label={"Confirma tú contraseña"}
+          fullWidth
+          margin="normal"
+          
+          onChange={(e) =>
+            setPasswordConfirm(e.target.value)
           }
           InputProps={{
             endAdornment: (
@@ -253,7 +272,7 @@ export default function Login() {
               typeof value === "string" ? value.trim() !== "" : true
             )
             // && passwordConfirm.trim() !== ""
-          ) || isWorng
+          ) || isWorng || userRegister.newPassword != passwordConfirm
         }
         onClick={async () => {
           handleRegisterRequested();

@@ -30,8 +30,8 @@ import { storageKeys } from "@/const/storage_keys";
 
 // Servicios y lógica de negocio
 // Asegúrate de que esta interfaz incluya 'recaptchaToken'
-import { UserLoginRequest } from "@/service/token/interface";
-import loginRequest from "@/service/token/service"; // Este servicio debe enviar el token
+import { ForgotPasswordRequest, UserLoginRequest } from "@/service/token/interface";
+import loginRequest, { forgotPassword } from "@/service/token/service"; // Este servicio debe enviar el token
 
 // Componentes comunes
 import AppTextField from "@/components/common/app_text_field";
@@ -84,7 +84,7 @@ export default function Login() {
     }
   };
 
-  const handleLoginRequested = async () => {
+  const handleRecoveryPassword = async () => {
     if (!recaptchaToken) {
       setErrorMsg("Por favor, completa el reCAPTCHA para continuar.");
       setOpenSnack(true);
@@ -93,31 +93,24 @@ export default function Login() {
 
     setOpenBackdrop(true);
 
-    const loginPayload: UserLoginRequest = {
+    const loginPayload: ForgotPasswordRequest = {
       ...user,
       recaptchaToken: recaptchaToken, // Incluye el token en el payload
     };
 
     try {
-      const response = await loginRequest(loginPayload); // Tu servicio debe enviar este payload
+      const response = await forgotPassword(loginPayload); // Tu servicio debe enviar este payload
       setOpenBackdrop(false);
 
-      if (response.status === 401) {
-        setErrorMsg(response.errors || "Usuario o contraseña incorrectos.");
-        setOpenSnack(true);
-        recaptchaRef.current?.reset(); // Reinicia reCAPTCHA
-        setRecaptchaToken(null);
-      } else if (response.status === 400 && response.errors?.toLowerCase().includes("recaptcha")) {
+      if (response.status === 400 && response.errors?.toLowerCase().includes("recaptcha")) {
         // Ejemplo si el backend devuelve un error específico de reCAPTCHA
         setErrorMsg(response.errors || "Falló la verificación reCAPTCHA. Intenta de nuevo.");
         setOpenSnack(true);
         recaptchaRef.current?.reset();
         setRecaptchaToken(null);
       } else if (response.status === 200 && response.data) {
-        localStorage.setItem(storageKeys.token, response.data.token);
-        localStorage.setItem(storageKeys.email, response.data.email);
-        localStorage.setItem(storageKeys.userName, response.data.userName);
-        localStorage.setItem(storageKeys.refreshToken, response.data.refreshToken);
+        setErrorMsg("El correo fue enviado");
+      setOpenSnack(true);
         router.push("/home");
       } else {
         setErrorMsg(response.errors || "Ocurrió un error durante el inicio de sesión.");
@@ -183,7 +176,7 @@ export default function Login() {
         component="form" // Es buena práctica usar un tag <form>
         onSubmit={(e) => {
             e.preventDefault(); // Previene el envío tradicional del formulario
-            handleLoginRequested();
+            handleRecoveryPassword();
         }}
         position={"relative"}
         bgcolor={AppColorsHex.white}
@@ -203,7 +196,12 @@ export default function Login() {
       >
         <Box mb={5}>
           <Typography variant="h1" color={AppColorsHex.blue}>
-            Iniciar Sesión
+           Recuperar contraseña
+          </Typography>
+        </Box>
+        <Box mb={2}>
+          <Typography variant="body1" color={AppColorsHex.blue}>
+           Recibiras un correo con instrucciones para recuperar tu contraseña.
           </Typography>
         </Box>
         <AppTextField
@@ -217,51 +215,15 @@ export default function Login() {
           type="email"
           required // Añade validación básica HTML5
         />
-        <AppTextField
-          label={"Tu contraseña"}
-          fullWidth
-          margin="normal"
-          type={showPassword ? "text" : "password"}
-          value={user.password} // Controla el valor
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  color="primary"
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          onChange={(s) =>
-            setUser((state) => ({ ...state, password: s.target.value }))
-          }
-          required // Añade validación básica HTML5
-        />
-        <Link href={"recover-password"} color="primary" underline="hover">
-        <Typography typography={'body2'}>
-
-        Recuperar contraseña
-        </Typography>
-        </Link>
+        
         {/* --- Componente ReCAPTCHA --- */}
         
         {/* --- Fin Componente ReCAPTCHA --- */}
 
-        <AppButton label="Acceder" type="submit" /> {/* Cambiado onClick a type="submit" */}
+        <AppButton label="Enviar" type="submit" /> {/* Cambiado onClick a type="submit" */}
       </Box>
 
-      <AppButton
-        label="Registrarme"
-        onClick={() => router.push("/register")}
-        color="warning"
-        sx={{ minWidth: "18vw" }}
-      />
+     
       <Box height={200}/>
       <Box  mt={2} mb={2} display="flex" justifyContent="center" position="fixed" alignSelf={'center'} bottom={10}  >
           <ReCAPTCHA
