@@ -53,6 +53,7 @@ export default function Login() {
   const [user, setUser] = useState<UserLoginRequest>({
     email: "",
     password: "",
+    recaptchaToken:''
   });
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -103,19 +104,7 @@ export default function Login() {
     //   console.error('OpenPay is not loaded');
     // }
   };
-  const handleLoginRequested = async () => {
-    const response = await loginRequest(user);
 
-    if (response.status == 401) {
-      //setErrorMsg("Usuario o contraseña incorrectos.");
-    } else if (response.status == 200 && response.data) {
-      localStorage.setItem(storageKeys.token, response.data.token);
-      localStorage.setItem(storageKeys.email, response.data.email);
-      localStorage.setItem(storageKeys.userName, response.data.userName);
-      localStorage.setItem(storageKeys.refreshToken, response.data.refreshToken);
-      router.push("/banners");
-    }
-  };
 
   return (
     <Box
