@@ -84,6 +84,9 @@ export default function Page() {
       fetchSubcategoryProperties(producto.subcategoryId)
     }
   },[producto])
+  useEffect(()=>{
+    console.log(selectedOptions)
+  },[selectedOptions])
   useEffect(() => {
     getProductImagesById(product.toString());
     if (producto.id !== product.toString()) {
@@ -206,9 +209,10 @@ export default function Page() {
               input={<OutlinedInput id="select-multiple-chip" label={element.name} />}
               value={selectedOptions.has(element.id) ? selectedOptions.get(element.id):0}
               renderValue={(value)=>{
-                var x = element.options.filter(elementOption=> productOptions.some(pO=>elementOption.id == pO.propertyOptionId) )[value as number]
+                var x = element.options.find(ppty=>ppty.id==value)
                 return(
-                <Box
+                  x ?
+                (<Box
                   sx={{
                     display:'flex',
                     alignItems:'center'}}
@@ -216,7 +220,7 @@ export default function Page() {
                   { x.image &&
                   <Image src={x.image ??''} width={30} height={30} style={{marginRight:10}} alt={`image_${x.text}`}/>}
                   {x.text}
-                </Box>
+                </Box>):(<Typography>Selecciona uno</Typography>)
               )}}
             >
 
@@ -224,7 +228,7 @@ export default function Page() {
                 <MenuItem
 
                   key={name.id}
-                  value={index}
+                  value={name.id}
                   style={{}}
                 >
                   {
@@ -275,7 +279,7 @@ export default function Page() {
                 ? addToCart(
                     producto,
                     count,
-                    Array.from(selectedOptions.keys()),
+                    Array.from(selectedOptions.values()),
                     localStorage.getItem(storageKeys.token)
                   )
                 : null;

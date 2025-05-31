@@ -125,7 +125,7 @@ export default function AppProductDetail({ producto }: {
           width={isSmallScreen ? "100%" : "30%"} // Ajuste del ancho
         >
           {producto.selectedOptions.map((element) =>
-            <Box key={`selectedOption_${producto.productId}_${element.id}`} display={'flex'} flexDirection={'row'} justifyContent={'center'} alignItems={'center'} gap={2}>
+            <Box key={`selectedOption_${producto.productId}_${element.id}`} display={'flex'} flexDirection={'row'} justifyContent={isSmallScreen ? "center" : "start"} alignItems={'center'} gap={2}>
               <Image width={25} height={25} style={{ borderRadius: 25 }} src={element.image} alt={`image_${producto.productId}_${element.id}`} />
               <Typography
                 sx={{
