@@ -49,14 +49,12 @@ export default function Catalogo() {
 
   // Cargar más productos con paginación
   const loadMoreProducts = useCallback(async () => {
-    
     const nextPage = page + 1;
-    
 
     if (subcategoriaPaginada) {
-      const hasMore = nextPage * 20 <= subcategoriaPaginada.elementos
+      const hasMore = nextPage * 20 <= subcategoriaPaginada.elementos;
       if (loading || !hasMore) return;
-  
+
       setLoading(true);
       await getSubcategoriaPaginada(
         subcategoriaPaginada.datosPaginados.id,
@@ -103,7 +101,6 @@ export default function Catalogo() {
     getProductos,
     getCategorias,
   ]);
- 
 
   return (
     <AppBackgroundImage>
@@ -129,25 +126,25 @@ export default function Catalogo() {
           {(subcategoriaPaginada?.datosPaginados?.subcategoryProductDtos ?? [])
             .length > 0
             ? (
-              subcategoriaPaginada?.datosPaginados?.subcategoryProductDtos ??
-              []
-            ).map((product, i) => (
-              <AppProduct
-                key={i}
-                product={product}
-                image={product.imageUrlSmall}
-                titulo={product.name}
-              />
-            ))
+                subcategoriaPaginada?.datosPaginados?.subcategoryProductDtos ??
+                []
+              ).map((product, i) => (
+                <AppProduct
+                  key={i}
+                  product={product}
+                  image={product.imageUrlSmall}
+                  titulo={product.name}
+                />
+              ))
             : listaDeProductos.length > 0 &&
-            listaDeProductos.map((producto, i) => (
-              <AppProduct
-                key={i}
-                product={producto}
-                image={producto.imageUrlSmall}
-                titulo={producto.name}
-              />
-            ))}
+              listaDeProductos.map((producto, i) => (
+                <AppProduct
+                  key={i}
+                  product={producto}
+                  image={producto.imageUrlSmall}
+                  titulo={producto.name}
+                />
+              ))}
         </Grid>
         {loading && <Typography>Cargando...</Typography>}
       </Box>

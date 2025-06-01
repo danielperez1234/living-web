@@ -65,6 +65,7 @@ export default function AppFilterDrawer({
   // Efecto para actualizar la URL solo cuando ambos, categoría y subcategoría, están seleccionados
   useEffect(() => {
     if (selectedCategoryId !== "0" && selectedSubcategoryId !== "0") {
+      cleanSubcategoriaPaginada();
       router.replace(
         `/catalogo/${selectedCategoryId}/${selectedSubcategoryId}`
       );
@@ -77,10 +78,11 @@ export default function AppFilterDrawer({
     setSelectedSubcategoryId("0");
     router.replace(`/catalogo/0/0`);
     cleanSubcategoriaPaginada();
-    console.log(
-      "Datos paginados: " +
-        useSubcategoriasStore.getState().subcategoriasConProductos
-    );
+    // console.log(
+    //   "Datos paginados: " +
+    //     //useSubcategoriasStore.getState().subcategoriasConProductos,
+    //     useSubcategoriasStore.getState().subcategoriaPaginada
+    // );
   };
 
   return (
